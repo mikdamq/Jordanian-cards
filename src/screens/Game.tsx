@@ -2,10 +2,10 @@ import { useEffect, useReducer, useRef, useState } from 'react';
 import {
   CategoryIcon,
   Confetti,
+  HeadsUpWord,
   PromptCard,
   RotatePrompt,
   Screen,
-  sizeClass,
   TatreezBand,
   TeamAvatar,
   TiltTutorial,
@@ -268,7 +268,7 @@ function PlayHeadsUp({ g, dispatch }: { g: Game; dispatch: Dispatch }) {
 
   return (
     <div className="hu">
-      <TatreezBand cell={5} />
+      <TatreezBand cell={4} />
       <div className="hu__bar">
         <span className={`hu__timer ${left <= 10 ? 'is-low' : ''}`}>{left}</span>
         {card && (
@@ -279,14 +279,7 @@ function PlayHeadsUp({ g, dispatch }: { g: Game; dispatch: Dispatch }) {
         )}
         <span className="score-pill">✓ {turnScore(g)}</span>
       </div>
-      {card && (
-        <div className="hu__card" key={card.id}>
-          <h2 className={`hu__ar ${sizeClass(card.ar)}`}>{card.ar}</h2>
-          <p className="hu__en" dir="ltr">
-            {card.arabizi}
-          </p>
-        </div>
-      )}
+      {card && <HeadsUpWord key={card.id} card={card} />}
       <div className={`hu__buttons ${tilt ? 'hu__buttons--quiet' : ''}`}>
         <button className="btn btn--skip" onClick={() => answer(false)}>
           ⬆️ تخطّي
@@ -295,7 +288,7 @@ function PlayHeadsUp({ g, dispatch }: { g: Game; dispatch: Dispatch }) {
           ⬇️ صح
         </button>
       </div>
-      <TatreezBand cell={5} className="band--flip" />
+      <TatreezBand cell={4} className="band--flip" />
       {flash && <div className={`hu__flash hu__flash--${flash}`}>{flash === 'correct' ? 'صح! ✓' : 'تخطّي'}</div>}
       {!landscape && <RotatePrompt />}
     </div>

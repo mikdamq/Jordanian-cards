@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { nextTiltState, screenFacing, type TiltState } from './lib/tilt';
 
 /** Counts down while running; returns whole seconds left. */
@@ -131,4 +131,42 @@ export function useTheme(): [ThemePref, () => void] {
 
   const cycle = () => setPref((p) => (p === 'auto' ? 'light' : p === 'light' ? 'dark' : 'auto'));
   return [pref, cycle];
+}
+
+/**
+ * Shrinks `inner`'s font size until it fits inside `box`, so long phrases
+ * never push the rest of the layout off screen. Refits when the box resizes
+ * (e.g. on rotation).
+ */
+export function useFitText<B extends HTMLElement, I extends HTMLElement>(text: string, max: number, min = 14) {
+  const box = useRef<B>(null);
+  const inner = useRef<I>(null);
+
+  useLayoutEffect(() => {
+    const b = box.current;
+    const el = inner.current;
+    if (!b || !el) return;
+    const fits = () => el.scrollHeight <= b.clientHeight && el.scrollWidth <= b.clientWidth;
+    const fit = () => {
+      let lo = min;
+      let hi = max;
+      el.style.fontSize = `${hi}px`;
+      if (fits()) return;
+      while (hi - lo > 1) {
+        const mid = Math.floor((lo + hi) / 2);
+        el.style.fontSize = `${mid}px`;
+        if (fits()) lo = mid;
+        else hi = mid;
+      }
+      el.style.fontSize = `${lo}px`;
+    };
+    fit();
+    // Webfonts can finish loading after the first measure.
+    void document.fonts?.ready.then(fit);
+    const ro = new ResizeObserver(fit);
+    ro.observe(b);
+    return () => ro.disconnect();
+  }, [text, max, min]);
+
+  return [box, inner] as const;
 }

@@ -1,7 +1,7 @@
 import { useId, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { avatarById, CATEGORY_ART, TATREEZ_BAND, type AvatarId, type StitchArt, type Thread } from './art';
 import { categoryById, type Card } from './data/cards';
-import type { ThemePref } from './hooks';
+import { useFitText, type ThemePref } from './hooks';
 
 const THREADS: Thread[] = ['r', 'g', 'y', 'k', 'b'];
 
@@ -134,15 +134,7 @@ export function Difficulty({ level }: { level: number }) {
   );
 }
 
-/** Long prompts get a smaller size so they still fit on one screen. */
-export function sizeClass(text: string): string {
-  if (text.length > 22) return 'len-xl';
-  if (text.length > 14) return 'len-l';
-  if (text.length > 8) return 'len-m';
-  return 'len-s';
-}
-
-const SWIPE_DISTANCE = 90;
+const SWIPE_DISTANCE = 70;
 
 /** The prompt card. In classic mode it can be swiped: right = got it, left = skip. */
 export function PromptCard({ card, onSwipe }: { card: Card; onSwipe?: (correct: boolean) => void }) {
@@ -150,14 +142,16 @@ export function PromptCard({ card, onSwipe }: { card: Card; onSwipe?: (correct: 
   const [dx, setDx] = useState(0);
   const [leaving, setLeaving] = useState<0 | 1 | -1>(0);
   const [dragging, setDragging] = useState(false);
-  const start = useRef<number | null>(null);
+  const drag = useRef<{ x: number; dx: number } | null>(null);
+  const [box, text] = useFitText<HTMLDivElement, HTMLHeadingElement>(card.ar, 64, 22);
 
   const release = () => {
-    if (start.current == null) return;
-    start.current = null;
+    const d = drag.current;
+    if (!d) return;
+    drag.current = null;
     setDragging(false);
-    if (Math.abs(dx) < SWIPE_DISTANCE || !onSwipe) return setDx(0);
-    const dir = dx > 0 ? 1 : -1;
+    if (Math.abs(d.dx) < SWIPE_DISTANCE || !onSwipe) return setDx(0);
+    const dir = d.dx > 0 ? 1 : -1;
     setLeaving(dir);
     setTimeout(() => onSwipe(dir > 0), 180);
   };
@@ -173,11 +167,16 @@ export function PromptCard({ card, onSwipe }: { card: Card; onSwipe?: (correct: 
       style={{ transform }}
       onPointerDown={(e) => {
         if (!onSwipe || leaving) return;
-        start.current = e.clientX;
+        drag.current = { x: e.clientX, dx: 0 };
         setDragging(true);
         e.currentTarget.setPointerCapture(e.pointerId);
       }}
-      onPointerMove={(e) => start.current != null && setDx(e.clientX - start.current)}
+      onPointerMove={(e) => {
+        const d = drag.current;
+        if (!d) return;
+        d.dx = e.clientX - d.x;
+        setDx(d.dx);
+      }}
       onPointerUp={release}
       onPointerCancel={release}
     >
@@ -189,7 +188,11 @@ export function PromptCard({ card, onSwipe }: { card: Card; onSwipe?: (correct: 
         </span>
         <Difficulty level={card.difficulty} />
       </div>
-      <h2 className={`prompt__ar ${sizeClass(card.ar)}`}>{card.ar}</h2>
+      <div className="prompt__box" ref={box}>
+        <h2 className="prompt__ar" ref={text}>
+          {card.ar}
+        </h2>
+      </div>
       <p className="prompt__en" dir="ltr">
         {card.arabizi}
       </p>
@@ -205,6 +208,21 @@ export function PromptCard({ card, onSwipe }: { card: Card; onSwipe?: (correct: 
         </>
       )}
     </article>
+  );
+}
+
+/** Heads-up word, sized to fill whatever space the landscape screen has left. */
+export function HeadsUpWord({ card }: { card: Card }) {
+  const [box, text] = useFitText<HTMLDivElement, HTMLDivElement>(card.ar, 200, 18);
+  return (
+    <div className="hu__card" ref={box}>
+      <div className="hu__fit" ref={text}>
+        <h2 className="hu__ar">{card.ar}</h2>
+        <p className="hu__en" dir="ltr">
+          {card.arabizi}
+        </p>
+      </div>
+    </div>
   );
 }
 
