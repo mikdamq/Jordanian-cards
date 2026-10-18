@@ -1,5 +1,7 @@
 let ctx: AudioContext | null = null;
 let noise: AudioBuffer | null = null;
+let chime: AudioBuffer | null = null;
+let chimeLoading = false;
 
 function audio(): AudioContext | null {
   try {
@@ -82,6 +84,29 @@ function rhythm(pattern: string, stepMs: number) {
   });
 }
 
+/** Loads the pre-rendered "correct" chime (scripts/make-sounds.mjs). */
+function loadChime(ac: AudioContext) {
+  if (chime || chimeLoading) return;
+  chimeLoading = true;
+  fetch(`${import.meta.env.BASE_URL}sounds/correct.wav`)
+    .then((r) => r.arrayBuffer())
+    .then((data) => ac.decodeAudioData(data))
+    .then((buf) => (chime = buf))
+    .catch(() => (chimeLoading = false));
+}
+
+function playChime(): boolean {
+  const ac = audio();
+  if (!ac || !chime) return false;
+  const src = ac.createBufferSource();
+  const gain = ac.createGain();
+  gain.gain.value = 0.9;
+  src.buffer = chime;
+  src.connect(gain).connect(ac.destination);
+  src.start();
+  return true;
+}
+
 function buzz(pattern: number | number[]) {
   try {
     navigator.vibrate?.(pattern);
@@ -92,10 +117,15 @@ function buzz(pattern: number | number[]) {
 
 export const feedback = {
   /** Call from a tap so browsers allow audio later in the turn. */
-  unlock: () => void audio(),
+  unlock() {
+    const ac = audio();
+    if (ac) loadChime(ac);
+  },
   correct() {
-    rhythm('TT', 90);
-    tone(988, 160, 140, 'sine', 0.15);
+    if (!playChime()) {
+      tone(988, 90, 0, 'sine', 0.2);
+      tone(1319, 400, 80, 'sine', 0.2);
+    }
     buzz(60);
   },
   skip() {
