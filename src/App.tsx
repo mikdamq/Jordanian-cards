@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { DEFAULT_SETTINGS, type Settings } from './game';
+import { DEFAULT_SETTINGS, normalizeSettings, type Settings } from './game';
+import { useTheme } from './hooks';
 import { load, save } from './lib/storage';
 import { GameView } from './screens/Game';
 import { Home } from './screens/Home';
@@ -12,7 +13,8 @@ const SETTINGS_KEY = 'wk.settings';
 
 export default function App() {
   const [view, setView] = useState<View>('home');
-  const [settings, setSettings] = useState<Settings>(() => load(SETTINGS_KEY, DEFAULT_SETTINGS));
+  const [settings, setSettings] = useState<Settings>(() => normalizeSettings(load(SETTINGS_KEY, DEFAULT_SETTINGS)));
+  const [theme, cycleTheme] = useTheme();
   // Bumped to remount the game for "play again" with a fresh deck.
   const [gameId, setGameId] = useState(0);
 
@@ -21,7 +23,7 @@ export default function App() {
 
   switch (view) {
     case 'home':
-      return <Home onPlay={() => setView('setup')} onHowTo={() => setView('howto')} />;
+      return <Home onPlay={() => setView('setup')} onHowTo={() => setView('howto')} theme={theme} onTheme={cycleTheme} />;
     case 'howto':
       return <HowTo onBack={() => setView('home')} />;
     case 'setup':
@@ -31,7 +33,7 @@ export default function App() {
           onChange={setSettings}
           onBack={() => setView('home')}
           onStart={() => {
-            setSettings({ ...settings, teams: settings.teams.map((t) => t.trim()) });
+            setSettings({ ...settings, teams: settings.teams.map((t) => ({ ...t, name: t.name.trim() })) });
             setGameId((n) => n + 1);
             setView('game');
           }}

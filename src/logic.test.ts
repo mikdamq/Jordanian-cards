@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { CARDS, CATEGORIES } from './data/cards';
-import { DEFAULT_SETTINGS, newGame, reduce, winners, type Game } from './game';
+import { DEFAULT_SETTINGS, DEFAULT_TEAMS, newGame, normalizeSettings, reduce, winners, type Game, type Settings } from './game';
 import { buildDeck, eligibleCards } from './lib/deck';
 import { nextTiltState, screenFacing } from './lib/tilt';
 
@@ -59,7 +59,7 @@ describe('game flow', () => {
   const play = (g: Game, ...actions: Parameters<typeof reduce>[1][]) => actions.reduce(reduce, g);
 
   it('scores a turn, rotates teams, and ends after the last round', () => {
-    const settings = { ...DEFAULT_SETTINGS, rounds: 3 as const, teams: ['أ', 'ب'] };
+    const settings = { ...DEFAULT_SETTINGS, rounds: 3, teams: DEFAULT_TEAMS.slice(0, 2) };
     let g = newGame(settings, buildDeck(settings.categories, false, new Set()));
     g = play(g, { type: 'countdown' }, { type: 'play' }, { type: 'answer', correct: true }, { type: 'answer', correct: false }, { type: 'answer', correct: true }, { type: 'timeUp' });
     expect(g.phase).toBe('summary');
@@ -78,7 +78,7 @@ describe('game flow', () => {
   });
 
   it('ends the game when the deck runs out', () => {
-    const settings = { ...DEFAULT_SETTINGS, teams: ['أ', 'ب'] };
+    const settings = { ...DEFAULT_SETTINGS, teams: DEFAULT_TEAMS.slice(0, 2) };
     let g = newGame(settings, CARDS.slice(0, 2));
     g = play(g, { type: 'countdown' }, { type: 'play' }, { type: 'answer', correct: true }, { type: 'answer', correct: true });
     expect(g.phase).toBe('summary');
@@ -87,5 +87,18 @@ describe('game flow', () => {
 
   it('reports ties', () => {
     expect(winners([4, 4, 1])).toEqual([0, 1]);
+  });
+});
+
+describe('settings', () => {
+  it('upgrades settings saved by the first version', () => {
+    const old = { ...DEFAULT_SETTINGS, teams: ['أ', 'ب'], rounds: 7 } as unknown as Settings;
+    const s = normalizeSettings(old);
+    expect(s.teams).toEqual([
+      { name: 'أ', avatar: 'falcon' },
+      { name: 'ب', avatar: 'oryx' },
+    ]);
+    expect(s.rounds).toBe(7);
+    expect(normalizeSettings({ ...DEFAULT_SETTINGS, rounds: 40 }).rounds).toBe(10);
   });
 });

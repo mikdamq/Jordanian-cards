@@ -1,17 +1,31 @@
+import { AVATARS, type AvatarId } from './art';
 import { CATEGORIES, SHABAB, type Card, type CategoryId } from './data/cards';
 
 export type Mode = 'classic' | 'headsup';
 
+export interface Team {
+  name: string;
+  avatar: AvatarId;
+}
+
 export interface Settings {
   mode: Mode;
-  teams: string[];
+  teams: Team[];
   categories: CategoryId[];
   shabab: boolean;
   seconds: 30 | 60 | 90;
-  rounds: 3 | 5 | 7;
+  rounds: number;
 }
 
-export const DEFAULT_TEAMS = ['النشامى', 'الصقور', 'النسور', 'الفرسان'];
+export const MIN_ROUNDS = 1;
+export const MAX_ROUNDS = 10;
+
+export const DEFAULT_TEAMS: Team[] = [
+  { name: 'النشامى', avatar: 'falcon' },
+  { name: 'المها', avatar: 'oryx' },
+  { name: 'الخيّالة', avatar: 'horse' },
+  { name: 'الهجّانة', avatar: 'camel' },
+];
 
 export const DEFAULT_SETTINGS: Settings = {
   mode: 'classic',
@@ -21,6 +35,19 @@ export const DEFAULT_SETTINGS: Settings = {
   seconds: 60,
   rounds: 3,
 };
+
+/** Repairs settings saved by older versions (plain team names, fixed round options). */
+export function normalizeSettings(s: Settings): Settings {
+  const teams = (s.teams as (Team | string)[]).map((t, i) =>
+    typeof t === 'string' ? { name: t, avatar: DEFAULT_TEAMS[i % 4].avatar } : t,
+  );
+  const validAvatar = (a: AvatarId) => AVATARS.some((x) => x.id === a);
+  return {
+    ...s,
+    teams: teams.map((t, i) => (validAvatar(t.avatar) ? t : { ...t, avatar: DEFAULT_TEAMS[i % 4].avatar })),
+    rounds: Math.min(MAX_ROUNDS, Math.max(MIN_ROUNDS, Math.round(Number(s.rounds) || 3))),
+  };
+}
 
 export interface TurnResult {
   card: Card;
