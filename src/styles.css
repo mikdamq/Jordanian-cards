@@ -393,6 +393,12 @@ h2 {
   border: 2px solid var(--line);
 }
 
+.btn--share {
+  color: #fff;
+  background: linear-gradient(180deg, var(--ok), var(--ok-2));
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--ok) 35%, transparent);
+}
+
 .btn--team {
   gap: 12px;
 }
@@ -594,6 +600,19 @@ h2 {
 
 .home__cta {
   margin-top: auto;
+}
+
+.home__links {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.home__links a {
+  color: var(--muted);
+  text-underline-offset: 4px;
 }
 
 /* ---------- setup ---------- */

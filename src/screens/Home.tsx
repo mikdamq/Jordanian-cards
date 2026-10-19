@@ -1,6 +1,7 @@
 import { CategoryIcon, Logo, Screen, TatreezBand, ThemeToggle } from '../components';
 import { CARDS, CATEGORIES } from '../data/cards';
 import type { ThemePref } from '../hooks';
+import { CONTACT_EMAIL } from '../config';
 
 interface Props {
   onPlay: () => void;
@@ -44,6 +45,11 @@ export function Home({ onPlay, onHowTo, theme, onTheme }: Props) {
         <p className="muted center">
           {CARDS.length} بطاقة · {CATEGORIES.length} فئات · تمثيل وعالجبين
         </p>
+        <nav className="home__links">
+          <a href={`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent('ولا كلمة — ملاحظات')}`}>ملاحظات</a>
+          <span aria-hidden>·</span>
+          <a href="privacy.html">الخصوصية</a>
+        </nav>
       </div>
     </Screen>
   );

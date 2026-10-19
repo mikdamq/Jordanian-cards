@@ -20,3 +20,11 @@ npm run build    # typecheck + production build in dist/
 Card content lives in `src/data/cards.ts`. Each row is `[arabic, arabizi, difficulty 1–3]`.
 
 > Tilt controls need HTTPS (or localhost). On iPhone the game asks for motion permission when the team taps **جاهزين**.
+
+## Analytics
+
+Anonymous, cookie-free counts via [GoatCounter](https://www.goatcounter.com). Set `GOATCOUNTER_CODE` in `src/config.ts` to your site code to switch it on; it stays off while empty. Events: `game-start/<mode>/...`, `game-end/<mode>`, `share/<shared|downloaded|cancelled>`.
+
+## Store listing
+
+Draft Google Play listing text and checklists: `docs/google-play-listing.md`. Privacy policy: `public/privacy.html`.

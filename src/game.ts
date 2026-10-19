@@ -1,5 +1,5 @@
 import { AVATARS, type AvatarId } from './art';
-import { CATEGORIES, SHABAB, type Card, type CategoryId } from './data/cards';
+import { CATEGORIES, type Card, type CategoryId } from './data/cards';
 
 export type Mode = 'classic' | 'headsup';
 
@@ -30,7 +30,8 @@ export const DEFAULT_TEAMS: Team[] = [
 export const DEFAULT_SETTINGS: Settings = {
   mode: 'classic',
   teams: DEFAULT_TEAMS.slice(0, 2),
-  categories: CATEGORIES.map((c) => c.id).filter((id) => id !== SHABAB),
+  // The four easiest to act out; the rest are one tap away in setup.
+  categories: ['screen', 'food', 'places', 'life'],
   shabab: false,
   seconds: 60,
   rounds: 3,

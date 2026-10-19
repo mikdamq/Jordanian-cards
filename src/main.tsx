@@ -8,6 +8,9 @@ import '@fontsource/almarai/800.css';
 import './styles.css';
 import App from './App';
 import { ErrorBoundary } from './ErrorBoundary';
+import { startAnalytics } from './lib/analytics';
+
+startAnalytics();
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

@@ -17,6 +17,9 @@ import { buildDeck, markSeen } from '../lib/deck';
 import { feedback } from '../lib/feedback';
 import { loadList, save } from '../lib/storage';
 import { requestTiltPermission } from '../lib/tilt';
+import { track } from '../lib/analytics';
+import { shareResult } from '../lib/shareImage';
+import { CONTACT_EMAIL } from '../config';
 
 type Dispatch = (a: Parameters<typeof reduce>[1]) => void;
 
@@ -49,6 +52,10 @@ function leaveLandscape() {
 export function GameView({ settings, onExit, onReplay }: Props) {
   const [g, dispatch] = useReducer(reduce, settings, (s) => newGame(s, buildDeck(s.categories, s.shabab)));
   useWakeLock(g.phase !== 'final');
+
+  useEffect(() => {
+    track(`game-start/${settings.mode}/${settings.teams.length}-teams/${settings.rounds}-rounds`);
+  }, [settings]);
 
   useEffect(() => {
     if (g.phase !== 'countdown' && g.phase !== 'play') leaveLandscape();
@@ -390,9 +397,24 @@ function Final({ g, onHome, onReplay }: { g: Game; onHome: () => void; onReplay:
   const endedEarly = !isLastTurn(g);
   const champ = team(g, top[0]);
 
+  const [sharing, setSharing] = useState(false);
+
   useEffect(() => {
     feedback.celebrate();
-  }, []);
+    track(`game-end/${g.settings.mode}`);
+  }, [g.settings.mode]);
+
+  const share = async () => {
+    setSharing(true);
+    try {
+      const how = await shareResult({ teams: g.settings.teams, scores: g.scores, winners: top });
+      track(`share/${how}`);
+    } catch {
+      track('share/failed');
+    } finally {
+      setSharing(false);
+    }
+  };
 
   return (
     <Screen className="center-screen final">
@@ -413,12 +435,18 @@ function Final({ g, onHome, onReplay }: { g: Game; onHome: () => void; onReplay:
       <p className="muted">{endedEarly ? 'خلصت البطاقات — لعبتوها كلها! 🔥' : tie ? 'ما حدا أحسن من حدا 😄' : 'نشامى والله! 🇯🇴'}</p>
       <Standings g={g} />
       <div className="stack">
+        <button className="btn btn--share btn--xl" onClick={share} disabled={sharing}>
+          {sharing ? 'لحظة…' : '📤 شارك النتيجة'}
+        </button>
         <button className="btn btn--primary btn--xl" onClick={onReplay}>
           العبوا كمان مرة
         </button>
         <button className="btn btn--ghost" onClick={onHome}>
           الرئيسية
         </button>
+        <a className="link-btn center" href={`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent('ولا كلمة — ملاحظات')}`}>
+          عندك ملاحظة أو فكرة بطاقة؟ ابعتلنا
+        </a>
       </div>
     </Screen>
   );
