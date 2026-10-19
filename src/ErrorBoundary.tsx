@@ -26,7 +26,7 @@ export class ErrorBoundary extends Component<{ children: ReactNode }, { error: s
     return (
       <main className="screen center-screen">
         <h1>صار في خلل بسيط 😅</h1>
-        <p className="muted">إذا كانت ترجمة المتصفح شغّالة، طفّيها لهاي الصفحة وجرّب مرة ثانية.</p>
+        <p className="muted">اكبس الزر وارجع للعب. إذا تكرر، ابعتلنا صورة للرسالة تحت.</p>
         <button className="btn btn--primary btn--xl" onClick={this.restart}>
           ابدأ من جديد
         </button>

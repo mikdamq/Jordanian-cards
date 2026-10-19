@@ -18,8 +18,14 @@ export default function App() {
   // Bumped to remount the game for "play again" with a fresh deck.
   const [gameId, setGameId] = useState(0);
 
-  useEffect(() => save(SETTINGS_KEY, settings), [settings]);
-  useEffect(() => window.scrollTo(0, 0), [view]);
+  useEffect(() => {
+    save(SETTINGS_KEY, settings);
+  }, [settings]);
+  // Braces matter: newer Chrome returns a Promise from scrollTo, and React
+  // would try to call any returned value as the effect's cleanup.
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [view]);
 
   switch (view) {
     case 'home':
