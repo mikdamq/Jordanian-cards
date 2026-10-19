@@ -7,9 +7,12 @@ import '@fontsource/almarai/700.css';
 import '@fontsource/almarai/800.css';
 import './styles.css';
 import App from './App';
+import { ErrorBoundary } from './ErrorBoundary';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <ErrorBoundary>
+      <App />
+    </ErrorBoundary>
   </StrictMode>,
 );

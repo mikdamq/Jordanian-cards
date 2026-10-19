@@ -101,4 +101,18 @@ describe('settings', () => {
     expect(s.rounds).toBe(7);
     expect(normalizeSettings({ ...DEFAULT_SETTINGS, rounds: 40 }).rounds).toBe(10);
   });
+
+  it('turns damaged settings into playable defaults instead of crashing', () => {
+    const junk = [null, 'oops', 42, {}, { teams: [{ name: 5 }, null], categories: ['nope', 'food'], seconds: 45, mode: 'x' }];
+    for (const j of junk) {
+      const s = normalizeSettings(j as unknown as Settings);
+      expect(s.teams.length).toBeGreaterThanOrEqual(2);
+      expect(s.teams.every((t) => typeof t.name === 'string')).toBe(true);
+      expect([30, 60, 90]).toContain(s.seconds);
+      expect(['classic', 'headsup']).toContain(s.mode);
+    }
+    const repaired = normalizeSettings(junk[4] as unknown as Settings);
+    expect(repaired.categories).toEqual(['food']);
+    expect(repaired.teams[0]).toEqual({ name: 'النشامى', avatar: 'falcon' });
+  });
 });

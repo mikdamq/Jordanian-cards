@@ -1968,6 +1968,12 @@ h2 {
   }
 }
 
+.error-detail {
+  font-size: 0.75rem;
+  color: var(--muted);
+  word-break: break-word;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

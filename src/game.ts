@@ -36,16 +36,37 @@ export const DEFAULT_SETTINGS: Settings = {
   rounds: 3,
 };
 
-/** Repairs settings saved by older versions (plain team names, fixed round options). */
-export function normalizeSettings(s: Settings): Settings {
-  const teams = (s.teams as (Team | string)[]).map((t, i) =>
-    typeof t === 'string' ? { name: t, avatar: DEFAULT_TEAMS[i % 4].avatar } : t,
-  );
-  const validAvatar = (a: AvatarId) => AVATARS.some((x) => x.id === a);
+/**
+ * Repairs settings saved by older versions or damaged in storage: anything
+ * missing or malformed falls back to its default instead of crashing a screen.
+ */
+export function normalizeSettings(raw: Settings): Settings {
+  const s = (raw && typeof raw === 'object' ? raw : {}) as Partial<Record<keyof Settings, unknown>>;
+  const validAvatar = (a: unknown): a is AvatarId => AVATARS.some((x) => x.id === a);
+  const validCategory = (c: unknown): c is CategoryId => CATEGORIES.some((x) => x.id === c);
+
+  const teams = (Array.isArray(s.teams) ? s.teams : [])
+    .slice(0, 4)
+    .map((t, i): Team => {
+      const fallback = DEFAULT_TEAMS[i % 4];
+      if (typeof t === 'string') return { name: t, avatar: fallback.avatar };
+      const obj = (t && typeof t === 'object' ? t : {}) as Partial<Record<keyof Team, unknown>>;
+      return {
+        name: typeof obj.name === 'string' ? obj.name : fallback.name,
+        avatar: validAvatar(obj.avatar) ? obj.avatar : fallback.avatar,
+      };
+    });
+  while (teams.length < 2) teams.push(DEFAULT_TEAMS[teams.length]);
+
+  const categories = Array.isArray(s.categories) ? s.categories.filter(validCategory) : DEFAULT_SETTINGS.categories;
+
   return {
-    ...s,
-    teams: teams.map((t, i) => (validAvatar(t.avatar) ? t : { ...t, avatar: DEFAULT_TEAMS[i % 4].avatar })),
-    rounds: Math.min(MAX_ROUNDS, Math.max(MIN_ROUNDS, Math.round(Number(s.rounds) || 3))),
+    mode: s.mode === 'headsup' ? 'headsup' : 'classic',
+    teams,
+    categories,
+    shabab: s.shabab === true,
+    seconds: s.seconds === 30 || s.seconds === 90 ? s.seconds : 60,
+    rounds: Math.min(MAX_ROUNDS, Math.max(MIN_ROUNDS, Math.round(Number(s.rounds)) || DEFAULT_SETTINGS.rounds)),
   };
 }
 

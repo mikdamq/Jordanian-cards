@@ -26,8 +26,9 @@ interface Props {
   onReplay: () => void;
 }
 
-/** Fullscreen + landscape lock where the browser allows it (Android); a no-op elsewhere. */
+/** Fullscreen + landscape lock on phones and tablets where the browser allows it (Android). */
 async function enterLandscape() {
+  if (!window.matchMedia('(pointer: coarse)').matches) return;
   try {
     if (!document.fullscreenElement) await document.documentElement.requestFullscreen?.();
     await (screen.orientation as ScreenOrientation & { lock?: (o: string) => Promise<void> }).lock?.('landscape');
