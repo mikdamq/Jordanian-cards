@@ -28,7 +28,7 @@ export function Home({ onPlay, onHowTo, theme, onTheme }: Props) {
       <TatreezBand cell={5} />
 
       <div className="home__patches" aria-hidden>
-        {CATEGORIES.map((c, i) => (
+        {CATEGORIES.slice(0, 8).map((c, i) => (
           <span key={c.id} style={{ animationDelay: `${i * 0.06}s` }}>
             <CategoryIcon id={c.id} size={52} />
           </span>

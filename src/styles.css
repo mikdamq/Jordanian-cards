@@ -441,6 +441,11 @@ h2 {
   line-height: 1;
 }
 
+.link-btn--small {
+  font-size: 0.85rem;
+  margin-bottom: 10px;
+}
+
 .link-btn {
   color: var(--red);
   font-weight: 700;

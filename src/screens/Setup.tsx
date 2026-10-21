@@ -151,7 +151,19 @@ export function Setup({ settings, onChange, onStart, onBack }: Props) {
       </section>
 
       <section>
-        <h3 className="label">الفئات</h3>
+        <div className="label-row">
+          <h3 className="label">الفئات</h3>
+          <button
+            className="link-btn link-btn--small"
+            onClick={() => {
+              feedback.select();
+              const all = CATEGORIES.filter((c) => c.id !== SHABAB).map((c) => c.id);
+              set({ categories: settings.categories.length === all.length ? [] : all });
+            }}
+          >
+            {settings.categories.length === CATEGORIES.length - 1 ? 'شيل الكل' : 'اختار الكل'}
+          </button>
+        </div>
         <div className="cat-grid">
           {CATEGORIES.filter((c) => c.id !== SHABAB).map((c) => {
             const on = settings.categories.includes(c.id);

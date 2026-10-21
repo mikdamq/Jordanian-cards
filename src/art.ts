@@ -89,6 +89,94 @@ export const CATEGORY_ART: Record<CategoryId, StitchArt> = {
     '.kk....kk.',
     '...kkkk...',
   ],
+  // Cat face
+  animals: [
+    'k.......k',
+    'kk.....kk',
+    'kyk...kyk',
+    'kyyyyyyyk',
+    'yykyyykyy',
+    'yyyyyyyyy',
+    'yyyykyyyy',
+    '.yykkkyy.',
+    '..yyyyy..',
+  ],
+  // Builder's hard hat
+  jobs: [
+    '...yyyy...',
+    '..yyyyyy..',
+    '.yyykyyyy.',
+    '.yyykyyyy.',
+    'yyyykyyyyy',
+    'yyyyyyyyyy',
+    'kkkkkkkkkk',
+  ],
+  // Laptop
+  office: [
+    '.kkkkkkkk.',
+    '.kbbbbbbk.',
+    '.kbyybbbk.',
+    '.kbbbbbbk.',
+    '.kkkkkkkk.',
+    'kkkkkkkkkk',
+    '.kkkkkkkk.',
+  ],
+  // Engagement ring
+  weddings: [
+    '....b....',
+    '...bbb...',
+    '....b....',
+    '..yyyyy..',
+    '.y.....y.',
+    'y.......y',
+    'y.......y',
+    '.y.....y.',
+    '..yyyyy..',
+  ],
+  // Cassette tape
+  nineties: [
+    'kkkkkkkkkkk',
+    'k.........k',
+    'k.kkk.kkk.k',
+    'k.k.k.k.k.k',
+    'k.kkk.kkk.k',
+    'k.........k',
+    'k..rrrrr..k',
+    'kkkkkkkkkkk',
+  ],
+  // White-stone houses on Amman's hills
+  amman: [
+    '....yy....',
+    '...yyyy...',
+    '.yy.yyyy..',
+    '.yy.ykyy..',
+    'yyyyyyyyyy',
+    'ykyykyykyy',
+    'yyyyyyyyyy',
+    'ykyykyykyy',
+  ],
+  // Crescent and star
+  ramadan: [
+    '..yyy.....',
+    '.yyy......',
+    'yyy....y..',
+    'yyy...yyy.',
+    'yyy....y..',
+    'yyy.......',
+    '.yyy......',
+    '..yyy.....',
+  ],
+  // Running figure
+  actions: [
+    '....kk....',
+    '....kk....',
+    '..kkkkk...',
+    '.k..kk.k..',
+    '....kk..k.',
+    '...k..k...',
+    '..k....k..',
+    '.k......k.',
+  ],
   // Cool face with sunglasses
   shabab: [
     '...yyyyy...',

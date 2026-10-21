@@ -31,12 +31,13 @@ Draft text for the Play Console. Character limits are Google's.
 >
 > طلّع البطاقة، مثّلها بالإشارات والحركات بس، وفريقك لازم يحزر قبل ما يخلص الوقت… وممنوع تحكي ولا كلمة! 🤐
 >
-> **طريقتين للعب**
+> **٣ طرق للعب**
 > 🎭 **تمثيل:** واحد بمثّل وفريقه بحزر. اسحب البطاقة يمين إذا عرفوها، ويسار لتتخطّى.
+> ⏱️ **مين أسرع؟:** بدون فرق، من ٢ لـ ١٢ لاعب. واحد بمثّل والكل بجاوب، وأول واحد بعرفها بياخذ النقطة.
 > 📱 **عالجبين:** حط الجوال على جبينك بالعرض وفريقك يمثّل لك. نزّل الجوال إذا عرفتها، وارفعه لتتخطّى.
 >
-> **أكثر من ٢٣٠ بطاقة أردنية**
-> 🎬 أفلام ومسلسلات · 🍽️ أكل وشرب (منسف، مقلوبة، كنافة…) · 📍 أماكن (البتراء، وادي رم، وسط البلد…) · 🚕 مواقف أردنية (تستنى السرفيس، الجاهة، نتايج التوجيهي…) · 🗣️ حكي أردني · 🏺 تراث وأغراض · ⚽ رياضة وفن · 😎 باكيت الشباب
+> **أكثر من ٥٠٠ بطاقة أردنية**
+> 🎬 أفلام ومسلسلات · 🍽️ أكل وشرب (منسف، مقلوبة، كنافة…) · 📍 أماكن (البتراء، وادي رم، وسط البلد…) · 🚕 مواقف أردنية (تستنى السرفيس، الجاهة، نتايج التوجيهي…) · 🗣️ حكي أردني · 🏺 تراث وأغراض · ⚽ رياضة وفن · 🐪 حيوانات · 👷 مهن · 🏢 جو الشغل · 💍 أعراس ومناسبات · 📼 نوستالجيا التسعينات · 🏙️ عمّان وأحيائها · 🌙 رمضان والعيد · 🤸 أفعال وحركات · 😎 باكيت الشباب
 >
 > **ليش رح تحبها**
 > • من ٢ لـ ٤ فرق، مع شعار لكل فريق: صقر، مها، جمل، حصان، سوسنة، زيتونة
@@ -55,11 +56,12 @@ Draft text for the Play Console. Character limits are Google's.
 >
 > Draw a card, act it out with gestures only, and your team races to guess before time runs out. No talking allowed! 🤐
 >
-> **Two ways to play**
+> **Three ways to play**
 > 🎭 **Classic charades:** one player acts, the team guesses. Swipe right when they get it, left to skip.
 > 📱 **Heads Up:** hold the phone sideways on your forehead while your team acts it out. Tilt down for correct, up to skip.
+> ⏱️ **Who's fastest?:** no teams, 2–12 players. One acts, everyone shouts, and the first right answer takes the point.
 >
-> **230+ Jordanian cards:** movies & TV, food (mansaf, maqloubeh, knafeh…), places (Petra, Wadi Rum, downtown Amman…), everyday Jordanian moments, local sayings, heritage, sports & arts, plus a youth "Shabab" pack.
+> **500+ Jordanian cards:** movies & TV, food (mansaf, maqloubeh, knafeh…), places (Petra, Wadi Rum, downtown Amman…), everyday Jordanian moments, local sayings, heritage, sports & arts, animals, jobs, office life, weddings, 90s nostalgia, Amman neighbourhoods, Ramadan & Eid, pure-mime actions, plus a youth "Shabab" pack.
 >
 > • 2 to 4 teams with Jordanian emblems
 > • 30/60/90-second turns, 1 to 10 rounds

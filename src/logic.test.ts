@@ -5,9 +5,10 @@ import { buildDeck, eligibleCards } from './lib/deck';
 import { nextTiltState, screenFacing } from './lib/tilt';
 
 describe('cards', () => {
-  it('has ~200 family cards plus a shabab pack, with unique ids and no duplicate prompts', () => {
+  it('has ~470 family cards plus a shabab pack, with unique ids and no duplicate prompts', () => {
     const family = CARDS.filter((c) => c.category !== 'shabab');
-    expect(family.length).toBeGreaterThanOrEqual(190);
+    expect(family.length).toBeGreaterThanOrEqual(460);
+    for (const cat of CATEGORIES) expect(CARDS.filter((c) => c.category === cat.id).length).toBeGreaterThanOrEqual(25);
     expect(CARDS.filter((c) => c.category === 'shabab').length).toBeGreaterThanOrEqual(25);
     expect(new Set(CARDS.map((c) => c.id)).size).toBe(CARDS.length);
     expect(new Set(CARDS.map((c) => c.ar)).size).toBe(CARDS.length);
