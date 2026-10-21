@@ -623,8 +623,8 @@ h2 {
 
 .modes {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
 }
 
 .mode {
@@ -633,7 +633,7 @@ h2 {
   align-items: center;
   gap: 6px;
   text-align: center;
-  padding: 18px 12px 16px;
+  padding: 16px 8px 14px;
   border-radius: var(--radius);
   background: var(--surface);
   border: 2px solid var(--line);
@@ -643,12 +643,18 @@ h2 {
 
 .mode b {
   font-family: var(--display);
-  font-size: 1.25rem;
+  font-size: 1.1rem;
 }
 
 .mode small {
   color: var(--muted);
-  line-height: 1.5;
+  line-height: 1.45;
+  font-size: 0.78rem;
+}
+
+.hint {
+  margin: -4px 0 10px;
+  font-size: 0.82rem;
 }
 
 .mode.on {
@@ -1558,6 +1564,74 @@ h2 {
   color: #b5121b;
   right: 18px;
   transform: rotate(14deg);
+}
+
+.play--fastest .play__deck {
+  min-height: 210px;
+}
+
+.guess-label {
+  margin: 0;
+  font-weight: 800;
+  font-family: var(--display);
+  text-align: center;
+}
+
+.guessers {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
+  gap: 8px;
+}
+
+.guesser {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 52px;
+  padding: 6px 10px 6px 6px;
+  padding-inline-start: 6px;
+  border-radius: 16px;
+  background: var(--surface);
+  border: 2px solid var(--team-color);
+  font-weight: 800;
+  text-align: start;
+  box-shadow: var(--shadow);
+  transition: transform 0.1s;
+}
+
+.guesser:active {
+  transform: scale(0.95);
+  background: color-mix(in srgb, var(--team-color) 15%, var(--surface));
+}
+
+.guesser span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.guesser .patch::after {
+  display: none;
+}
+
+.result__who {
+  flex: none;
+  max-width: 40%;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 0.9rem;
+  color: var(--muted);
+  background: var(--surface-2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.result__who[class*='team-'] {
+  color: #fff;
+  background: var(--team-color);
 }
 
 .swipe-hint {

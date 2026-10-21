@@ -11,7 +11,7 @@ import {
   TiltTutorial,
 } from '../components';
 import { categoryById } from '../data/cards';
-import { currentCard, isLastTurn, newGame, reduce, winners, type Game, type Settings } from '../game';
+import { currentCard, isLastTurn, newGame, reduce, sides, winners, type Game, type Settings } from '../game';
 import { useCountdown, useLandscape, useTilt, useWakeLock } from '../hooks';
 import { buildDeck, markSeen } from '../lib/deck';
 import { feedback } from '../lib/feedback';
@@ -54,7 +54,7 @@ export function GameView({ settings, onExit, onReplay }: Props) {
   useWakeLock(g.phase !== 'final');
 
   useEffect(() => {
-    track(`game-start/${settings.mode}/${settings.teams.length}-teams/${settings.rounds}-rounds`);
+    track(`game-start/${settings.mode}/${sides(settings).length}-${settings.mode === 'fastest' ? 'players' : 'teams'}/${settings.rounds}-rounds`);
   }, [settings]);
 
   useEffect(() => {
@@ -73,6 +73,7 @@ export function GameView({ settings, onExit, onReplay }: Props) {
       case 'countdown':
         return <Countdown g={g} dispatch={dispatch} />;
       case 'play':
+        if (g.settings.mode === 'fastest') return <PlayFastest g={g} dispatch={dispatch} />;
         return g.settings.mode === 'classic' ? <PlayClassic g={g} dispatch={dispatch} /> : <PlayHeadsUp g={g} dispatch={dispatch} />;
       case 'summary':
         return <Summary g={g} dispatch={dispatch} />;
@@ -95,7 +96,7 @@ export function GameView({ settings, onExit, onReplay }: Props) {
   );
 }
 
-const team = (g: Game, i = g.team) => g.settings.teams[i];
+const team = (g: Game, i = g.team) => sides(g.settings)[i];
 
 function RoundDots({ g }: { g: Game }) {
   return (
@@ -113,6 +114,7 @@ const TUTORIAL_KEY = 'wk.tiltTutorial';
 
 function TurnIntro({ g, dispatch }: { g: Game; dispatch: Dispatch }) {
   const headsUp = g.settings.mode === 'headsup';
+  const fastest = g.settings.mode === 'fastest';
   const [denied, setDenied] = useState(false);
   const [tutorial, setTutorial] = useState(() => headsUp && loadList(TUTORIAL_KEY).length === 0);
   const t = team(g);
@@ -137,9 +139,9 @@ function TurnIntro({ g, dispatch }: { g: Game; dispatch: Dispatch }) {
       <p className="muted">
         الجولة {g.round} من {g.settings.rounds}
       </p>
-      <div className={`intro__team team-${g.team}`}>
-        <TeamAvatar avatar={t.avatar} team={g.team} size={124} />
-        <span className="intro__turn">دور</span>
+      <div className={`intro__team team-${(g.team) % 4}`}>
+        <TeamAvatar avatar={t.avatar} team={(g.team) % 4} size={124} />
+        <span className="intro__turn">{fastest ? 'دور الممثّل' : 'دور'}</span>
         <h1 className="team-title">{t.name}</h1>
       </div>
       <div className="panel seam instructions">
@@ -150,6 +152,12 @@ function TurnIntro({ g, dispatch }: { g: Game; dispatch: Dispatch }) {
             <button className="link-btn" onClick={() => setTutorial(true)}>
               شوف شرح الحركة
             </button>
+          </>
+        ) : fastest ? (
+          <>
+            <p>🎭 {t.name} بمسك الجوال وبمثّل، والباقي ما يطّلعوا عالشاشة!</p>
+            <p>🙋 الكل بجاوب، وأول واحد بعرفها بياخذ النقطة.</p>
+            <p>👇 الممثّل بكبس على اسم اللي عرفها.</p>
           </>
         ) : (
           <>
@@ -234,8 +242,8 @@ function PlayClassic({ g, dispatch }: { g: Game; dispatch: Dispatch }) {
   return (
     <Screen className="play">
       <div className="play__top">
-        <span className={`team-pill team-${g.team}`}>
-          <TeamAvatar avatar={t.avatar} team={g.team} size={30} />
+        <span className={`team-pill team-${(g.team) % 4}`}>
+          <TeamAvatar avatar={t.avatar} team={(g.team) % 4} size={30} />
           {t.name}
         </span>
         <span className="score-pill">✓ {turnScore(g)}</span>
@@ -251,6 +259,45 @@ function PlayClassic({ g, dispatch }: { g: Game; dispatch: Dispatch }) {
           عرفوها ✓
         </button>
       </div>
+    </Screen>
+  );
+}
+
+function PlayFastest({ g, dispatch }: { g: Game; dispatch: Dispatch }) {
+  const left = useTurnTimer(g, dispatch);
+  const card = currentCard(g);
+  const actor = team(g);
+  const answer = (guesser?: number) => {
+    if (guesser != null) feedback.correct();
+    else feedback.skip();
+    dispatch({ type: 'answer', correct: guesser != null, guesser });
+  };
+
+  return (
+    <Screen className="play play--fastest">
+      <div className="play__top">
+        <span className={`team-pill team-${g.team % 4}`}>
+          <TeamAvatar avatar={actor.avatar} team={g.team % 4} size={30} />
+          🎭 {actor.name}
+        </span>
+        <span className="score-pill">✓ {turnScore(g)}</span>
+      </div>
+      <TimerThread left={left} total={g.settings.seconds} />
+      <div className="play__deck">{card && <PromptCard key={card.id} card={card} />}</div>
+      <p className="guess-label">مين عرفها أول؟</p>
+      <div className="guessers">
+        {g.settings.players.map((p, i) =>
+          i === g.team ? null : (
+            <button key={i} className={`guesser team-${i % 4}`} onClick={() => answer(i)}>
+              <TeamAvatar avatar={p.avatar} team={i % 4} size={30} />
+              <span>{p.name}</span>
+            </button>
+          ),
+        )}
+      </div>
+      <button className="btn btn--skip" onClick={() => answer()}>
+        ما حدا عرفها · تخطّي
+      </button>
     </Screen>
   );
 }
@@ -311,21 +358,24 @@ function Summary({ g, dispatch }: { g: Game; dispatch: Dispatch }) {
   const outOfCards = g.deckPos >= g.deck.length;
   const t = team(g);
   const points = turnScore(g);
+  const fastest = g.settings.mode === 'fastest';
 
   return (
     <Screen className="summary">
       <div className="summary__head">
         <h1>{outOfCards ? 'خلصت البطاقات! 🃏' : 'خلص الوقت! ⏰'}</h1>
-        <div className={`summary__score team-${g.team}`}>
-          <TeamAvatar avatar={t.avatar} team={g.team} size={56} />
+        <div className={`summary__score team-${(g.team) % 4}`}>
+          <TeamAvatar avatar={t.avatar} team={(g.team) % 4} size={56} />
           <span>
-            <b>{t.name}</b>
+            <b>{fastest ? `🎭 ${t.name}` : t.name}</b>
             <span className="summary__points">
-              {points} <small>{points === 1 ? 'نقطة' : 'نقاط'}</small>
+              {points} <small>{fastest ? 'بطاقات انعرفت' : points === 1 ? 'نقطة' : 'نقاط'}</small>
             </span>
           </span>
         </div>
-        {g.turn.length > 0 && <p className="muted">اكبس على أي بطاقة لتصلّح النتيجة</p>}
+        {g.turn.length > 0 && (
+          <p className="muted">{fastest ? 'اكبس على أي بطاقة لتغيّر مين عرفها' : 'اكبس على أي بطاقة لتصلّح النتيجة'}</p>
+        )}
       </div>
       <ul className="results">
         {g.turn.length === 0 && <li className="muted center">ولا بطاقة هالدور 😅</li>}
@@ -337,7 +387,13 @@ function Summary({ g, dispatch }: { g: Game; dispatch: Dispatch }) {
                 {r.card.ar}
                 <small dir="ltr">{r.card.arabizi}</small>
               </span>
-              <CategoryIcon id={r.card.category} size={34} />
+              {fastest ? (
+                <span className={`result__who ${r.guesser != null ? `team-${r.guesser % 4}` : ''}`}>
+                  {r.guesser != null ? team(g, r.guesser).name : 'ما حدا'}
+                </span>
+              ) : (
+                <CategoryIcon id={r.card.category} size={34} />
+              )}
             </button>
           </li>
         ))}
@@ -357,8 +413,8 @@ function Standings({ g }: { g: Game }) {
   return (
     <ol className="standings">
       {order.map(({ s, i }, rank) => (
-        <li key={i} className={`team-${i} ${rank === 0 && s > 0 ? 'lead' : ''}`}>
-          <TeamAvatar avatar={team(g, i).avatar} team={i} size={44} />
+        <li key={i} className={`team-${(i) % 4} ${rank === 0 && s > 0 ? 'lead' : ''}`}>
+          <TeamAvatar avatar={team(g, i).avatar} team={(i) % 4} size={44} />
           <span className="standings__main">
             <span className="standings__name">{team(g, i).name}</span>
             <span className="standings__bar">
@@ -373,7 +429,7 @@ function Standings({ g }: { g: Game }) {
 }
 
 function Scores({ g, dispatch }: { g: Game; dispatch: Dispatch }) {
-  const lastTeam = g.team === g.settings.teams.length - 1;
+  const lastTeam = g.team === sides(g.settings).length - 1;
   const next = lastTeam ? 0 : g.team + 1;
   const t = team(g, next);
   return (
@@ -384,8 +440,8 @@ function Scores({ g, dispatch }: { g: Game; dispatch: Dispatch }) {
       <Standings g={g} />
       <TatreezBand cell={4} />
       <button className="btn btn--primary btn--xl btn--team" onClick={() => dispatch({ type: 'nextTurn' })}>
-        <TeamAvatar avatar={t.avatar} team={next} size={36} />
-        دور {t.name}
+        <TeamAvatar avatar={t.avatar} team={(next) % 4} size={36} />
+        {g.settings.mode === 'fastest' ? `دور ${t.name} يمثّل` : `دور ${t.name}`}
       </button>
     </Screen>
   );
@@ -407,7 +463,7 @@ function Final({ g, onHome, onReplay }: { g: Game; onHome: () => void; onReplay:
   const share = async () => {
     setSharing(true);
     try {
-      const how = await shareResult({ teams: g.settings.teams, scores: g.scores, winners: top });
+      const how = await shareResult({ teams: sides(g.settings), scores: g.scores, winners: top });
       track(`share/${how}`);
     } catch {
       track('share/failed');
@@ -422,13 +478,13 @@ function Final({ g, onHome, onReplay }: { g: Game; onHome: () => void; onReplay:
       {tie ? (
         <div className="final__tie">
           {top.map((i) => (
-            <TeamAvatar key={i} avatar={team(g, i).avatar} team={i} size={96} />
+            <TeamAvatar key={i} avatar={team(g, i).avatar} team={(i) % 4} size={96} />
           ))}
         </div>
       ) : (
-        <div className={`final__champ team-${top[0]}`}>
+        <div className={`final__champ team-${(top[0]) % 4}`}>
           <span className="final__crown">👑</span>
-          <TeamAvatar avatar={champ.avatar} team={top[0]} size={140} />
+          <TeamAvatar avatar={champ.avatar} team={(top[0]) % 4} size={140} />
         </div>
       )}
       <h1 className="final__title">{tie ? 'تعادل!' : `مبروك يا ${champ.name}!`}</h1>

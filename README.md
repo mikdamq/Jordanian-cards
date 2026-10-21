@@ -4,6 +4,7 @@ A Jordanian charades and heads-up party game, built as an installable web app (P
 
 - **🎭 Classic (تمثيل):** act out the card silently while your team guesses.
 - **📱 Heads Up (عالجبين):** phone on your forehead. Tilt down for correct, tilt up to skip (tap buttons as a fallback).
+- **⏱️ مين أسرع؟ (Who's fastest?):** no teams, 2–12 players. One person acts, everyone shouts answers, and the actor taps whoever got it first to give them the point. The phone rotates through every player.
 - **230 cards** in Arabic + Arabizi across 7 categories: movies and TV, food, places, Jordanian moments, Jordanian sayings, heritage, and sports and arts. Plus an optional **شباب** youth pack.
 - 2–4 teams, a 30/60/90s timer, 3/5/7 rounds, editable results after each turn, and no repeated cards across game nights.
 - Works offline once installed and keeps the screen awake during play.

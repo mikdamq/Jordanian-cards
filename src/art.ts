@@ -219,7 +219,7 @@ export const TATREEZ_BAND: StitchArt = [
   'y.y.y.',
 ];
 
-export const MODE_ART: Record<'classic' | 'headsup', StitchArt> = {
+export const MODE_ART: Record<'classic' | 'headsup' | 'fastest', StitchArt> = {
   // Zipped mouth: "not a word"
   classic: [
     '...yyyyy...',
@@ -243,5 +243,18 @@ export const MODE_ART: Record<'classic' | 'headsup', StitchArt> = {
     '..yyyyyyy..',
     '...yykyy...',
     '....yyy....',
+  ],
+  // Stopwatch: first to answer wins
+  fastest: [
+    '....kkk....',
+    '.....k.....',
+    '...kkkkk...',
+    '..k.....k..',
+    '.k...r...k.',
+    '.k...r...k.',
+    '.k...rrr.k.',
+    '.k.......k.',
+    '..k.....k..',
+    '...kkkkk...',
   ],
 };

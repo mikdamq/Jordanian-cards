@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { AVATARS, MODE_ART, type AvatarId } from '../art';
 import { CategoryIcon, Patch, roundsLabel, Screen, Slider, TeamAvatar } from '../components';
 import { CARDS, CATEGORIES, SHABAB, type CategoryId } from '../data/cards';
-import { DEFAULT_TEAMS, MAX_ROUNDS, MIN_ROUNDS, type Mode, type Settings } from '../game';
+import { DEFAULT_TEAMS, MAX_PLAYERS, MAX_ROUNDS, MAX_TEAMS, MIN_ROUNDS, playerAvatar, playerName, type Mode, type Settings, type Team } from '../game';
 import { eligibleCards } from '../lib/deck';
 import { feedback } from '../lib/feedback';
 
@@ -14,8 +14,9 @@ interface Props {
 }
 
 const MODES: { id: Mode; title: string; desc: string }[] = [
-  { id: 'classic', title: 'تمثيل', desc: 'مثّل البطاقة بدون حكي وفريقك يحزر' },
-  { id: 'headsup', title: 'عالجبين', desc: 'الجوال على جبينك وفريقك يمثّل لك' },
+  { id: 'classic', title: 'تمثيل', desc: 'مثّل وفريقك يحزر' },
+  { id: 'headsup', title: 'عالجبين', desc: 'الجوال على جبينك وفريقك يمثّل' },
+  { id: 'fastest', title: 'مين أسرع؟', desc: 'بدون فرق: أول واحد بجاوب بياخذ النقطة' },
 ];
 
 const countIn = (id: CategoryId) => CARDS.filter((c) => c.category === id).length;
@@ -24,7 +25,12 @@ export function Setup({ settings, onChange, onStart, onBack }: Props) {
   const [picking, setPicking] = useState<number | null>(null);
   const set = (patch: Partial<Settings>) => onChange({ ...settings, ...patch });
   const count = eligibleCards(settings.categories, settings.shabab).length;
-  const teamsValid = settings.teams.every((t) => t.name.trim());
+  // "مين أسرع؟" uses individual players; the other modes use teams.
+  const solo = settings.mode === 'fastest';
+  const listKey = solo ? 'players' : 'teams';
+  const list = settings[listKey];
+  const maxEntries = solo ? MAX_PLAYERS : MAX_TEAMS;
+  const namesValid = list.every((t) => t.name.trim());
 
   const toggleCategory = (id: CategoryId) => {
     feedback.select();
@@ -35,18 +41,24 @@ export function Setup({ settings, onChange, onStart, onBack }: Props) {
     });
   };
 
-  const updateTeam = (i: number, patch: Partial<Settings['teams'][number]>) =>
-    set({ teams: settings.teams.map((t, j) => (j === i ? { ...t, ...patch } : t)) });
+  const setList = (next: Team[]) => set({ [listKey]: next });
 
-  const addTeam = () => {
-    const unusedName = DEFAULT_TEAMS.find((d) => !settings.teams.some((t) => t.name === d.name));
-    const unusedAvatar = AVATARS.find((a) => !settings.teams.some((t) => t.avatar === a.id))!.id;
-    set({ teams: [...settings.teams, { name: unusedName?.name ?? `فريق ${settings.teams.length + 1}`, avatar: unusedAvatar }] });
+  const updateEntry = (i: number, patch: Partial<Team>) => setList(list.map((t, j) => (j === i ? { ...t, ...patch } : t)));
+
+  const addEntry = () => {
+    if (solo) {
+      let n = list.length;
+      while (list.some((t) => t.name === playerName(n))) n++;
+      return setList([...list, { name: playerName(n), avatar: playerAvatar(list.length) }]);
+    }
+    const unusedName = DEFAULT_TEAMS.find((d) => !list.some((t) => t.name === d.name));
+    const unusedAvatar = AVATARS.find((a) => !list.some((t) => t.avatar === a.id))!.id;
+    setList([...list, { name: unusedName?.name ?? `فريق ${list.length + 1}`, avatar: unusedAvatar }]);
   };
 
   const pickAvatar = (i: number, avatar: AvatarId) => {
     feedback.select();
-    updateTeam(i, { avatar });
+    updateEntry(i, { avatar });
     setPicking(null);
   };
 
@@ -66,10 +78,13 @@ export function Setup({ settings, onChange, onStart, onBack }: Props) {
             <button
               key={m.id}
               className={`mode seam ${settings.mode === m.id ? 'on' : ''}`}
-              onClick={() => set({ mode: m.id })}
+              onClick={() => {
+                setPicking(null);
+                set({ mode: m.id });
+              }}
               aria-pressed={settings.mode === m.id}
             >
-              <Patch art={MODE_ART[m.id]} size={60} />
+              <Patch art={MODE_ART[m.id]} size={52} />
               <b>{m.title}</b>
               <small>{m.desc}</small>
             </button>
@@ -78,27 +93,36 @@ export function Setup({ settings, onChange, onStart, onBack }: Props) {
       </section>
 
       <section>
-        <h3 className="label">الفرق</h3>
+        <div className="label-row">
+          <h3 className="label">{solo ? 'اللاعبين' : 'الفرق'}</h3>
+          {solo && <span className="muted">{list.length} لاعبين</span>}
+        </div>
         <div className="stack stack--tight">
-          {settings.teams.map((t, i) => (
+          {list.map((t, i) => (
             <div key={i} className="team-block">
-              <div className={`team-row team-${i}`}>
+              <div className={`team-row team-${i % 4}`}>
                 <button
                   className="team-row__avatar"
                   onClick={() => setPicking(picking === i ? null : i)}
                   aria-label={`غيّر شعار ${t.name}`}
                   aria-expanded={picking === i}
                 >
-                  <TeamAvatar avatar={t.avatar} team={i} size={46} />
+                  <TeamAvatar avatar={t.avatar} team={i % 4} size={solo ? 40 : 46} />
                   <span className="team-row__edit">✎</span>
                 </button>
-                <input value={t.name} maxLength={20} onChange={(e) => updateTeam(i, { name: e.target.value })} aria-label={`اسم الفريق ${i + 1}`} />
-                {settings.teams.length > 2 && (
+                <input
+                  value={t.name}
+                  maxLength={20}
+                  onChange={(e) => updateEntry(i, { name: e.target.value })}
+                  onFocus={(e) => solo && t.name === playerName(i) && e.target.select()}
+                  aria-label={solo ? `اسم اللاعب ${i + 1}` : `اسم الفريق ${i + 1}`}
+                />
+                {list.length > 2 && (
                   <button
                     className="icon-btn icon-btn--bare"
                     onClick={() => {
                       setPicking(null);
-                      set({ teams: settings.teams.filter((_, j) => j !== i) });
+                      setList(list.filter((_, j) => j !== i));
                     }}
                     aria-label={`احذف ${t.name}`}
                   >
@@ -118,9 +142,9 @@ export function Setup({ settings, onChange, onStart, onBack }: Props) {
               )}
             </div>
           ))}
-          {settings.teams.length < 4 && (
-            <button className="btn btn--dashed" onClick={addTeam}>
-              + زيد فريق
+          {list.length < maxEntries && (
+            <button className="btn btn--dashed" onClick={addEntry}>
+              {solo ? '+ زيد لاعب' : '+ زيد فريق'}
             </button>
           )}
         </div>
@@ -179,6 +203,7 @@ export function Setup({ settings, onChange, onStart, onBack }: Props) {
           <h3 className="label">عدد الجولات</h3>
           <span className="label-value">{roundsLabel(settings.rounds)}</span>
         </div>
+        {solo && <p className="muted hint">بكل جولة، كل لاعب بمثّل دور واحد</p>}
         <Slider
           value={settings.rounds}
           min={MIN_ROUNDS}
@@ -192,8 +217,8 @@ export function Setup({ settings, onChange, onStart, onBack }: Props) {
       </section>
 
       <div className="sticky-cta">
-        <button className="btn btn--primary btn--xl" disabled={!count || !teamsValid} onClick={onStart}>
-          {!count ? 'اختار فئة وحدة على الأقل' : !teamsValid ? 'سمّي كل الفرق' : 'يلا نبلّش!'}
+        <button className="btn btn--primary btn--xl" disabled={!count || !namesValid} onClick={onStart}>
+          {!count ? 'اختار فئة وحدة على الأقل' : !namesValid ? (solo ? 'سمّي كل اللاعبين' : 'سمّي كل الفرق') : 'يلا نبلّش!'}
         </button>
         <p className="muted center">
           {count} من {CARDS.length} بطاقة

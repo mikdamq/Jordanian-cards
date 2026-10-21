@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { CARDS, CATEGORIES } from './data/cards';
-import { DEFAULT_SETTINGS, DEFAULT_TEAMS, newGame, normalizeSettings, reduce, winners, type Game, type Settings } from './game';
+import { DEFAULT_SETTINGS, DEFAULT_TEAMS, defaultPlayer, newGame, nextGuesser, normalizeSettings, reduce, winners, type Game, type Settings } from './game';
 import { buildDeck, eligibleCards } from './lib/deck';
 import { nextTiltState, screenFacing } from './lib/tilt';
 
@@ -114,5 +114,53 @@ describe('settings', () => {
     const repaired = normalizeSettings(junk[4] as unknown as Settings);
     expect(repaired.categories).toEqual(['food']);
     expect(repaired.teams[0]).toEqual({ name: 'النشامى', avatar: 'falcon' });
+  });
+});
+
+describe('مين أسرع؟ (fastest) mode', () => {
+  const play = (g: Game, ...actions: Parameters<typeof reduce>[1][]) => actions.reduce(reduce, g);
+  const players = [0, 1, 2, 3].map(defaultPlayer);
+
+  it('gives each point to the first guesser and rotates the actor through every player', () => {
+    const settings = { ...DEFAULT_SETTINGS, mode: 'fastest' as const, players, rounds: 1 };
+    let g = newGame(settings, CARDS.slice(0, 50));
+    expect(g.scores).toEqual([0, 0, 0, 0]);
+    // Player 0 acts; players 2, 2 and 3 guess, one card skipped
+    g = play(g, { type: 'countdown' }, { type: 'play' },
+      { type: 'answer', correct: true, guesser: 2 },
+      { type: 'answer', correct: true, guesser: 2 },
+      { type: 'answer', correct: false },
+      { type: 'answer', correct: true, guesser: 3 },
+      { type: 'timeUp' }, { type: 'confirmTurn' });
+    expect(g.scores).toEqual([0, 0, 2, 1]);
+    for (let actor = 1; actor < 4; actor++) {
+      g = reduce(g, { type: 'nextTurn' });
+      expect(g.team).toBe(actor);
+      g = play(g, { type: 'countdown' }, { type: 'play' }, { type: 'answer', correct: true, guesser: 0 }, { type: 'timeUp' }, { type: 'confirmTurn' });
+    }
+    expect(g.phase).toBe('final');
+    expect(g.scores).toEqual([3, 0, 2, 1]);
+  });
+
+  it('fixing a result cycles skip → each non-actor player → skip', () => {
+    expect(nextGuesser(undefined, 0, 4)).toBe(1);
+    expect(nextGuesser(1, 2, 4)).toBe(3);
+    expect(nextGuesser(3, 0, 4)).toBeUndefined();
+    const settings = { ...DEFAULT_SETTINGS, mode: 'fastest' as const, players: players.slice(0, 3), rounds: 1 };
+    let g = play(newGame(settings, CARDS.slice(0, 5)), { type: 'countdown' }, { type: 'play' }, { type: 'answer', correct: false }, { type: 'timeUp' });
+    g = reduce(g, { type: 'toggle', index: 0 });
+    expect(g.turn[0]).toMatchObject({ correct: true, guesser: 1 });
+    g = reduce(g, { type: 'toggle', index: 0 });
+    expect(g.turn[0]).toMatchObject({ correct: true, guesser: 2 });
+    g = reduce(g, { type: 'toggle', index: 0 });
+    expect(g.turn[0].correct).toBe(false);
+    expect(g.turn[0].guesser).toBeUndefined();
+  });
+
+  it('keeps up to 12 players and restores defaults when missing', () => {
+    const many = Array.from({ length: 15 }, (_, i) => ({ name: `p${i}`, avatar: 'camel' }));
+    expect(normalizeSettings({ ...DEFAULT_SETTINGS, players: many } as unknown as Settings).players).toHaveLength(12);
+    expect(normalizeSettings({ mode: 'fastest' } as unknown as Settings).players).toHaveLength(4);
+    expect(normalizeSettings({ mode: 'fastest' } as unknown as Settings).mode).toBe('fastest');
   });
 });

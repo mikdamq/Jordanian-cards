@@ -41,6 +41,19 @@ export function HowTo({ onBack }: { onBack: () => void }) {
       </section>
 
       <section className="panel seam">
+        <div className="panel__head">
+          <Patch art={MODE_ART.fastest} size={52} />
+          <h2>مين أسرع؟</h2>
+        </div>
+        <ol>
+          <li>بدون فرق: كل واحد بلعب لحاله، من ٢ لـ ١٢ لاعب.</li>
+          <li>واحد بمسك الجوال وبمثّل البطاقة، والباقي بجاوبوا بنفس الوقت.</li>
+          <li>أول واحد بعرفها، الممثّل بكبس على اسمه وبياخذ النقطة.</li>
+          <li>الجوال بلف على الكل، واللي بجمع أكثر نقاط بربح.</li>
+        </ol>
+      </section>
+
+      <section className="panel seam">
         <h2>🏆 النقاط</h2>
         <p>كل بطاقة صح بنقطة. بعد كل دور بتقدروا تصلّحوا النتيجة إذا صار غلط. الفرق بتتناوب، واللي بجمع أكثر بعد آخر جولة بربح.</p>
       </section>

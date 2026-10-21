@@ -161,10 +161,10 @@ export async function renderResultImage({ teams, scores, winners }: ShareResult)
     const gap = 230;
     winners.slice(0, 3).forEach((i, k, arr) => {
       const cx = W / 2 + (k - (arr.length - 1) / 2) * gap;
-      patch(ctx, avatarById(teams[i].avatar).art, cx, 500, 85, TEAM_COLORS[i]);
+      patch(ctx, avatarById(teams[i].avatar).art, cx, 500, 85, TEAM_COLORS[i % 4]);
     });
   } else {
-    patch(ctx, avatarById(champ.avatar).art, W / 2, 510, 100, TEAM_COLORS[winners[0]]);
+    patch(ctx, avatarById(champ.avatar).art, W / 2, 510, 100, TEAM_COLORS[winners[0] % 4]);
     ctx.font = '84px sans-serif';
     ctx.fillText('👑', W / 2, 400);
   }
@@ -174,21 +174,22 @@ export async function renderResultImage({ teams, scores, winners }: ShareResult)
   ctx.fillText(tie ? 'تعادل!' : `مبروك يا ${champ.name}!`, W / 2, 685);
 
   // Scoreboard: rows shrink so up to four teams fit above the border
-  const order = scores.map((s, i) => ({ s, i })).sort((a, b) => b.s - a.s);
+  // Up to 12 players in "مين أسرع؟": the image shows the top five.
+  const order = scores.map((s, i) => ({ s, i })).sort((a, b) => b.s - a.s).slice(0, 5);
   const top = 760;
   const rowH = Math.min(96, (H - 225 - top) / order.length - 14);
   order.forEach(({ s, i }, rank) => {
     const y = top + rank * (rowH + 14);
     ctx.fillStyle = C.card;
-    ctx.strokeStyle = rank === 0 && !tie ? TEAM_COLORS[i] : C.line;
+    ctx.strokeStyle = rank === 0 && !tie ? TEAM_COLORS[i % 4] : C.line;
     ctx.lineWidth = 4;
     ctx.beginPath();
     ctx.roundRect(120, y, W - 240, rowH, 26);
     ctx.fill();
     ctx.stroke();
-    patch(ctx, avatarById(teams[i].avatar).art, W - 180, y + rowH / 2, rowH / 3, TEAM_COLORS[i]);
+    patch(ctx, avatarById(teams[i].avatar).art, W - 180, y + rowH / 2, rowH / 3, TEAM_COLORS[i % 4]);
     ctx.textAlign = 'right';
-    ctx.fillStyle = TEAM_COLORS[i];
+    ctx.fillStyle = TEAM_COLORS[i % 4];
     fitText(ctx, teams[i].name, 520, Math.round(rowH * 0.46), 800);
     ctx.fillText(teams[i].name, W - 240, y + rowH / 2 + 2);
     ctx.textAlign = 'left';

@@ -39,7 +39,8 @@ export default function App() {
           onChange={setSettings}
           onBack={() => setView('home')}
           onStart={() => {
-            setSettings({ ...settings, teams: settings.teams.map((t) => ({ ...t, name: t.name.trim() })) });
+            const trim = (list: Settings['teams']) => list.map((t) => ({ ...t, name: t.name.trim() }));
+            setSettings({ ...settings, teams: trim(settings.teams), players: trim(settings.players) });
             setGameId((n) => n + 1);
             setView('game');
           }}
