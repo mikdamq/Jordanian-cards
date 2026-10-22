@@ -23,6 +23,8 @@ Tokens: [`brand/tokens/sahra.css`](../../brand/tokens/sahra.css) and [`brand/tok
 | `--red-2` | `#8e0e16` | Pressed red |
 | `--olive` | `#4f6b2c` | Correct, team 2 |
 | `--gold` | `#b9861f` | Decoration, team 4 (never text on cream) |
+| `--red-text` | `#b5121b` | Small red text |
+| `--warn-text` | `#86600f` | Warning text (4.8:1 on cream) |
 | `--indigo` | `#3b3f7a` | Team 3, info |
 
 ### Dark: night majlis
@@ -36,7 +38,8 @@ Tokens: [`brand/tokens/sahra.css`](../../brand/tokens/sahra.css) and [`brand/tok
 | `--text` | `#f4ecdd` |
 | `--muted` | `#b5a28a` |
 | `--red` | `#d42630` (fills and large text) |
-| `--red-text` | `#e0444c` (small red text) |
+| `--red-text` | `#ec5f66` (small red text, 4.5:1 on every dark surface) |
+| `--warn-text` | `#ddae4a` (warnings) |
 | `--olive` | `#8aa75a` |
 | `--gold` | `#ddae4a` |
 | `--indigo` | `#8d92d6` |
@@ -59,7 +62,7 @@ On a typical screen or post: about **60% cream, 25% ink, 10% red, 5% threads**. 
 | **Gold on cream** | **2.8** | **Decoration only, never text** |
 | Indigo on cream | 8.2 | Text OK |
 | Cream on night | 15.9 | Any text |
-| Red `#d42630` on night | 3.7 | Fills and 24px+ headings only; small red text uses `#e0444c` |
+| Red `#d42630` on night | 3.7 | Fills and 24px+ headings only; small red text uses `--red-text` `#ec5f66` (5.2 on surface) |
 | Cream on dark red | 4.8 | Button text |
 | White on dark green `#4d8f39` | 4.0 | Buttons must stay bold 18px+ |
 

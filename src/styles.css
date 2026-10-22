@@ -15,6 +15,9 @@
   --muted: #7a6650;
   --red: #b5121b;
   --red-2: #8e0e16;
+  /* Small text in red or gold, tuned for 4.5:1 contrast */
+  --red-text: #b5121b;
+  --warn-text: #86600f;
   --on-red: #fff8ee;
   --olive: #4f6b2c;
   --gold: #b9861f;
@@ -58,6 +61,8 @@
     --muted: #b5a28a;
     --red: #d42630;
     --red-2: #a3161f;
+  --red-text: #ec5f66;
+  --warn-text: #ddae4a;
     --olive: #8aa75a;
     --gold: #ddae4a;
     --indigo: #8d92d6;
@@ -86,6 +91,8 @@
   --muted: #b5a28a;
   --red: #d42630;
   --red-2: #a3161f;
+  --red-text: #ec5f66;
+  --warn-text: #ddae4a;
   --olive: #8aa75a;
   --gold: #ddae4a;
   --indigo: #8d92d6;
@@ -168,7 +175,7 @@ h2 {
 }
 
 .warn {
-  color: var(--gold);
+  color: var(--warn-text);
 }
 
 :focus-visible {
@@ -319,7 +326,7 @@ h2 {
   font-family: var(--display);
   font-weight: 700;
   font-size: 1.15rem;
-  color: var(--red);
+  color: var(--red-text);
 }
 
 /* ---------- buttons ---------- */
@@ -447,7 +454,7 @@ h2 {
 }
 
 .link-btn {
-  color: var(--red);
+  color: var(--red-text);
   font-weight: 700;
   text-decoration: underline dashed;
   text-underline-offset: 5px;
@@ -503,7 +510,7 @@ h2 {
 .logo__en {
   font-size: 0.85rem;
   letter-spacing: 0.35em;
-  color: var(--red);
+  color: var(--red-text);
   text-transform: uppercase;
   font-weight: 700;
 }
@@ -930,7 +937,7 @@ h2 {
 
 .segmented button.on {
   background: var(--surface);
-  color: var(--red);
+  color: var(--red-text);
   box-shadow: var(--shadow);
   outline: 1.5px dashed var(--stitch);
   outline-offset: -5px;
@@ -1027,7 +1034,7 @@ h2 {
 }
 
 .slider__ticks button.on {
-  color: var(--red);
+  color: var(--red-text);
   transform: scale(1.35);
   font-family: var(--display);
 }
