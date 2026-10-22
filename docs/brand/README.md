@@ -6,7 +6,7 @@ The living record of the Wala Kelmeh brand. Each step is written down here once 
 | --- | --- | --- |
 | 1 | [Brand strategy](01-strategy.md) | Agreed |
 | 2 | [Voice and tone](02-voice-and-tone.md), plus the «___ها… بس ولا كلمة!» formula | Agreed |
-| 3 | Logo system, partner lockup, sponsored-pack badge | Round 3 concepts in `brand/logo/concepts/round-3/` |
+| 3 | Logo system, partner lockup, sponsored-pack badge | Round 4 concepts in `brand/logo/concepts/round-4/` |
 | 4 | Colour, type, pattern and illustration | To do |
 | 4b | Mascot: شمّوغ (Shammogh) | To do |
 | 5 | Brand guidelines page and `/brand` asset folder | To do |
