@@ -1,4 +1,4 @@
-# Google Play listing: ولا كلمة (Wala Kilmeh)
+# Google Play listing: ولا كلمة (Wala Kelmeh)
 
 Draft text for the Play Console. Character limits are Google's.
 
@@ -7,15 +7,15 @@ Draft text for the Play Console. Character limits are Google's.
 | Field | Value |
 | --- | --- |
 | App name (≤30) | ولا كلمة - لعبة تمثيل أردنية |
-| App name, English (≤30) | Wala Kilmeh: Arabic Charades |
+| App name, English (≤30) | Wala Kelmeh: Arabic Charades |
 | Category | Games › Word (alternative: Casual) |
 | Tags | Party, Charades, Word, Family, Multiplayer |
 | Price | Free |
-| Ads | No |
+| Ads | No ads during play. Sponsored packs may come later: always labelled, always opt-in |
 | In-app purchases | No (for now) |
 | Contact email | info@mikdam.com |
 | Privacy policy | https://mikdamq.github.io/Jordanian-cards/privacy.html |
-| App ID | **Not decided yet**, e.g. `com.walakilmeh.app` (permanent once published) |
+| App ID | **Not decided yet**, e.g. `com.walakelmeh.app` (permanent once published) |
 
 ## Short description (≤80)
 
@@ -46,13 +46,14 @@ Draft text for the Play Console. Character limits are Google's.
 > • تصميم مستوحى من الشماغ والتطريز الأردني، بوضع فاتح وغامق
 > • أصوات دربكة 🥁 واحتفال بالفريق الفائز
 > • شارك صورة النتيجة على واتساب وإنستغرام
-> • بتشتغل بدون إنترنت، وبدون حساب، وبدون إعلانات
+> • اللعبة الأساسية مجانية دايماً، وما في إعلانات بنص اللعب
+> • بتشتغل بدون إنترنت، وبدون حساب
 >
 > جمعة رمضان؟ عزومة؟ سهرة صحاب؟ **ولا كلمة** بتولّعها! 🔥
 
 ## Full description, English (≤4000)
 
-> **Wala Kilmeh** ("not a word!") is the Jordanian charades game for family and friends. 🎭
+> **Wala Kelmeh** ("not a word!") is the Jordanian charades game for family and friends. 🎭
 >
 > Draw a card, act it out with gestures only, and your team races to guess before time runs out. No talking allowed! 🤐
 >
@@ -69,12 +70,13 @@ Draft text for the Play Console. Character limits are Google's.
 > • Shemagh and tatreez-inspired design, light and dark modes
 > • Darbuka sound effects and a winner celebration
 > • Share your result to WhatsApp and Instagram
-> • Works offline, no account, no ads
+> • Core deck free forever, never an ad mid-game
+> • Works offline, no account needed
 
 ## Graphics checklist
 
-- [ ] App icon 512×512 PNG (have: `public/icon-512.png`)
-- [ ] Feature graphic 1024×500: shemagh band, logo, "مثّلها… بس ولا كلمة!"
+- [x] App icon 512×512 PNG, full-bleed square: `brand/logo/png/store-icon-512.png`
+- [ ] Feature graphic 1024×500: shemagh band, Arabic horizontal lockup, "مثّلها… بس ولا كلمة!"
 - [ ] Phone screenshots (2–8, 1080×1920 or similar), with Arabic captions:
   1. Home: «لعبة التمثيل الأردنية»
   2. Setup with team avatars: «من ٢ لـ ٤ فرق»

@@ -1,4 +1,4 @@
-# ولا كلمة — Wala Kilmeh
+# ولا كلمة — Wala Kelmeh
 
 A Jordanian charades and heads-up party game, built as an installable web app (PWA).
 

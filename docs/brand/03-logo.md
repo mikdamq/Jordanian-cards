@@ -88,8 +88,12 @@ brand/logo/
   concepts/  rounds 1 to 4, for reference
 ```
 
-## Next
+## In the app
 
-- Replace the app icon, favicon and PWA icons with the new symbol
-- Rename *Wala Kilmeh* to *Wala Kelmeh* in the app, listing and privacy page
-- Update the store listing's "no ads" line to the new promise
+| File | Version |
+| --- | --- |
+| `public/icon.svg` (favicon) | Star only |
+| `public/icon-192.png`, `public/icon-512.png` | Red patch, rounded |
+| `public/icon-maskable-512.png` | Red patch, full bleed, artwork inside the 80% safe zone |
+| `public/apple-touch-icon.png` | Red patch, full-bleed square (iOS rounds it) |
+| `brand/logo/png/store-icon-512.png` | Red patch, full-bleed square, for store listings |

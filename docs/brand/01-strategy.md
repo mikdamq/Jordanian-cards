@@ -96,8 +96,8 @@ The core stays free. These are ways to unlock a closed category:
 
 ## Follow-ups this strategy creates
 
-- [ ] Update store listing copy from "no ads" to the new promise (`docs/google-play-listing.md`)
-- [ ] Rename the Latin name from *Wala Kilmeh* to *Wala Kelmeh* across the app, listing and privacy page
-- [ ] Add the partner lockup and sponsored-pack badge to the logo system (step 3)
+- [x] Update store listing copy from "no ads" to the new promise (`docs/google-play-listing.md`)
+- [x] Rename the Latin name from *Wala Kilmeh* to *Wala Kelmeh* across the app, listing and privacy page
+- [x] Add the partner lockup and sponsored-pack badge to the logo system (step 3)
 - [ ] Explore شمّوغ sketches (step 4b)
 - [ ] Plan the dialect-pack and «صغار» pack content

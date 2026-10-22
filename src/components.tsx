@@ -110,7 +110,7 @@ export function Logo({ small }: { small?: boolean }) {
         <div className="logo__ar">ولا كلمة</div>
         {!small && (
           <div className="logo__en" dir="ltr">
-            Wala Kilmeh
+            Wala Kelmeh
           </div>
         )}
       </div>
