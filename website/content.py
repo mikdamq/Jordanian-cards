@@ -1,0 +1,96 @@
+"""All website copy, in Arabic and English. One entry per string: {'ar': ..., 'en': ...}."""
+
+SITE = 'https://walakelmeh.com'           # final domain (not live yet)
+CONTACT = 'info@mikdam.com'
+
+CATEGORIES = [  # id, Arabic, English, cards
+    ('screen', 'أفلام ومسلسلات', 'Movies & TV', 40),
+    ('food', 'أكل وشرب', 'Food & Drink', 40),
+    ('places', 'أماكن', 'Places', 38),
+    ('life', 'مواقف أردنية', 'Jordanian Moments', 38),
+    ('sayings', 'حكي أردني', 'Jordanian Sayings', 38),
+    ('heritage', 'تراث وأغراض', 'Heritage', 38),
+    ('fun', 'رياضة وفن', 'Sports & Arts', 38),
+    ('animals', 'حيوانات', 'Animals', 25),
+    ('jobs', 'مهن', 'Jobs', 25),
+    ('office', 'جو الشغل', 'Office Life', 25),
+    ('weddings', 'أعراس ومناسبات', 'Weddings & Occasions', 25),
+    ('nineties', 'نوستالجيا التسعينات', '90s Nostalgia', 25),
+    ('amman', 'عمّان وأحيائها', 'Amman', 25),
+    ('ramadan', 'رمضان والعيد', 'Ramadan & Eid', 25),
+    ('actions', 'أفعال وحركات', 'Actions', 25),
+    ('shabab', 'باكيت الشباب', 'Shabab Pack', 40),
+]
+TOTAL_CARDS = sum(c[3] for c in CATEGORIES)
+
+T = {
+  'lang_switch': {'ar': 'English', 'en': 'عربي'},
+  'nav': {
+    'how': {'ar': 'كيف تلعب', 'en': 'How to play'},
+    'categories': {'ar': 'الفئات', 'en': 'Categories'},
+    'cafes': {'ar': 'للمقاهي', 'en': 'For cafés'},
+    'stickers': {'ar': 'ستيكرات شمّوغ', 'en': 'Stickers'},
+  },
+  'play': {'ar': 'العب هسّا', 'en': 'Play now'},
+  'install': {'ar': 'ثبّتها على جوالك', 'en': 'Install on your phone'},
+  'meta_title': {'ar': 'ولا كلمة: لعبة التمثيل الأردنية للسهرات', 'en': 'Wala Kelmeh: The Jordanian Charades Party Game'},
+  'meta_desc': {
+    'ar': 'مثّلها… بس ولا كلمة! لعبة تمثيل وتخمين أردنية بأكثر من ٥٠٠ بطاقة و٣ طرق للعب. مجانية، بدون حساب، وبتشتغل بدون إنترنت.',
+    'en': 'Act it out, not a word! A Jordanian charades and heads-up game with 500+ cards and three ways to play. Free, no account, works offline.'},
+  'hero_eyebrow': {'ar': 'لعبة التمثيل الأردنية', 'en': 'The Jordanian charades game'},
+  'hero_h1': {'ar': 'مثّلها… بس ولا كلمة!', 'en': 'Act it out. Not a word.'},
+  'hero_sub': {
+    'ar': 'طلّع البطاقة، مثّلها بالحركات بس، وخلّي فريقك يحزر قبل ما يخلص الوقت. أكثر من ٥٠٠ بطاقة أردنية لسهرات العيلة والصحاب.',
+    'en': 'Draw a card, act it out with gestures only, and get your team to guess before time runs out. Over 500 Jordanian cards for family nights and friends’ sahras.'},
+  'hero_facts': {'ar': ['مجانية دايماً', 'بدون إنترنت', 'بدون حساب'], 'en': ['Free forever', 'Works offline', 'No account']},
+  'stores_soon': {'ar': 'قريباً على', 'en': 'Coming soon to'},
+  'modes_h': {'ar': '٣ طرق للعب', 'en': 'Three ways to play'},
+  'modes_p': {'ar': 'من سهرة هادية لحرب تخمين. اختاروا اللي بناسب الجَمعة.', 'en': 'From a calm night in to a full-on guessing war. Pick what suits the crowd.'},
+  'modes': [
+    ('classic', {'ar': 'تمثيل', 'en': 'Classic charades'},
+     {'ar': 'واحد بمثّل وفريقه بحزر. اسحب البطاقة يمين إذا عرفوها، ويسار لتتخطّاها.', 'en': 'One player acts, the team guesses. Swipe right when they get it, left to skip.'},
+     {'ar': '٢ لـ ٤ فرق', 'en': '2 to 4 teams'}),
+    ('headsup', {'ar': 'عالجبين', 'en': 'Heads up'},
+     {'ar': 'حط الجوال على جبينك بالعرض وفريقك يمثّل لك. نزّله إذا عرفتها، وارفعه لتتخطّى.', 'en': 'Hold the phone sideways on your forehead while your team acts it out. Tilt down for correct, up to skip.'},
+     {'ar': '٢ لـ ٤ فرق', 'en': '2 to 4 teams'}),
+    ('fastest', {'ar': 'مين أسرع؟', 'en': 'Who’s fastest?'},
+     {'ar': 'بدون فرق. واحد بمثّل والكل بجاوب، وأول واحد بعرفها بياخذ النقطة.', 'en': 'No teams. One acts, everyone shouts, and the first right answer takes the point.'},
+     {'ar': '٢ لـ ١٢ لاعب', 'en': '2 to 12 players'}),
+  ],
+  'cats_h': {'ar': f'{TOTAL_CARDS} بطاقة، ١٦ فئة', 'en': f'{TOTAL_CARDS} cards, 16 categories'},
+  'cats_p': {'ar': 'من المنسف للجاهة لنتايج التوجيهي. كل بطاقة بالعربي ومع كتابة بالحروف الإنجليزية.', 'en': 'From mansaf to the jaha to tawjihi results. Every card in Arabic, with Arabizi underneath.'},
+  'cards_word': {'ar': 'بطاقة', 'en': 'cards'},
+  'how_h': {'ar': 'كيف تلعب؟', 'en': 'How to play'},
+  'how': [
+    ({'ar': 'اختاروا الطريقة', 'en': 'Pick a mode'}, {'ar': 'تمثيل، عالجبين، أو مين أسرع؟ وبعدين الفرق والوقت وعدد الجولات.', 'en': 'Classic, heads up or who’s fastest, then teams, timer and rounds.'}),
+    ({'ar': 'مثّلها… بس ولا كلمة', 'en': 'Act it out, silently'}, {'ar': 'إشارات وحركات بس. ممنوع الحكي، ممنوع الأصوات، وممنوع تأشّر على إشي بالغرفة.', 'en': 'Gestures only. No talking, no sounds, no pointing at things in the room.'}),
+    ({'ar': 'اجمعوا النقاط', 'en': 'Score and win'}, {'ar': 'كل بطاقة صح بنقطة. بعد آخر جولة، الفريق اللي معه أكثر بيفوز… وبتشاركوا صورة النتيجة.', 'en': 'Every correct card is a point. After the last round the top team wins, and you can share the result.'}),
+  ],
+  'promise_h': {'ar': 'وعدنا إلك', 'en': 'Our promise'},
+  'promise': [
+    ({'ar': 'مجانية دايماً', 'en': 'Free forever'}, {'ar': 'اللعبة الأساسية مجانية، وما في إعلانات بنص اللعب.', 'en': 'The core deck is free, and there’s never an ad mid-game.'}),
+    ({'ar': 'بدون إنترنت', 'en': 'Works offline'}, {'ar': 'ثبّتها مرة وحدة، والعبها بالرحلة أو بالمزرعة.', 'en': 'Install once, then play on a road trip or at the farm.'}),
+    ({'ar': 'بدون حساب', 'en': 'No account'}, {'ar': 'لا تسجيل ولا إيميل. افتح والعب.', 'en': 'No sign-up, no email. Open it and play.'}),
+    ({'ar': 'بطاقات ما بتتكرر', 'en': 'No repeats'}, {'ar': 'اللعبة بتتذكر شو لعبتوا، فكل سهرة بطاقات جديدة.', 'en': 'The game remembers what you played, so every night brings new cards.'}),
+  ],
+  'cafes_eyebrow': {'ar': 'للمقاهي والأماكن', 'en': 'For cafés and venues'},
+  'cafes_h': {'ar': 'ليلة ولا كلمة… عندك', 'en': 'Host a Wala Kelmeh night'},
+  'cafes_p': {'ar': 'خلّي زبائنك يسهروا عندك أطول: تحدّيات بين الطاولات، كود خاص بمحلّك بيفتح فئة باسمك، وخصم للفريق الفائز.', 'en': 'Keep guests around longer: table-vs-table challenges, a code that unlocks a category named after your place, and a reward for the winning team.'},
+  'cafes_cta': {'ar': 'احكي معنا', 'en': 'Talk to us'},
+  'stickers_h': {'ar': 'ستيكرات شمّوغ', 'en': 'Shammogh stickers'},
+  'stickers_p': {'ar': 'شمّوغ هو الشماغ اللي ما بقدر يسكت… بلعبة ممنوع فيها الحكي. ١٤ ستيكر لواتساب.', 'en': 'Shammogh is the shemagh who can’t stop talking, in a game where talking isn’t allowed. 14 stickers for WhatsApp.'},
+  'stickers_cta': {'ar': 'شوف الستيكرات', 'en': 'See the stickers'},
+  'faq_h': {'ar': 'أسئلة بتنسأل كثير', 'en': 'Questions people ask'},
+  'faq': [
+    ({'ar': 'هل اللعبة مجانية؟', 'en': 'Is it free?'}, {'ar': 'آه. اللعبة الأساسية بكل فئاتها مجانية دايماً، وما في إعلانات بنص اللعب. ممكن نضيف باكيتات خاصة بالمستقبل، وبتكون اختيارية.', 'en': 'Yes. The core game and all its categories are free forever, with no ads mid-game. Special packs may come later, always optional.'}),
+    ({'ar': 'كيف بثبّتها على جوالي؟', 'en': 'How do I install it?'}, {'ar': 'افتح اللعبة بالمتصفح، وعلى أندرويد اختار «إضافة للشاشة الرئيسية»، وعلى آيفون من زر المشاركة اختار «إضافة إلى الشاشة الرئيسية». وقريباً على المتاجر.', 'en': 'Open the game in your browser. On Android choose “Add to Home screen”; on iPhone tap Share, then “Add to Home Screen”. Store versions are coming soon.'}),
+    ({'ar': 'بتشتغل بدون إنترنت؟', 'en': 'Does it work offline?'}, {'ar': 'آه، بعد أول مرة بتفتحها كل البطاقات بتنحفظ على جوالك.', 'en': 'Yes. After the first visit, every card is saved on your phone.'}),
+    ({'ar': 'إذا مش أردني، بقدر ألعبها؟', 'en': 'I’m not Jordanian. Can I play?'}, {'ar': 'أكيد! فئات مثل الأكل والأفلام والحيوانات والأفعال بيعرفها كل العرب، وكل بطاقة مكتوبة كمان بالحروف الإنجليزية.', 'en': 'Of course. Food, movies, animals and actions work for every Arab, and every card is also written in Arabizi.'}),
+    ({'ar': 'لأي عمر؟', 'en': 'What ages is it for?'}, {'ar': 'للكل، من الصغار للجدّ. وفي باكيت للشباب إذا بدكم إشي أجرأ شوي.', 'en': 'Everyone, from kids to grandparents. There’s also a Shabab pack if you want something a bit cheekier.'}),
+  ],
+  'footer_tag': {'ar': 'لعبة التمثيل الأردنية للسهرات', 'en': 'The Jordanian charades party game'},
+  'privacy': {'ar': 'الخصوصية', 'en': 'Privacy'},
+  'contact': {'ar': 'تواصل معنا', 'en': 'Contact'},
+  'rights': {'ar': '© ٢٠٢٦ ولا كلمة', 'en': '© 2026 Wala Kelmeh'},
+  'preview_note': {'ar': 'نسخة تجريبية: الروابط للصفحات الثانية رح تشتغل لما نبنيها.', 'en': 'Preview: links to other pages will work once they’re built.'},
+}
