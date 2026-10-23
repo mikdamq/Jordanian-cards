@@ -272,24 +272,16 @@ def faq(lang):
   <div class="faq">{qs}</div></div></section>'''
 
 def footer(lang, pre):
-    play_links = [(T['nav']['how'][lang], 'how-to-play/'), (T['nav']['categories'][lang], 'categories/'), (T['nav']['stickers'][lang], 'stickers/'), (t('play', lang), PLAY)]
-    more_links = [(T['nav']['cafes'][lang], 'cafes/'), (t('contact', lang), f'mailto:{CONTACT}'), (t('privacy', lang), f'{pre}privacy.html'),
-                  (t('lang_switch', lang), 'en/' if lang == 'ar' else '../')]
-    col = lambda title, links: f'<div class="foot-col"><h2>{title}</h2><ul>' + ''.join(f'<li><a href="{h}">{n}</a></li>' for n, h in links) + '</ul></div>'
+    links = [(T['nav']['how'][lang], 'how-to-play/'), (T['nav']['categories'][lang], 'categories/'), (T['nav']['cafes'][lang], 'cafes/'),
+             (T['nav']['stickers'][lang], 'stickers/'), (t('privacy', lang), f'{pre}privacy.html'), (t('contact', lang), f'mailto:{CONTACT}')]
+    nav = ''.join(f'<a href="{h}">{n}</a>' for n, h in links)
     return f'''</main>
-<footer class="foot">
-  <div class="foot-cta"><div class="in">
-    <p class="foot-cta-text">{t('footer_cta', lang)} <span>{t('hero_h1', lang)}</span></p>
-    <a class="btn btn-cream" href="{PLAY}">{t('play', lang)}</a>
-  </div></div>
-  <div class="foot-main"><div class="in">
-    <div class="foot-brand">{logo_img(lang, 'red', pre, 58)}<p>{t('footer_tag', lang)}</p></div>
-    {col(t('col_play', lang), play_links)}
-    {col(t('col_more', lang), more_links)}
-    <div class="foot-mascot">{mascot_img('wave', lang, pre, w=200)}</div>
-  </div></div>
-  <div class="foot-base"><div class="in"><p>{t('rights', lang)}</p><p lang="ar" dir="rtl">مثّلها… بس ولا كلمة!</p></div></div>
-</footer>
+<div class="band" aria-hidden="true"></div>
+<footer class="foot"><div class="in">
+  <div class="foot-brand">{logo_img(lang, 'dark', pre, 54)}<p>{t('footer_tag', lang)}</p></div>
+  <nav class="foot-links" aria-label="{'روابط' if lang == 'ar' else 'Footer'}">{nav}</nav>
+  <p class="rights">{t('rights', lang)}</p>
+</div></footer>
 </body>
 </html>'''
 
@@ -371,7 +363,7 @@ def preview_bundle():
         return re.sub(r'<img src="(?:\.\./)?assets/(logo-[\w-]+\.svg)"[^>]*?alt="([^"]*)"[^>]*>', lambda m: LOGO_FILES[m.group(1)].replace('<svg ', '<svg class="pv-logo" ', 1), s)
     script = '''<script>
 document.addEventListener('click', function (e) {
-  var a = e.target.closest('a.lang, .foot-col a[hreflang], .foot-col a[href="en/"], .foot-col a[href="../"]');
+  var a = e.target.closest('a.lang');
   if (!a) return;
   e.preventDefault();
   var ar = document.getElementById('v-ar'), en = document.getElementById('v-en'), toEn = !ar.hidden;

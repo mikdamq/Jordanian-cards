@@ -16,7 +16,7 @@ python3 website/build.py --preview  # links to the live game + out/preview.html 
 
 | Page | Status |
 | --- | --- |
-| Home | Built: logo fix, new footer, SEO pass |
+| Home | Built: logo fix, SEO pass, original footer |
 | How to play | To do |
 | Categories, plus one page per category (16) | To do |
 | For cafés and partners | To do |
