@@ -2,7 +2,7 @@
 P = {
   'title': {'ar': 'ليلة ولا كلمة بمحلّك: شراكات للمقاهي والمطاعم والشركات', 'en': 'Wala Kelmeh Nights for Cafés, Restaurants and Companies'},
   'desc': {'ar': 'خلّي زبائنك يسهروا عندك أطول مع ليلة ولا كلمة: تحدّيات بين الطاولات، كيت شريك جاهز، وترويج لمحلّك. للمقاهي والمطاعم والشركات والماركات بالأردن.',
-           'en': 'Keep guests longer with a Wala Kelmeh night: table-vs-table challenges, a ready partner kit and promotion for your venue. For cafés, restaurants, companies and brands in Jordan.'},
+           'en': 'Keep guests longer with a Wala Kelmeh night: table-vs-table challenges, a ready partner kit and promotion. For cafés, companies and brands in Jordan.'},
   'crumb': {'ar': 'للمقاهي والشركاء', 'en': 'For cafés & partners'},
   'eyebrow': {'ar': 'للمقاهي والمطاعم والشركات', 'en': 'For cafés, restaurants and companies'},
   'h1': {'ar': 'ليلة «ولا كلمة»… بمحلّك', 'en': 'Host a Wala Kelmeh night'},
