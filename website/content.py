@@ -113,8 +113,10 @@ T = {
 }
 
 # ---------- suggestion forms ----------
-# Where submissions go. Leave empty until a form service is chosen: the forms then fall back to email.
-SUGGEST_ENDPOINT = ''
+# Submissions go to Web3Forms, which emails each one to the inbox tied to the access key.
+# The key is public by design (it only allows sending to that inbox). Empty = forms fall back to email.
+SUGGEST_ENDPOINT = 'https://api.web3forms.com/submit'
+WEB3FORMS_KEY = ''
 SUGGEST = {
   'card_h': {'ar': 'عندك بطاقة لهالفئة؟', 'en': 'Got a card for this category?'},
   'card_p': {'ar': 'اقترح كلمة أو موقف، وإذا انضافت للعبة بنكتب اسمك بقائمة الشكر (إذا بدك).',

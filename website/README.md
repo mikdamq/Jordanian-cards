@@ -28,6 +28,10 @@ Search setup and what we still need: see [SEO.md](SEO.md). Static images (share 
 
 ## Suggestion forms
 
-Every category page has a "suggest a card" form, and the Categories page has a "suggest a category" form. Set `SUGGEST_ENDPOINT` in `content.py` to the form service's URL to collect submissions there. While it's empty, the forms open the visitor's email app with the suggestion filled in. Fields sent: `kind`, `lang`, `category`, `word`, `arabizi`, `level`, `category_name`, `examples`, `name`, `page`. A hidden `website` field catches bots.
+Every category page has a "suggest a card" form, and the Categories page has a "suggest a category" form. They post to [Web3Forms](https://web3forms.com), which emails each suggestion to the inbox tied to the access key.
+
+- Put the key in `WEB3FORMS_KEY` in `content.py` and rebuild. While it's empty, the forms open the visitor's email app with the suggestion filled in instead.
+- Fields sent: `kind`, `lang`, `category`, `word`, `arabizi`, `level`, `category_name`, `examples`, `name`, `page`. The email subject says what was suggested and where.
+- `botcheck` is a hidden honeypot that Web3Forms uses to drop spam.
 
 The privacy page must mention suggestions before launch.

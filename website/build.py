@@ -13,7 +13,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.join(HERE, '..')
 sys.path.insert(0, os.path.join(REPO, 'brand', 'tools'))
 
-from content import T, CATEGORIES, SITE, CONTACT, TOTAL_CARDS, SUGGEST, SUGGEST_ENDPOINT
+from content import T, CATEGORIES, SITE, CONTACT, TOTAL_CARDS, SUGGEST, SUGGEST_ENDPOINT, WEB3FORMS_KEY
 from logos import icon_C, xstitch, svg as raw_svg
 from lockups2 import horiz_ar, horiz_en
 from final import BR, CREAM, INK, RED, GOLD
@@ -390,11 +390,14 @@ def suggest_form(c, kind, cid=None, cat_name=None):
     return f'''<section class="suggest" id="suggest" aria-labelledby="{fid}-h"><div class="in">
   <div class="suggest-card">
     <div class="suggest-head"><div class="suggest-art">{mascot_img(mood, lang, c.pre, w=160)}</div><div><h2 id="{fid}-h">{head_h}</h2><p>{head_p}</p></div></div>
-    <form class="sg-form" id="{fid}" data-kind="{kind}" data-subject="{html.escape(subject)}" data-endpoint="{SUGGEST_ENDPOINT}" data-mail="{CONTACT}" novalidate>
+    <form class="sg-form" id="{fid}" data-kind="{kind}" data-subject="{html.escape(subject)}" data-endpoint="{SUGGEST_ENDPOINT if WEB3FORMS_KEY else ''}" data-mail="{CONTACT}" novalidate>
+      <input type="hidden" name="access_key" value="{WEB3FORMS_KEY}">
+      <input type="hidden" name="subject" value="{html.escape('ولا كلمة · ' + subject)}">
+      <input type="hidden" name="from_name" value="Wala Kelmeh website">
       <input type="hidden" name="kind" value="{kind}"><input type="hidden" name="lang" value="{lang}">
       {fields}
       <div class="f-row"><label for="{fid}-n">{S('name')}</label><input id="{fid}-n" name="name" maxlength="60" placeholder="{S('name_ph')}" autocomplete="nickname"></div>
-      <div class="hp" aria-hidden="true"><label>Website<input name="website" tabindex="-1" autocomplete="off"></label></div>
+      <div class="hp" aria-hidden="true"><label>Website<input type="checkbox" name="botcheck" tabindex="-1"></label></div>
       <div class="f-actions"><button class="btn btn-red" type="submit" data-label="{S('send')}" data-busy="{S('sending')}">{S('send')}</button>
         <p class="f-note">{S('privacy')}</p></div>
       <p class="f-status" role="status" aria-live="polite" data-ok="{S('thanks')}" data-err="{S('error')}"></p>
@@ -411,7 +414,7 @@ SUGGEST_JS = """<script>
       if (req && !req.value.trim()) { req.focus(); req.setAttribute('aria-invalid', 'true'); return; }
       if (req) req.removeAttribute('aria-invalid');
       var data = new FormData(f);
-      if (data.get('website')) return;                       // honeypot: bots fill hidden fields
+      if (data.get('botcheck')) return;                      // honeypot: bots tick hidden fields
       data.append('page', location.pathname);
       var done = function (ok) {
         btn.disabled = false; btn.textContent = btn.dataset.label;
@@ -424,10 +427,12 @@ SUGGEST_JS = """<script>
       if (window.__PREVIEW__) { setTimeout(function () { done(true); }, 500); return; }
       if (url) {
         fetch(url, { method: 'POST', body: data, headers: { Accept: 'application/json' } })
-          .then(function (r) { done(r.ok); }).catch(function () { done(false); });
+          .then(function (r) { return r.json().then(function (j) { done(r.ok && j.success !== false); }); })
+          .catch(function () { done(false); });
         return;
       }
-      var lines = []; data.forEach(function (v, k) { if (v && k !== 'website') lines.push(k + ': ' + v); });
+      var skip = { access_key: 1, subject: 1, from_name: 1, botcheck: 1 };
+      var lines = []; data.forEach(function (v, k) { if (v && !skip[k]) lines.push(k + ': ' + v); });
       location.href = 'mailto:' + f.dataset.mail + '?subject=' + encodeURIComponent(f.dataset.subject) + '&body=' + encodeURIComponent(lines.join('\\n'));
       done(true);
     });
