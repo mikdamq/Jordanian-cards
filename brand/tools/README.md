@@ -15,3 +15,9 @@ node export_png.js jobs.json      # optional PNG exports (needs Playwright)
 - `logos.py`: the symbol, the seven-point star, and shared helpers
 - `lockups2.py`: horizontal and stacked lockups, one language each
 - `final.py`: the full asset list, plus partner and sponsor marks
+
+## Mascot and guidelines
+
+- `sham.py`: شمّوغ's body, face and shading. `poses4.py`: the 14 no-hands moods.
+- `build_book.py`: regenerates the brand book body (`brand/guidelines/book-body.html`). `brand/guidelines/index.html` is the standalone copy.
+- `poses.py` and `handsx.py` hold the earlier hand experiments that `poses4.py` reuses props from.

@@ -9,7 +9,7 @@ The living record of the Wala Kelmeh brand. Each step is written down here once 
 | 3 | [Logo](03-logo.md): symbol, wordmarks, lockups, partner and sponsor marks | Agreed |
 | 4 | [Colour, type, pattern and illustration](04-colour-type-pattern.md): direction A, Sahra | Agreed |
 | 4b | [Mascot: شمّوغ (Shammogh)](05-mascot.md): living shemagh, no hands, 14 moods, sticker pack | Agreed |
-| 5 | Brand guidelines page and `/brand` asset folder | Next |
+| 5 | Brand guidelines book: `brand/guidelines/index.html` | Agreed |
 
 ## Roadmap
 
