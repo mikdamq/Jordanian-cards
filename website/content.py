@@ -111,3 +111,34 @@ T = {
   'rights': {'ar': '© ٢٠٢٦ ولا كلمة', 'en': '© 2026 Wala Kelmeh'},
   'preview_note': {'ar': 'نسخة تجريبية: الروابط للصفحات الثانية رح تشتغل لما نبنيها.', 'en': 'Preview: links to other pages will work once they’re built.'},
 }
+
+# ---------- suggestion forms ----------
+# Where submissions go. Leave empty until a form service is chosen: the forms then fall back to email.
+SUGGEST_ENDPOINT = ''
+SUGGEST = {
+  'card_h': {'ar': 'عندك بطاقة لهالفئة؟', 'en': 'Got a card for this category?'},
+  'card_p': {'ar': 'اقترح كلمة أو موقف، وإذا انضافت للعبة بنكتب اسمك بقائمة الشكر (إذا بدك).',
+             'en': 'Suggest a word or a moment. If it makes it into the game, we’ll thank you by name (if you like).'},
+  'cat_h': {'ar': 'بدك فئة جديدة؟', 'en': 'Want a new category?'},
+  'cat_p': {'ar': 'قلنا شو الفئة اللي ناقصة، وأعطينا كم مثال عليها.', 'en': 'Tell us which category is missing, and give us a few examples.'},
+  'word': {'ar': 'الكلمة أو الموقف', 'en': 'Word or moment'},
+  'word_ph': {'ar': 'مثلاً: مسخّن', 'en': 'e.g. Musakhan'},
+  'arabizi': {'ar': 'بالحروف الإنجليزية (اختياري)', 'en': 'In Arabizi (optional)'},
+  'arabizi_ph': {'ar': 'Msakhan', 'en': 'Msakhan'},
+  'level': {'ar': 'قديش صعبة؟', 'en': 'How hard is it?'},
+  'cat_name': {'ar': 'اسم الفئة', 'en': 'Category name'},
+  'cat_name_ph': {'ar': 'مثلاً: مسلسلات بدوية', 'en': 'e.g. Bedouin TV series'},
+  'examples': {'ar': 'أمثلة (اختياري)', 'en': 'Examples (optional)'},
+  'examples_ph': {'ar': 'كلمة بكل سطر', 'en': 'One per line'},
+  'name': {'ar': 'اسمك (اختياري)', 'en': 'Your name (optional)'},
+  'name_ph': {'ar': 'مثلاً: أبو أحمد من إربد', 'en': 'e.g. Ahmad from Irbid'},
+  'send': {'ar': 'ابعت الاقتراح', 'en': 'Send suggestion'},
+  'sending': {'ar': 'عم نبعت…', 'en': 'Sending…'},
+  'thanks': {'ar': 'وصل! شكراً إلك 🙏 بنقرا كل اقتراح.', 'en': 'Got it, thank you! 🙏 We read every suggestion.'},
+  'error': {'ar': 'ما زبطت. جرّب كمان مرة، أو ابعتلنا على الإيميل.', 'en': 'That didn’t work. Try again, or email us.'},
+  'privacy': {'ar': 'ما بنطلب إيميل ولا رقم. بنستعمل الاقتراح بس لتطوير اللعبة.', 'en': 'We don’t ask for your email or number. Suggestions are only used to improve the game.'},
+  'another': {'ar': 'اقترح كمان', 'en': 'Suggest another'},
+  'home_h': {'ar': 'شارك بصناعة اللعبة', 'en': 'Help build the game'},
+  'home_p': {'ar': 'عندك كلمة أو فئة ناقصة؟ اقتراحاتكم بتصير بطاقات.', 'en': 'Got a missing word or category? Your suggestions become cards.'},
+  'home_cta': {'ar': 'اقترح بطاقة أو فئة', 'en': 'Suggest a card or category'},
+}

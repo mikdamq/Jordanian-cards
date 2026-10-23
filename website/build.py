@@ -13,7 +13,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.join(HERE, '..')
 sys.path.insert(0, os.path.join(REPO, 'brand', 'tools'))
 
-from content import T, CATEGORIES, SITE, CONTACT, TOTAL_CARDS
+from content import T, CATEGORIES, SITE, CONTACT, TOTAL_CARDS, SUGGEST, SUGGEST_ENDPOINT
 from logos import icon_C, xstitch, svg as raw_svg
 from lockups2 import horiz_ar, horiz_en
 from final import BR, CREAM, INK, RED, GOLD
@@ -70,7 +70,7 @@ def logo_pair(lang, pre=''):
     """Both versions; CSS shows the one that matches the viewer's theme."""
     return f'<span class="logo-light">{logo_img(lang, "light", pre, eager=True)}</span><span class="logo-dark">{logo_img(lang, "dark", pre, eager=True)}</span>'
 
-MASCOT_FILES = ('card', 'shh', 'cool', 'wave', 'laugh', 'yay', 'love', 'shock', 'proud', 'wink')
+MASCOT_FILES = ('card', 'shh', 'cool', 'wave', 'laugh', 'yay', 'love', 'shock', 'proud', 'wink', 'think')
 def mascot_img(key, lang, prefix, eager=False, w=440):
     ar_line, en = MOODS[key][0], MOODS[key][1]
     alt = f'شمّوغ، شماغ لعبة ولا كلمة: {ar_line}' if lang == 'ar' else f'Shammogh, the Wala Kelmeh shemagh mascot: {en}'
@@ -236,6 +236,7 @@ def footer(c):
   <nav class="foot-links" aria-label="{'روابط' if lang == 'ar' else 'Footer'}">{nav}</nav>
   <p class="rights">{t('rights', lang)}</p>
 </div></footer>
+{SUGGEST_JS if c.key.startswith('cat') or c.key == 'categories' else ''}
 </body>
 </html>'''
 
@@ -289,7 +290,8 @@ def home(c):
   <div class="modes">{modes}</div></div></section>
 <section class="sec" id="categories" aria-labelledby="cats-h"><div class="in">
   <div class="sec-head"><h2 id="cats-h">{cats_h}</h2><p>{t('cats_p', lang)}</p></div>
-  <ul class="cats">{tiles}</ul></div></section>
+  <ul class="cats">{tiles}</ul>
+  <div class="invite"><div><b>{SUGGEST['home_h'][lang]}</b><span>{SUGGEST['home_p'][lang]}</span></div><a class="btn btn-ghost" href={c.href('categories')[:-1] + '#suggest"' if not PREVIEW else c.href('categories')}>{SUGGEST['home_cta'][lang]}</a></div></div></section>
 <section class="sec how" id="how" aria-labelledby="how-h"><div class="in">
   <div class="sec-head"><h2 id="how-h">{t('how_h', lang)}</h2></div>
   <div class="how-grid"><div class="how-text"><ol class="steps">{steps}</ol><a class="btn btn-ghost" href={c.href('how')}>{'القواعد كاملة' if lang == 'ar' else 'Read the full rules'}</a></div><div class="how-mascot">{mascot_img('shh', lang, pre)}</div></div></div></section>
@@ -367,6 +369,72 @@ def how_page(c):
     graph = base_graph(c) + [webpage(c, title, desc), breadcrumbs_ld(c, [(home_name, c.abs('home')), (L(H['crumb']), c.url)]), howto, faq_ld(H['faq'], lang)]
     return head(c, title, desc, graph) + header(c) + '<main id="main">' + main + footer(c)
 
+# ---------- suggestion forms ----------
+def suggest_form(c, kind, cid=None, cat_name=None):
+    """kind: card (inside a category page) or category (new category idea). Works without a backend: falls back to email."""
+    lang, S = c.lang, (lambda k: SUGGEST[k][c.lang])
+    fid = f'sg-{kind}-{cid or "new"}-{lang}'
+    if kind == 'card':
+        lv = ''.join(f'<label><input type="radio" name="level" value="{i}"{" checked" if i == 1 else ""}><span>{n}</span></label>'
+                     for i, n in enumerate(CC.C['levels'][lang], 1))
+        fields = f'''<input type="hidden" name="category" value="{cid}">
+      <div class="f-row"><label for="{fid}-w">{S('word')}</label><input id="{fid}-w" name="word" required maxlength="60" placeholder="{S('word_ph')}" autocomplete="off"></div>
+      <div class="f-row"><label for="{fid}-a">{S('arabizi')}</label><input id="{fid}-a" name="arabizi" maxlength="60" dir="ltr" placeholder="{S('arabizi_ph')}" autocomplete="off"></div>
+      <fieldset class="f-row"><legend>{S('level')}</legend><div class="seg">{lv}</div></fieldset>'''
+        head_h, head_p, mood = S('card_h'), S('card_p'), 'think'
+    else:
+        fields = f'''<div class="f-row"><label for="{fid}-c">{S('cat_name')}</label><input id="{fid}-c" name="category_name" required maxlength="60" placeholder="{S('cat_name_ph')}" autocomplete="off"></div>
+      <div class="f-row"><label for="{fid}-e">{S('examples')}</label><textarea id="{fid}-e" name="examples" rows="3" maxlength="400" placeholder="{S('examples_ph')}"></textarea></div>'''
+        head_h, head_p, mood = S('cat_h'), S('cat_p'), 'think'
+    subject = ('اقتراح بطاقة' if kind == 'card' else 'اقتراح فئة') + (f': {cat_name}' if cat_name else '')
+    return f'''<section class="suggest" id="suggest" aria-labelledby="{fid}-h"><div class="in">
+  <div class="suggest-card">
+    <div class="suggest-head"><div class="suggest-art">{mascot_img(mood, lang, c.pre, w=160)}</div><div><h2 id="{fid}-h">{head_h}</h2><p>{head_p}</p></div></div>
+    <form class="sg-form" id="{fid}" data-kind="{kind}" data-subject="{html.escape(subject)}" data-endpoint="{SUGGEST_ENDPOINT}" data-mail="{CONTACT}" novalidate>
+      <input type="hidden" name="kind" value="{kind}"><input type="hidden" name="lang" value="{lang}">
+      {fields}
+      <div class="f-row"><label for="{fid}-n">{S('name')}</label><input id="{fid}-n" name="name" maxlength="60" placeholder="{S('name_ph')}" autocomplete="nickname"></div>
+      <div class="hp" aria-hidden="true"><label>Website<input name="website" tabindex="-1" autocomplete="off"></label></div>
+      <div class="f-actions"><button class="btn btn-red" type="submit" data-label="{S('send')}" data-busy="{S('sending')}">{S('send')}</button>
+        <p class="f-note">{S('privacy')}</p></div>
+      <p class="f-status" role="status" aria-live="polite" data-ok="{S('thanks')}" data-err="{S('error')}"></p>
+    </form>
+  </div></div></section>'''
+
+SUGGEST_JS = """<script>
+(function () {
+  document.querySelectorAll('form.sg-form').forEach(function (f) {
+    f.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var status = f.querySelector('.f-status'), btn = f.querySelector('button[type=submit]');
+      var req = f.querySelector('[required]');
+      if (req && !req.value.trim()) { req.focus(); req.setAttribute('aria-invalid', 'true'); return; }
+      if (req) req.removeAttribute('aria-invalid');
+      var data = new FormData(f);
+      if (data.get('website')) return;                       // honeypot: bots fill hidden fields
+      data.append('page', location.pathname);
+      var done = function (ok) {
+        btn.disabled = false; btn.textContent = btn.dataset.label;
+        status.textContent = ok ? status.dataset.ok : status.dataset.err;
+        status.className = 'f-status ' + (ok ? 'ok' : 'err');
+        if (ok) { f.reset(); }
+      };
+      btn.disabled = true; btn.textContent = btn.dataset.busy;
+      var url = f.dataset.endpoint;
+      if (window.__PREVIEW__) { setTimeout(function () { done(true); }, 500); return; }
+      if (url) {
+        fetch(url, { method: 'POST', body: data, headers: { Accept: 'application/json' } })
+          .then(function (r) { done(r.ok); }).catch(function () { done(false); });
+        return;
+      }
+      var lines = []; data.forEach(function (v, k) { if (v && k !== 'website') lines.push(k + ': ' + v); });
+      location.href = 'mailto:' + f.dataset.mail + '?subject=' + encodeURIComponent(f.dataset.subject) + '&body=' + encodeURIComponent(lines.join('\\n'));
+      done(true);
+    });
+  });
+})();
+</script>"""
+
 # ---------- categories ----------
 import content_cats as CC
 CARDS = CC.load_cards()
@@ -390,6 +458,7 @@ def categories_page(c):
   <div class="page-hero-art">{mascot_img('laugh', lang, pre, eager=True, w=300)}</div></div></div></section>
 <div class="band" aria-hidden="true"></div>
 <section class="sec"><div class="in"><ul class="catlist">{tiles}</ul></div></section>
+{suggest_form(c, 'category')}
 {cta_band(c, L(CC.C['cta_h']))}'''
     title, desc = L(CC.C['index_title']), L(CC.C['index_desc'])
     items = {'@type': 'ItemList', 'numberOfItems': len(CATEGORIES), 'itemListElement': [
@@ -429,6 +498,7 @@ def category_page(cid):
 <section class="sec" aria-labelledby="samples-h"><div class="in">
   <div class="sec-head"><h2 id="samples-h">{L(CC.C['samples_h'])}</h2><p>{note}</p></div>
   <ul class="scards">{''.join(card_tile(a, b, lv, lang) for a, b, lv in sample)}</ul></div></section>
+{suggest_form(c, 'card', cid, name)}
 <section class="sec related" aria-labelledby="rel-h"><div class="in">
   <div class="sec-head"><h2 id="rel-h">{L(CC.C['related_h'])}</h2></div>
   <ul class="cats">{rel}</ul></div></section>
@@ -544,7 +614,7 @@ document.addEventListener('click', function (e) {
            '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Almarai:wght@700;800&family=Cairo:wght@400;600;800&display=swap">\n'
            f'<style>{CSS}\n.pv-img{{width:100%;height:auto;display:block}}.mode-art .pv-img{{width:70px}}.cat-art .pv-img{{width:62px}}'
            '.pv-note{margin:0;padding:8px 16px;background:#2a1f1a;color:#f4ecdd;font:600 13px Cairo,sans-serif;text-align:center}</style>\n'
-           f'{note}{views}{script}')
+           '<script>window.__PREVIEW__ = true;</script>' + f'{note}{views}{script}')
     write(os.path.join(OUT, 'preview.html'), doc)
     print('preview bundle written')
 

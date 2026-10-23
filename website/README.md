@@ -25,3 +25,9 @@ python3 website/build.py --preview  # links to the live game + out/preview.html 
 | Blog | Planned |
 
 Search setup and what we still need: see [SEO.md](SEO.md). Static images (share cards, favicons) are rendered by `make_og.py` into `static/`.
+
+## Suggestion forms
+
+Every category page has a "suggest a card" form, and the Categories page has a "suggest a category" form. Set `SUGGEST_ENDPOINT` in `content.py` to the form service's URL to collect submissions there. While it's empty, the forms open the visitor's email app with the suggestion filled in. Fields sent: `kind`, `lang`, `category`, `word`, `arabizi`, `level`, `category_name`, `examples`, `name`, `page`. A hidden `website` field catches bots.
+
+The privacy page must mention suggestions before launch.

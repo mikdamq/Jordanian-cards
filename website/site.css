@@ -258,3 +258,35 @@ a:focus-visible, summary:focus-visible { outline: 3px solid var(--gold); outline
 .lvl i.on { background: #f6efe3; }
 .related { background: var(--surface-2); }
 .related .cats { grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: 640px; }
+
+/* ---------- suggestion forms ---------- */
+.suggest { padding-block: 56px; }
+.suggest-card { background: var(--surface); border: 2px dashed var(--stitch); border-radius: 26px; padding: 28px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 28px; align-items: start; }
+.suggest-head { display: grid; gap: 14px; align-content: start; }
+.suggest-head h2 { font-size: clamp(26px, 3.4vw, 34px); }
+.suggest-head p { color: var(--muted); }
+.suggest-art { width: 130px; }
+.suggest-art img { width: 100%; height: auto; display: block; }
+@media (max-width: 820px) { .suggest-card { grid-template-columns: 1fr; padding: 22px; } .suggest-head { grid-template-columns: 90px minmax(0, 1fr); align-items: center; } .suggest-art { width: 90px; } }
+.sg-form { display: grid; gap: 14px; }
+.f-row { display: grid; gap: 6px; border: 0; margin: 0; padding: 0; min-width: 0; }
+.f-row > label, .f-row legend { font-weight: 800; font-size: 15px; padding: 0; }
+.sg-form input:not([type=radio]), .sg-form textarea { font: 600 17px/1.5 var(--font); color: var(--text); background: var(--bg); border: 2px solid var(--line); border-radius: 14px; padding: 12px 14px; width: 100%; }
+.sg-form input:focus, .sg-form textarea:focus { outline: none; border-color: var(--red); box-shadow: 0 0 0 4px color-mix(in srgb, var(--red) 18%, transparent); }
+.sg-form [aria-invalid="true"] { border-color: var(--red); }
+.seg { display: flex; flex-wrap: wrap; gap: 8px; }
+.seg label { cursor: pointer; }
+.seg input { position: absolute; opacity: 0; pointer-events: none; }
+.seg span { display: inline-block; padding: 8px 16px; border-radius: 999px; border: 2px solid var(--line); font-weight: 700; font-size: 15px; }
+.seg input:checked + span { background: var(--red); border-color: var(--red); color: var(--on-red); }
+.seg input:focus-visible + span { outline: 3px solid var(--gold); outline-offset: 2px; }
+.hp { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.f-actions { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; }
+.f-note { color: var(--muted); font-size: 13px; flex: 1 1 220px; }
+.f-status { font-weight: 800; min-height: 1.5em; }
+.f-status.ok { color: var(--olive); }
+.f-status.err { color: var(--red-text); }
+.invite { display: flex; flex-wrap: wrap; gap: 14px 20px; align-items: center; justify-content: space-between; background: var(--surface); border: 2px dashed var(--stitch); border-radius: 18px; padding: 16px 20px; }
+.invite div { display: grid; }
+.invite b { font-family: var(--display); font-size: 18px; }
+.invite span { color: var(--muted); }
