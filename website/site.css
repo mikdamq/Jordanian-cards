@@ -339,3 +339,8 @@ a:focus-visible, summary:focus-visible { outline: 3px solid var(--gold); outline
 .use-rules li::before { position: absolute; inset-inline-start: 16px; font-weight: 900; }
 .use-rules li.ok::before { content: "✓"; color: var(--olive); }
 .use-rules li.no::before { content: "✕"; color: var(--red-text); }
+
+/* ---------- privacy ---------- */
+.updated { color: var(--muted); font-weight: 700; font-size: 15px; }
+.plain { margin: 0; padding-inline-start: 20px; display: grid; gap: 8px; }
+.sel { user-select: all; font-weight: 800; }

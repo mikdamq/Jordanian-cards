@@ -105,7 +105,7 @@ def art_img(kind, key, rows, label, pre, size=72):
 CSS = open(os.path.join(HERE, 'site.css'), encoding='utf-8').read()
 
 # ---------- routing ----------
-PAGES = {'home': '', 'how': 'how-to-play/', 'categories': 'categories/', 'cafes': 'cafes/', 'stickers': 'stickers/'}
+PAGES = {'home': '', 'how': 'how-to-play/', 'categories': 'categories/', 'cafes': 'cafes/', 'stickers': 'stickers/', 'privacy': 'privacy/'}
 PAGES.update({f'cat-{cid}': f'categories/{cid}/' for cid, *_ in CATEGORIES})
 
 class Ctx:
@@ -227,7 +227,7 @@ def crumbs_html(c, crumbs):
 def footer(c):
     lang = c.lang
     links = [(T['nav']['how'][lang], c.href('how')), (T['nav']['categories'][lang], c.href('categories')), (T['nav']['cafes'][lang], c.href('cafes')),
-             (T['nav']['stickers'][lang], c.href('stickers')), (t('privacy', lang), f'"{c.pre}privacy.html"'), (t('contact', lang), f'"mailto:{CONTACT}"')]
+             (T['nav']['stickers'][lang], c.href('stickers')), (t('privacy', lang), c.href('privacy')), (t('contact', lang), f'"mailto:{CONTACT}"')]
     nav = ''.join(f'<a href={h}>{n}</a>' for n, h in links)
     return f'''</main>
 <div class="band" aria-hidden="true"></div>
@@ -645,7 +645,32 @@ def stickers_page(c):
     graph = base_graph(c) + [webpage(c, title, desc), breadcrumbs_ld(c, [(home_name, c.abs('home')), (L('crumb'), c.url)]), gallery, faq_ld(S['faq'], lang)]
     return head(c, title, desc, graph) + header(c) + '<main id="main">' + main + footer(c)
 
-BUILT = {'home': home, 'how': how_page, 'categories': categories_page, 'cafes': cafes_page, 'stickers': stickers_page}
+# ---------- privacy ----------
+def privacy_page(c):
+    from content_privacy import PR
+    lang, L = c.lang, (lambda k: PR[k][c.lang])
+    home_name = 'الرئيسية' if lang == 'ar' else 'Home'
+    toc = ''.join(f'<li><a href="#{k}">{h[lang]}</a></li>' for k, h, _ in PR['sections'])
+    # English names inside Arabic sentences get their own direction, or the letters scramble
+    iso = (lambda x: re.sub(r'([A-Za-z][A-Za-z0-9]*(?: [A-Za-z][A-Za-z0-9]*)*)', r'<bdi>\1</bdi>', x)) if lang == 'ar' else (lambda x: x)
+    body = ''.join(f'<section class="rule-block" id="{k}" aria-labelledby="{k}-h"><h2 id="{k}-h">{h[lang]}</h2><ul class="plain">{"".join(f"<li>{iso(p[lang])}</li>" for p in ps)}</ul></section>'
+                   for k, h, ps in PR['sections'])
+    main = f'''<section class="page-hero"><div class="in">
+  {crumbs_html(c, [(home_name, 'home'), (L('crumb'), 'privacy')])}
+  <div class="page-hero-text"><h1>{L('h1')}</h1><p class="updated">{L('updated')}</p><p class="answer">{L('short')}</p></div></div></section>
+<div class="band" aria-hidden="true"></div>
+<div class="in doc">
+  <aside class="toc" aria-label="{'محتويات الصفحة' if lang == 'ar' else 'On this page'}"><h2>{'بهاي الصفحة' if lang == 'ar' else 'On this page'}</h2><ol>{toc}</ol></aside>
+  <div class="doc-body">{body}
+    <section class="rule-block" id="contact"><h2>{L('contact_h')}</h2><p>{L('contact_p')} <span class="sel" dir="ltr">{CONTACT}</span></p></section>
+  </div>
+</div>'''
+    title, desc = L('title'), L('desc')
+    page = webpage(c, title, desc)
+    graph = base_graph(c) + [page, breadcrumbs_ld(c, [(home_name, c.abs('home')), (L('crumb'), c.url)])]
+    return head(c, title, desc, graph) + header(c) + '<main id="main">' + main + footer(c)
+
+BUILT = {'home': home, 'how': how_page, 'categories': categories_page, 'cafes': cafes_page, 'stickers': stickers_page, 'privacy': privacy_page}
 BUILT.update({f'cat-{cid}': category_page(cid) for cid, *_ in CATEGORIES})
 
 # ---------- site files ----------
@@ -702,6 +727,7 @@ def build():
     for key, fn in BUILT.items():
         for lang in ('ar', 'en'):
             write(os.path.join(OUT, 'en' if lang == 'en' else '', PAGES[key], 'index.html'), fn(Ctx(lang, key)))
+    write(os.path.join(OUT, 'privacy.html'), f'<!doctype html><meta charset="utf-8"><title>Privacy</title><link rel="canonical" href="{SITE}/privacy/"><meta name="robots" content="noindex"><meta http-equiv="refresh" content="0; url=privacy/"><a href="privacy/">سياسة الخصوصية · Privacy policy</a>')
     write(os.path.join(OUT, 'robots.txt'), robots())
     write(os.path.join(OUT, 'sitemap.xml'), sitemap())
     write(os.path.join(OUT, 'llms.txt'), llms())
