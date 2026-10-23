@@ -23,6 +23,7 @@ python3 website/build.py --preview  # links to the live game + out/preview.html 
 | شمّوغ stickers | To do |
 | Privacy | Existing page, to restyle |
 | Blog | Planned |
+| Go live | Domain on Cloudflare, Cloudflare Pages hosting, game at `/play/`, own suggestion backend, Search Console |
 
 Search setup and what we still need: see [SEO.md](SEO.md). Static images (share cards, favicons) are rendered by `make_og.py` into `static/`.
 
@@ -35,3 +36,5 @@ Every category page has a "suggest a card" form, and the Categories page has a "
 - `botcheck` is a hidden honeypot that Web3Forms uses to drop spam.
 
 The privacy page must mention suggestions before launch.
+
+**Decision (2026-10-23):** Web3Forms now, our own backend later. At go-live, host the site and game on Cloudflare Pages and replace Web3Forms with our own `/api/suggest` (Pages Function), a D1 database, Turnstile anti-spam, and a private `/admin` page to approve suggestions. The form markup stays the same; only `SUGGEST_ENDPOINT` and the fields change.
