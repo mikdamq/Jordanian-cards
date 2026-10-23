@@ -7,7 +7,7 @@ pip install uharfbuzz
 # Put these Google Fonts (OFL) in brand/tools/fonts/, or point FONT_DIR at them:
 #   Almarai-Bold.ttf, Almarai-ExtraBold.ttf, Cairo[slnt,wght].ttf (saved as Cairo%5Bslnt%2Cwght%5D.ttf)
 python3 final.py                  # writes brand/logo/{symbol,wordmark,lockup,partner}
-node export_png.js jobs.json      # optional PNG exports (needs Playwright)
+node export_png.cjs jobs.json      # optional PNG exports (needs Playwright)
 ```
 
 - `stitchword.py`: the Arabic stitch grid. `d` cells mark the two stars on ة.

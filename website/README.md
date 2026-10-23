@@ -16,10 +16,12 @@ python3 website/build.py --preview  # links to the live game + out/preview.html 
 
 | Page | Status |
 | --- | --- |
-| Home | Built, in review |
+| Home | Built: logo fix, new footer, SEO pass |
 | How to play | To do |
 | Categories, plus one page per category (16) | To do |
 | For cafés and partners | To do |
 | شمّوغ stickers | To do |
 | Privacy | Existing page, to restyle |
 | Blog | Planned |
+
+Search setup and what we still need: see [SEO.md](SEO.md). Static images (share cards, favicons) are rendered by `make_og.py` into `static/`.
