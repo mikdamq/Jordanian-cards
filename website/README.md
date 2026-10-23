@@ -19,7 +19,7 @@ python3 website/build.py --preview  # links to the live game + out/preview.html 
 | Home | Built: logo fix, SEO pass, original footer |
 | How to play | Built, in review |
 | Categories, plus one page per category (16) | Built, in review |
-| For cafés and partners | To do |
+| For cafés and partners | Built, in review |
 | شمّوغ stickers | To do |
 | Privacy | Existing page, to restyle |
 | Blog | Planned |

@@ -236,7 +236,7 @@ def footer(c):
   <nav class="foot-links" aria-label="{'روابط' if lang == 'ar' else 'Footer'}">{nav}</nav>
   <p class="rights">{t('rights', lang)}</p>
 </div></footer>
-{SUGGEST_JS if c.key.startswith('cat') or c.key == 'categories' else ''}
+{SUGGEST_JS if c.key.startswith('cat') or c.key in ('categories', 'cafes') else ''}
 </body>
 </html>'''
 
@@ -300,7 +300,7 @@ def home(c):
   <ul class="promise">{promise}</ul></div></section>
 <section class="cafes" id="cafes" aria-labelledby="cafes-h"><div class="in">
   <div class="cafes-text"><span class="eyebrow gold">{t('cafes_eyebrow', lang)}</span><h2 id="cafes-h">{t('cafes_h', lang)}</h2><p>{t('cafes_p', lang)}</p>
-    <div class="ctas"><a class="btn btn-red" href="mailto:{CONTACT}?subject=Wala%20Kelmeh%20night">{t('cafes_cta', lang)}</a><span class="mail" dir="ltr">{CONTACT}</span></div></div>
+    <div class="ctas"><a class="btn btn-red" href={c.href('cafes')}>{t('cafes_cta', lang)}</a><span class="mail" dir="ltr">{CONTACT}</span></div></div>
   <div class="cafes-art">{mascot_img('cool', lang, pre)}</div></div></section>
 <section class="sec" id="stickers" aria-labelledby="stk-h"><div class="in">
   <div class="sec-head"><h2 id="stk-h">{t('stickers_h', lang)}</h2><p>{t('stickers_p', lang)}</p></div>
@@ -410,9 +410,12 @@ SUGGEST_JS = """<script>
     f.addEventListener('submit', function (e) {
       e.preventDefault();
       var status = f.querySelector('.f-status'), btn = f.querySelector('button[type=submit]');
-      var req = f.querySelector('[required]');
-      if (req && !req.value.trim()) { req.focus(); req.setAttribute('aria-invalid', 'true'); return; }
-      if (req) req.removeAttribute('aria-invalid');
+      var missing = null;
+      f.querySelectorAll('[required]').forEach(function (r) {
+        var bad = !r.value.trim();
+        if (bad) { r.setAttribute('aria-invalid', 'true'); missing = missing || r; } else { r.removeAttribute('aria-invalid'); }
+      });
+      if (missing) { missing.focus(); return; }
       var data = new FormData(f);
       if (data.get('botcheck')) return;                      // honeypot: bots tick hidden fields
       data.append('page', location.pathname);
@@ -517,7 +520,91 @@ def category_page(cid):
         return head(c, title, desc, graph) + header(c) + '<main id="main">' + main + footer(c)
     return render
 
-BUILT = {'home': home, 'how': how_page, 'categories': categories_page}
+# ---------- cafés and partners ----------
+PARTNER_FILES = {}
+def partner_badge_img(lang, pre, w=220):
+    name = f'partner-badge-{lang}.svg'
+    if name not in PARTNER_FILES:
+        PARTNER_FILES[name] = open(os.path.join(REPO, 'brand', 'logo', 'partner', f'partner-badge-{"arabic" if lang == "ar" else "english"}.svg')).read()
+    alt = 'شارة شريك ولا كلمة' if lang == 'ar' else 'Wala Kelmeh partner badge'
+    return f'<img src="{pre}assets/{name}" width="{w}" height="{w}" alt="{alt}" loading="lazy" decoding="async">'
+
+def table_tent(lang, pre):
+    """A table tent mock-up: the symbol, a call to scan, and a stylised QR placeholder."""
+    cells = ''.join(f'<i class="{"on" if (r * 7 + c * 3) % 5 < 2 or r in (0, 6) and c in (0, 1, 5, 6) or c in (0, 6) and r in (0, 1, 5, 6) else ""}"></i>' for r in range(7) for c in range(7))
+    return f'''<div class="tent" aria-hidden="true">
+  <div class="tent-top">{logo_img(lang, 'light', pre, 34)}</div>
+  <div class="qr">{cells}</div>
+  <b>{'امسح والعب!' if lang == 'ar' else 'Scan and play!'}</b>
+  <span>{'ليلة ولا كلمة · كل خميس' if lang == 'ar' else 'Wala Kelmeh night · every Thursday'}</span>
+</div>'''
+
+def partner_form(c):
+    from content_cafes import P
+    lang, L = c.lang, (lambda k: P[k][c.lang])
+    fid = f'pf-{lang}'
+    types = ''.join(f'<option>{t_}</option>' for t_ in P['types'][lang])
+    return f'''<section class="suggest" id="contact" aria-labelledby="{fid}-h"><div class="in">
+  <div class="suggest-card">
+    <div class="suggest-head"><div class="suggest-art">{mascot_img('wink', lang, c.pre, w=160)}</div><div><h2 id="{fid}-h">{L('form_h')}</h2><p>{L('form_p')}</p></div></div>
+    <form class="sg-form" id="{fid}" data-kind="partner" data-subject="{html.escape('طلب شراكة')}" data-endpoint="{SUGGEST_ENDPOINT if WEB3FORMS_KEY else ''}" data-mail="{CONTACT}" novalidate>
+      <input type="hidden" name="access_key" value="{WEB3FORMS_KEY}">
+      <input type="hidden" name="subject" value="{html.escape('ولا كلمة · طلب شراكة')}">
+      <input type="hidden" name="from_name" value="Wala Kelmeh website">
+      <input type="hidden" name="kind" value="partner"><input type="hidden" name="lang" value="{lang}">
+      <div class="f-grid">
+        <div class="f-row"><label for="{fid}-v">{L('venue')}</label><input id="{fid}-v" name="venue" required maxlength="80" placeholder="{L('venue_ph')}" autocomplete="organization"></div>
+        <div class="f-row"><label for="{fid}-c">{L('city')}</label><input id="{fid}-c" name="city" maxlength="40" placeholder="{L('city_ph')}" autocomplete="address-level2"></div>
+        <div class="f-row"><label for="{fid}-t">{L('type')}</label><select id="{fid}-t" name="type">{types}</select></div>
+        <div class="f-row"><label for="{fid}-n">{L('who')}</label><input id="{fid}-n" name="name" maxlength="60" autocomplete="name"></div>
+      </div>
+      <div class="f-row"><label for="{fid}-p">{L('contact')}</label><input id="{fid}-p" name="contact" required maxlength="80" dir="ltr" placeholder="{L('contact_ph')}" autocomplete="tel" inputmode="tel"></div>
+      <div class="f-row"><label for="{fid}-m">{L('msg')}</label><textarea id="{fid}-m" name="message" rows="3" maxlength="800" placeholder="{L('msg_ph')}"></textarea></div>
+      <div class="hp" aria-hidden="true"><label>Website<input type="checkbox" name="botcheck" tabindex="-1"></label></div>
+      <div class="f-actions"><button class="btn btn-red" type="submit" data-label="{L('send')}" data-busy="{SUGGEST['sending'][lang]}">{L('send')}</button>
+        <p class="f-note">{L('privacy')}</p></div>
+      <p class="f-status" role="status" aria-live="polite" data-ok="{SUGGEST['thanks'][lang]}" data-err="{SUGGEST['error'][lang]}"></p>
+    </form>
+  </div></div></section>'''
+
+def cafes_page(c):
+    from content_cafes import P
+    lang, pre, L = c.lang, c.pre, (lambda k: P[k][c.lang])
+    home_name = 'الرئيسية' if lang == 'ar' else 'Home'
+    why = ''.join(f'<li><h3>{h[lang]}</h3><p>{p[lang]}</p></li>' for h, p in P['why'])
+    how = ''.join(f'<li><span class="step" aria-hidden="true">{num(i, lang)}</span><h3>{h[lang]}</h3><p>{p[lang]}</p></li>' for i, (h, p) in enumerate(P['how'], 1))
+    soon_tag = f'<em>{L("soon")}</em>'
+    kit = ''.join(f'<li{" class=soon" if soon else ""}><b>{h[lang]}</b><span>{p[lang]}</span>{soon_tag if soon else ""}</li>' for h, p, soon in P['kit'])
+    others = ''.join(f'<li><h3>{h[lang]}</h3><p>{p[lang]}</p></li>' for h, p in P['others'])
+    qs = ''.join(f'<details{" open" if i == 0 else ""}><summary><h3>{q[lang]}</h3></summary><p>{a[lang]}</p></details>' for i, (q, a) in enumerate(P['faq']))
+    main = f'''<section class="page-hero cafes-hero"><div class="in">
+  {crumbs_html(c, [(home_name, 'home'), (L('crumb'), 'cafes')])}
+  <div class="page-hero-grid">
+    <div class="page-hero-text"><span class="eyebrow gold">{L('eyebrow')}</span><h1>{L('h1')}</h1><p class="answer">{L('answer')}</p>
+      <div class="ctas"><a class="btn btn-red" href="#contact">{L('cta')}</a></div></div>
+    <div class="page-hero-art cafes-hero-art">{mascot_img('cool', lang, pre, eager=True, w=300)}</div>
+  </div></div></section>
+<div class="band" aria-hidden="true"></div>
+<section class="sec" aria-labelledby="why-h"><div class="in">
+  <div class="sec-head"><h2 id="why-h">{L('why_h')}</h2></div><ul class="promise">{why}</ul></div></section>
+<section class="sec how" aria-labelledby="how-h"><div class="in">
+  <div class="sec-head"><h2 id="how-h">{L('how_h')}</h2></div>
+  <div class="how-grid"><ol class="steps">{how}</ol><div class="how-mascot">{table_tent(lang, pre)}</div></div></div></section>
+<section class="sec" aria-labelledby="kit-h"><div class="in">
+  <div class="kit-grid"><div class="kit-text"><div class="sec-head"><h2 id="kit-h">{L('kit_h')}</h2></div><ul class="kit">{kit}</ul></div>
+  <div class="kit-badge">{partner_badge_img(lang, pre)}</div></div></div></section>
+<section class="sec related" aria-labelledby="others-h"><div class="in">
+  <div class="sec-head"><h2 id="others-h">{L('others_h')}</h2></div><ul class="promise">{others}</ul></div></section>
+{partner_form(c)}
+<section class="sec" aria-labelledby="pfaq-h"><div class="in narrow">
+  <div class="sec-head"><h2 id="pfaq-h">{L('faq_h')}</h2></div><div class="faq">{qs}</div></div></section>'''
+    title, desc = L('title'), L('desc')
+    service = {'@type': 'Service', '@id': c.url + '#service', 'name': L('h1'), 'description': L('answer'), 'provider': {'@id': SITE + '/#org'},
+               'areaServed': {'@type': 'Country', 'name': 'Jordan'}, 'serviceType': 'Game nights for venues and companies'}
+    graph = base_graph(c) + [webpage(c, title, desc), breadcrumbs_ld(c, [(home_name, c.abs('home')), (L('crumb'), c.url)]), service, faq_ld(P['faq'], lang)]
+    return head(c, title, desc, graph) + header(c) + '<main id="main">' + main + footer(c)
+
+BUILT = {'home': home, 'how': how_page, 'categories': categories_page, 'cafes': cafes_page}
 BUILT.update({f'cat-{cid}': category_page(cid) for cid, *_ in CATEGORIES})
 
 # ---------- site files ----------
@@ -579,7 +666,7 @@ def build():
     write(os.path.join(OUT, 'llms.txt'), llms())
     for name, svg in ART_FILES.items():
         write(os.path.join(OUT, 'assets', 'art', name), svg)
-    for name, svg in LOGO_FILES.items():
+    for name, svg in list(LOGO_FILES.items()) + list(PARTNER_FILES.items()):
         write(os.path.join(OUT, 'assets', name), svg)
     for k in MASCOT_FILES:
         write(os.path.join(OUT, 'assets', f'shammogh-{k}.svg'), msvg(MOODS[k][2](f'a{k}'), MASCOT_VB))
@@ -597,6 +684,8 @@ def preview_bundle():
                    lambda m: msvg(MOODS[m.group(1)][2](uid('p')), MASCOT_VB).replace('<svg ', f'<svg role="img" aria-label="{m.group(2)}" class="pv-img" ', 1), s)
         s = re.sub(r'<img src="(?:\.\./)*assets/art/([\w-]+\.svg)"[^>]*?alt="([^"]*)"[^>]*>',
                    lambda m: ART_FILES[m.group(1)].replace('<svg ', f'<svg role="img" aria-label="{m.group(2)}" class="pv-img" ', 1), s)
+        s = re.sub(r'<img src="(?:\.\./)*assets/(partner-badge-\w+\.svg)"[^>]*?alt="([^"]*)"[^>]*>',
+                   lambda m: PARTNER_FILES[m.group(1)].replace('<svg ', f'<svg role="img" aria-label="{m.group(2)}" class="pv-img" ', 1), s)
         s = re.sub(r'<img src="(?:\.\./)*assets/(logo-[\w-]+\.svg)"[^>]*?alt="([^"]*)"[^>]*>',
                    lambda m: LOGO_FILES[m.group(1)].replace('<svg ', '<svg class="pv-logo" ', 1), s)
         return s
