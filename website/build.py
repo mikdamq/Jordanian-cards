@@ -106,6 +106,7 @@ CSS = open(os.path.join(HERE, 'site.css'), encoding='utf-8').read()
 
 # ---------- routing ----------
 PAGES = {'home': '', 'how': 'how-to-play/', 'categories': 'categories/', 'cafes': 'cafes/', 'stickers': 'stickers/'}
+PAGES.update({f'cat-{cid}': f'categories/{cid}/' for cid, *_ in CATEGORIES})
 
 class Ctx:
     """Where a page sits: language, its own route, and prefixes back to the site and language roots."""
@@ -202,7 +203,8 @@ def head(c, title, desc, graph):
 def header(c):
     lang, other = c.lang, ('en' if c.lang == 'ar' else 'ar')
     items = (('how', 'how'), ('categories', 'categories'), ('cafes', 'cafes'), ('stickers', 'stickers'))
-    nav = ''.join(f'<a href={c.href(k)}{" aria-current=page" if k == c.key else ""}>{T["nav"][n][lang]}</a>' for n, k in items)
+    cur = 'categories' if c.key.startswith('cat-') else c.key
+    nav = ''.join(f'<a href={c.href(k)}{" aria-current=page" if k == cur else ""}>{T["nav"][n][lang]}</a>' for n, k in items)
     return f'''<a class="skip" href="#main">{t('skip', lang)}</a>
 <header class="top">
   <div class="in">
@@ -259,7 +261,7 @@ def home(c):
     modes = ''.join(f'''<article class="mode">
       <div class="mode-art">{art_img('mode', k, MODE_ART[k], (('رسمة تطريز: ' if lang == 'ar' else 'Cross-stitch: ') + name[lang]), pre, 70)}</div>
       <h3>{name[lang]}</h3><p>{desc[lang]}</p><span class="tag">{who[lang]}</span></article>''' for k, name, desc, who in T['modes'])
-    tiles = ''.join(f'''<li><a class="cat" href="{pre}{'en/' if lang == 'en' else ''}categories/{cid}/">
+    tiles = ''.join(f'''<li><a class="cat" href={c.href('cat-' + cid)}>
       <span class="cat-art">{art_img('cat', cid, CAT_ART[cid], (('رسمة تطريز لفئة ' + ar) if lang == 'ar' else ('Cross-stitch art for ' + en)), pre, 62)}</span>
       <b>{ar if lang == 'ar' else en}</b><small>{num(n, lang)} {t('cards_word', lang)}</small></a></li>''' for cid, ar, en, n in CATEGORIES)
     steps = ''.join(f'<li><span class="step" aria-hidden="true">{num(i, lang)}</span><h3>{h[lang]}</h3><p>{p[lang]}</p></li>' for i, (h, p) in enumerate(T['how'], 1))
@@ -365,7 +367,83 @@ def how_page(c):
     graph = base_graph(c) + [webpage(c, title, desc), breadcrumbs_ld(c, [(home_name, c.abs('home')), (L(H['crumb']), c.url)]), howto, faq_ld(H['faq'], lang)]
     return head(c, title, desc, graph) + header(c) + '<main id="main">' + main + footer(c)
 
-BUILT = {'home': home, 'how': how_page}
+# ---------- categories ----------
+import content_cats as CC
+CARDS = CC.load_cards()
+
+def card_tile(ar, arabizi, level, lang):
+    dots = ''.join(f'<i class="{"on" if i < level else ""}"></i>' for i in range(3))
+    lvl = CC.C['levels'][lang][level - 1]
+    return (f'<li class="scard"><b lang="ar" dir="rtl">{ar}</b><span lang="en" dir="ltr">{html.escape(arabizi)}</span>'
+            f'<span class="lvl" title="{lvl}" aria-label="{lvl}">{dots}</span></li>')
+
+def categories_page(c):
+    lang, pre, L = c.lang, c.pre, (lambda d: d[c.lang])
+    home_name = 'الرئيسية' if lang == 'ar' else 'Home'
+    tiles = ''.join(f'''<li><a class="catrow" href={c.href('cat-' + cid)}>
+      <span class="cat-art">{art_img('cat', cid, CAT_ART[cid], (('رسمة تطريز لفئة ' + ar) if lang == 'ar' else ('Cross-stitch art for ' + en)), pre, 62)}</span>
+      <span class="catrow-text"><b>{ar if lang == 'ar' else en}</b><small>{num(n, lang)} {L(CC.C['cards_word'])}</small>
+      <span>{CC.CAT[cid][0 if lang == 'ar' else 1]}</span></span></a></li>''' for cid, ar, en, n in CATEGORIES)
+    main = f'''<section class="page-hero"><div class="in">
+  {crumbs_html(c, [(home_name, 'home'), (L(CC.C['index_crumb']), 'categories')])}
+  <div class="page-hero-grid"><div class="page-hero-text"><h1>{L(CC.C['index_h1'])}</h1><p class="answer">{L(CC.C['index_answer'])}</p></div>
+  <div class="page-hero-art">{mascot_img('laugh', lang, pre, eager=True, w=300)}</div></div></div></section>
+<div class="band" aria-hidden="true"></div>
+<section class="sec"><div class="in"><ul class="catlist">{tiles}</ul></div></section>
+{cta_band(c, L(CC.C['cta_h']))}'''
+    title, desc = L(CC.C['index_title']), L(CC.C['index_desc'])
+    items = {'@type': 'ItemList', 'numberOfItems': len(CATEGORIES), 'itemListElement': [
+        {'@type': 'ListItem', 'position': i, 'name': ar if lang == 'ar' else en, 'url': c.abs('cat-' + cid)} for i, (cid, ar, en, n) in enumerate(CATEGORIES, 1)]}
+    page = webpage(c, title, desc); page['@type'] = 'CollectionPage'
+    graph = base_graph(c) + [page, breadcrumbs_ld(c, [(home_name, c.abs('home')), (L(CC.C['index_crumb']), c.url)]), items]
+    return head(c, title, desc, graph) + header(c) + '<main id="main">' + main + footer(c)
+
+def category_page(cid):
+    def render(c):
+        lang, pre, L = c.lang, c.pre, (lambda d: d[c.lang])
+        _, ar, en, n = next(x for x in CATEGORIES if x[0] == cid)
+        name = ar if lang == 'ar' else en
+        intro_ar, intro_en, best_ar, best_en = CC.CAT[cid]
+        cards = CARDS[cid]
+        sample = CC.samples(cards)
+        counts = [sum(1 for x in cards if x[2] == k) for k in (1, 2, 3)]
+        home_name = 'الرئيسية' if lang == 'ar' else 'Home'
+        crumbs = [(home_name, 'home'), (L(CC.C['index_crumb']), 'categories'), (name, 'cat-' + cid)]
+        levels = ''.join(f'<div><dt>{lv}</dt><dd>{num(k, lang)}</dd></div>' for lv, k in zip(CC.C['levels'][lang], counts) if k)
+        idx = [x[0] for x in CATEGORIES].index(cid)
+        related = [CATEGORIES[(idx + d) % len(CATEGORIES)] for d in (1, 2, 3)]
+        rel = ''.join(f'''<li><a class="cat" href={c.href('cat-' + r[0])}><span class="cat-art">{art_img('cat', r[0], CAT_ART[r[0]], (('رسمة تطريز لفئة ' + r[1]) if lang == 'ar' else ('Cross-stitch art for ' + r[2])), pre, 62)}</span>
+          <b>{r[1] if lang == 'ar' else r[2]}</b><small>{num(r[3], lang)} {L(CC.C['cards_word'])}</small></a></li>''' for r in related)
+        note = L(CC.C['samples_note']).format(n=num(len(sample), lang), total=num(n, lang))
+        h1 = L(CC.C['cat_h1']).format(name=name)
+        main = f'''<section class="page-hero"><div class="in">
+  {crumbs_html(c, crumbs)}
+  <div class="page-hero-grid">
+    <div class="page-hero-text"><span class="eyebrow">{num(n, lang)} {L(CC.C['cards_word'])}</span><h1>{h1}</h1>
+      <p class="answer">{intro_ar if lang == 'ar' else intro_en}</p>
+      <dl class="facts-dl quick"><div><dt>{L(CC.C['best_h'])}</dt><dd>{best_ar if lang == 'ar' else best_en}</dd></div>{levels}</dl>
+      <div class="ctas"><a class="btn btn-red" href="{PLAY}">{L(CC.C['play_cat'])}</a></div></div>
+    <div class="page-hero-art cat-hero-art">{art_img('cat', cid, CAT_ART[cid], (('رسمة تطريز لفئة ' + ar) if lang == 'ar' else ('Cross-stitch art for ' + en)), pre, 220)}</div>
+  </div></div></section>
+<div class="band" aria-hidden="true"></div>
+<section class="sec" aria-labelledby="samples-h"><div class="in">
+  <div class="sec-head"><h2 id="samples-h">{L(CC.C['samples_h'])}</h2><p>{note}</p></div>
+  <ul class="scards">{''.join(card_tile(a, b, lv, lang) for a, b, lv in sample)}</ul></div></section>
+<section class="sec related" aria-labelledby="rel-h"><div class="in">
+  <div class="sec-head"><h2 id="rel-h">{L(CC.C['related_h'])}</h2></div>
+  <ul class="cats">{rel}</ul></div></section>
+{cta_band(c, L(CC.C['cta_h']), 'card')}'''
+        title = L(CC.C['cat_title']).format(name=name, n=num(n, lang))
+        desc = (intro_ar if lang == 'ar' else intro_en) + (f' {num(n, lang)} بطاقة بلعبة ولا كلمة.' if lang == 'ar' else f' {n} cards in Wala Kelmeh.')
+        terms = {'@type': 'DefinedTermSet', 'name': name, 'inLanguage': 'ar', 'hasDefinedTerm': [
+            {'@type': 'DefinedTerm', 'name': a, 'alternateName': b} for a, b, _ in sample]}
+        page = webpage(c, title, desc); page['@type'] = 'CollectionPage'
+        graph = base_graph(c) + [page, breadcrumbs_ld(c, [(home_name, c.abs('home')), (L(CC.C['index_crumb']), c.abs('categories')), (name, c.url)]), terms]
+        return head(c, title, desc, graph) + header(c) + '<main id="main">' + main + footer(c)
+    return render
+
+BUILT = {'home': home, 'how': how_page, 'categories': categories_page}
+BUILT.update({f'cat-{cid}': category_page(cid) for cid, *_ in CATEGORIES})
 
 # ---------- site files ----------
 def robots():
