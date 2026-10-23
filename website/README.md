@@ -20,7 +20,7 @@ python3 website/build.py --preview  # links to the live game + out/preview.html 
 | How to play | Built, in review |
 | Categories, plus one page per category (16) | Built, in review |
 | For cafés and partners | Built, in review |
-| شمّوغ stickers | To do |
+| شمّوغ stickers | Built, in review |
 | Privacy | Existing page, to restyle |
 | Blog | Planned |
 | Go live | Domain on Cloudflare, Cloudflare Pages hosting, game at `/play/`, own suggestion backend, Search Console |

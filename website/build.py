@@ -70,7 +70,7 @@ def logo_pair(lang, pre=''):
     """Both versions; CSS shows the one that matches the viewer's theme."""
     return f'<span class="logo-light">{logo_img(lang, "light", pre, eager=True)}</span><span class="logo-dark">{logo_img(lang, "dark", pre, eager=True)}</span>'
 
-MASCOT_FILES = ('card', 'shh', 'cool', 'wave', 'laugh', 'yay', 'love', 'shock', 'proud', 'wink', 'think')
+MASCOT_FILES = tuple(MOODS)   # every mood: the stickers page shows them all
 def mascot_img(key, lang, prefix, eager=False, w=440):
     ar_line, en = MOODS[key][0], MOODS[key][1]
     alt = f'شمّوغ، شماغ لعبة ولا كلمة: {ar_line}' if lang == 'ar' else f'Shammogh, the Wala Kelmeh shemagh mascot: {en}'
@@ -604,7 +604,48 @@ def cafes_page(c):
     graph = base_graph(c) + [webpage(c, title, desc), breadcrumbs_ld(c, [(home_name, c.abs('home')), (L('crumb'), c.url)]), service, faq_ld(P['faq'], lang)]
     return head(c, title, desc, graph) + header(c) + '<main id="main">' + main + footer(c)
 
-BUILT = {'home': home, 'how': how_page, 'categories': categories_page, 'cafes': cafes_page}
+# ---------- stickers ----------
+STICKER_SRC = os.path.join(REPO, 'brand', 'mascot', 'stickers')
+
+def stickers_page(c):
+    from content_stickers import S
+    lang, pre, L = c.lang, c.pre, (lambda k: S[k][c.lang])
+    home_name = 'الرئيسية' if lang == 'ar' else 'Home'
+    tiles = ''.join(f'''<li class="stile"><figure>{mascot_img(k, lang, pre, w=200)}<figcaption><b lang="ar" dir="rtl">{ar_line}</b><span>{en}</span></figcaption></figure>
+      <a class="dl" href="{pre}assets/stickers/shammogh-{k}.png" download>{L('download')}<span class="sr"> {en}</span></a></li>''' for k, (ar_line, en, _) in MOODS.items())
+    add = ''.join(f'<div class="add-card"><h3>{dev[lang]}</h3><ol class="rule-steps">{"".join(f"<li>{st[lang]}</li>" for st in steps)}</ol></div>' for dev, steps in S['add'])
+    rules = ''.join(f'<li class="{"ok" if i < 2 else "no"}">{r[lang]}</li>' for i, r in enumerate(S['rules']))
+    qs = ''.join(f'<details{" open" if i == 0 else ""}><summary><h3>{q[lang]}</h3></summary><p>{a[lang]}</p></details>' for i, (q, a) in enumerate(S['faq']))
+    main = f'''<section class="page-hero"><div class="in">
+  {crumbs_html(c, [(home_name, 'home'), (L('crumb'), 'stickers')])}
+  <div class="page-hero-grid">
+    <div class="page-hero-text"><span class="eyebrow">{num(len(MOODS), lang)} {'ستيكر' if lang == 'ar' else 'stickers'}</span><h1>{L('h1')}</h1><p class="answer">{L('answer')}</p>
+      <div class="ctas"><a class="btn btn-red" href="{pre}assets/stickers/shammogh-stickers.zip" download>{L('download_all')}</a><a class="btn btn-ghost" href="#add">{L('add_h')}</a></div></div>
+    <div class="page-hero-art">{mascot_img('wave', lang, pre, eager=True, w=300)}</div>
+  </div></div></section>
+<div class="band" aria-hidden="true"></div>
+<section class="sec" aria-labelledby="gal-h"><div class="in">
+  <div class="sec-head"><h2 id="gal-h">{L('gallery_h')}</h2><p>{L('gallery_p')}</p></div>
+  <ul class="sgallery">{tiles}</ul></div></section>
+<section class="sec how" id="add" aria-labelledby="add-h"><div class="in">
+  <div class="sec-head"><h2 id="add-h">{L('add_h')}</h2></div><div class="add-grid">{add}</div></div></section>
+<section class="sec" aria-labelledby="who-h"><div class="in">
+  <div class="kit-grid"><div class="sec-head"><h2 id="who-h">{L('who_h')}</h2><p>{L('who')}</p></div>
+  <div class="kit-badge">{mascot_img('shh', lang, pre, w=240)}</div></div></div></section>
+<section class="sec related" aria-labelledby="use-h"><div class="in narrow">
+  <div class="sec-head"><h2 id="use-h">{L('rules_h')}</h2></div><ul class="use-rules">{rules}</ul></div></section>
+<section class="sec" aria-labelledby="sfaq-h"><div class="in narrow">
+  <div class="sec-head"><h2 id="sfaq-h">{L('faq_h')}</h2></div><div class="faq">{qs}</div></div></section>
+{cta_band(c, L('cta_h'), 'card')}'''
+    title, desc = L('title'), L('desc')
+    gallery = {'@type': 'ImageGallery', 'name': L('h1'), 'description': L('answer'), 'associatedMedia': [
+        {'@type': 'ImageObject', 'name': f'Shammogh: {en}', 'caption': ar_line, 'contentUrl': f'{SITE}/assets/stickers/shammogh-{k}.png',
+         'width': 512, 'height': 512, 'creator': {'@id': SITE + '/#org'}, 'copyrightHolder': {'@id': SITE + '/#org'},
+         'license': c.url + '#use', 'acquireLicensePage': c.abs('cafes')} for k, (ar_line, en, _) in MOODS.items()]}
+    graph = base_graph(c) + [webpage(c, title, desc), breadcrumbs_ld(c, [(home_name, c.abs('home')), (L('crumb'), c.url)]), gallery, faq_ld(S['faq'], lang)]
+    return head(c, title, desc, graph) + header(c) + '<main id="main">' + main + footer(c)
+
+BUILT = {'home': home, 'how': how_page, 'categories': categories_page, 'cafes': cafes_page, 'stickers': stickers_page}
 BUILT.update({f'cat-{cid}': category_page(cid) for cid, *_ in CATEGORIES})
 
 # ---------- site files ----------
@@ -671,6 +712,13 @@ def build():
     for k in MASCOT_FILES:
         write(os.path.join(OUT, 'assets', f'shammogh-{k}.svg'), msvg(MOODS[k][2](f'a{k}'), MASCOT_VB))
     shutil.copy(os.path.join(REPO, 'brand', 'logo', 'symbol', 'symbol-small.svg'), os.path.join(OUT, 'assets', 'icon.svg'))
+    import zipfile
+    sdir = os.path.join(OUT, 'assets', 'stickers'); os.makedirs(sdir, exist_ok=True)
+    with zipfile.ZipFile(os.path.join(sdir, 'shammogh-stickers.zip'), 'w', zipfile.ZIP_DEFLATED) as z:
+        for k in MOODS:
+            shutil.copy(os.path.join(STICKER_SRC, f'{k}.png'), os.path.join(sdir, f'shammogh-{k}.png'))
+            z.write(os.path.join(STICKER_SRC, f'{k}.png'), f'shammogh-{k}.png')
+            z.write(os.path.join(STICKER_SRC, f'{k}.webp'), f'webp/shammogh-{k}.webp')
     if os.path.isdir(STATIC):
         shutil.copytree(STATIC, OUT, dirs_exist_ok=True)
     print('built', OUT, '(preview)' if PREVIEW else '', '·', ', '.join(BUILT))
