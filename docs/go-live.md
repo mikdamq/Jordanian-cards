@@ -18,7 +18,7 @@ In Namecheap **cPanel → SSL/TLS Status**, check that `walakelmeh.com` and `www
 ### 2. Create an FTP account for deploys
 In **cPanel → FTP Accounts**:
 - Log in: `deploy` (it becomes `deploy@walakelmeh.com`)
-- Directory: `public_html`
+- Directory: the domain's **Document Root**, shown in **cPanel → Domains** next to walakelmeh.com. On our account that's `/home/chefxmkt/walakelmeh.com`, because walakelmeh.com is an extra domain, not the account's main one. Remove any `/deploy` cPanel adds to the end.
 - A strong password, saved in your password manager
 
 Then note the **server hostname** shown under "Configure FTP Client" (something like `server123.web-hosting.com`). Use that hostname rather than `ftp.walakelmeh.com`, because the encrypted connection checks the certificate against it.
@@ -38,7 +38,7 @@ In the repository, go to **Settings → Secrets and variables → Actions**.
 
 | Name | Value |
 | --- | --- |
-| `FTP_DIR` | `./` (the FTP account already opens inside `public_html`) |
+| `FTP_DIR` | `./` (the FTP account already opens inside the domain's folder) |
 
 Never paste these in chat, an issue or a commit. GitHub keeps them encrypted.
 
@@ -49,7 +49,7 @@ In **cPanel → Email Deliverability**, make sure `walakelmeh.com` shows SPF and
 Merge the work branch into `main` (or ask Claude to open a pull request). Then watch **Actions → Deploy**. When it's green:
 - Open https://walakelmeh.com and https://walakelmeh.com/play/
 - Send a test suggestion from any category page and check that it reaches hello@walakelmeh.com (look in spam too, the first time)
-- Delete any old default files Namecheap put in `public_html` (like a default `index.php`). Leave `cgi-bin` and `.well-known` alone.
+- Delete any old default files Namecheap put in the domain's folder (like a default `index.php`). Leave `cgi-bin` and `.well-known` alone.
 
 ### 6. Switch the old address to a redirect
 Only after step 5 works. Add a repository **variable** `DOMAIN_LIVE` = `true`, then run **Actions → Deploy → Run workflow**. From then on:
@@ -68,7 +68,7 @@ When you create the store listings, use `https://walakelmeh.com/privacy/` as the
 | Problem | Fix |
 | --- | --- |
 | Deploy fails at the upload step | Check the three secrets. If FTPS is refused, ask Namecheap support whether FTP over TLS is on for your plan. |
-| The site shows Namecheap's default page | Delete the default `index.php` (or `default.html`) from `public_html`. |
-| Files land in `public_html/public_html` | Set `FTP_DIR` to `./` (step 3). |
+| The site shows Namecheap's default page | Delete the default `index.php` (or `default.html`) from the domain's folder. |
+| The site is empty, or files land in a subfolder | The FTP account's directory must be the domain's Document Root, with no `/deploy` on the end (step 2), and `FTP_DIR` must be `./` (step 3). |
 | Forms say there was a problem | Check **cPanel → Track Delivery**. If PHP mail is blocked, Namecheap support can enable it, or we switch the script to SMTP. |
 | The game shows an old version | It updates itself on the next visit. A hard refresh also works. |

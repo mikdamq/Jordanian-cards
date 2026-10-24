@@ -76,7 +76,7 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
           local-dir: site/
-          server-dir: ${{ vars.FTP_DIR || 'public_html/' }}
+          server-dir: ${{ vars.FTP_DIR || './' }}
       - if: env.FTP_SERVER == ''
         run: echo "::notice::FTP secrets are not set yet, so nothing was uploaded to walakelmeh.com."
 
