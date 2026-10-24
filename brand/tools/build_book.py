@@ -176,7 +176,7 @@ files = '''<section id="files" class="sec">
     <tr><td><code>brand/tools/</code></td><td>The scripts that draw all of the above</td></tr>
     <tr><td><code>docs/brand/</code></td><td>Written rules: strategy, voice, logo, colour and type, mascot</td></tr>
   </tbody></table></div>
-  <p class="note">Questions about the brand: Mikdam Qandil · <span class="sel">info@mikdam.com</span></p>
+  <p class="note">Questions about the brand: The Wala Kelmeh team · <span class="sel">hello@walakelmeh.com</span></p>
 </section>'''
 
 page = f'''<title>Wala Kelmeh Brand Guidelines</title>

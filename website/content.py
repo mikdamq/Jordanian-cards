@@ -1,7 +1,7 @@
 """All website copy, in Arabic and English. One entry per string: {'ar': ..., 'en': ...}."""
 
 SITE = 'https://walakelmeh.com'           # final domain (not live yet)
-CONTACT = 'info@mikdam.com'
+CONTACT = 'hello@walakelmeh.com'
 
 CATEGORIES = [  # id, Arabic, English, cards
     ('screen', 'أفلام ومسلسلات', 'Movies & TV', 40),

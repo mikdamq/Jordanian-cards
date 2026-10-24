@@ -107,7 +107,7 @@ item('partner-guide-a4', 210, 297, doc(210, 297, f'''<div class="band" style="to
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:5mm">{cols}</div>
   <div style="display:flex;justify-content:space-between;align-items:center;border-top:.4mm dashed #c7b08a;padding-top:5mm">
     <div style="display:grid;gap:1mm"><b style="font:800 5mm Almarai">بالكيت</b><span style="font:600 3.8mm Cairo;color:#7a6650">ستاند طاولة · بوستر A3 · بطاقة طاولة · ستيكر الواجهة · قالب ستوري</span>
-    <span style="font:600 3.8mm Cairo;color:#7a6650">أي سؤال: <b style="color:#2a1f1a;direction:ltr;unicode-bidi:isolate">info@mikdam.com</b></span></div>
+    <span style="font:600 3.8mm Cairo;color:#7a6650">أي سؤال: <b style="color:#2a1f1a;direction:ltr;unicode-bidi:isolate">hello@walakelmeh.com</b></span></div>
     <div class="qrbox qr" style="width:26mm;height:26mm">{QR}</div></div>
 </div><div class="band" style="bottom:0;height:7mm"></div>'''))
 

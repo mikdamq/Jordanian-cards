@@ -32,9 +32,9 @@ This covers SEO (Google, Bing), AEO (answer boxes, voice assistants) and GEO (AI
 1. **Domain**: walakelmeh.com, connected to GitHub Pages. All canonical, sitemap and social URLs already use it.
 2. **Google Search Console and Bing Webmaster Tools**: verify the domain and submit `sitemap.xml`. This takes about 10 minutes once the domain is live. I'll walk you through it.
 3. **Social accounts**: once the Instagram, TikTok and other handles exist, they go into the Organization `sameAs` so search engines connect them to the brand.
-4. **Public creator name**: should the site and structured data name you as the creator ("Made by Mikdam Qandil"), or only the brand? Naming a real person adds trust (E-E-A-T).
+4. ~~**Public creator name**~~ Decided: the site names the brand and «فريق ولا كلمة» (The Wala Kelmeh Team) only, never one person.
 5. **Analytics**: a GoatCounter site code (free, cookie-free), so we can see which pages and searches bring players.
-6. **A brand email** on the new domain, e.g. hello@walakelmeh.com (optional; info@mikdam.com is used for now).
+6. ~~**A brand email** on the new domain~~ Done: hello@walakelmeh.com is used everywhere.
 7. **Later**: real player quotes and a short gameplay video. Reviews and video both improve rich results and AI citations.
 
 ## Before each release
