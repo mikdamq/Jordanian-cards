@@ -1,4 +1,4 @@
-import { CategoryIcon, Logo, Screen, TatreezBand, ThemeToggle } from '../components';
+import { CategoryIcon, InstallButton, Logo, Screen, TatreezBand, ThemeToggle } from '../components';
 import { CARDS, CATEGORIES } from '../data/cards';
 import type { ThemePref } from '../hooks';
 import { CONTACT_EMAIL } from '../config';
@@ -42,6 +42,7 @@ export function Home({ onPlay, onHowTo, theme, onTheme }: Props) {
         <button className="btn btn--ghost" onClick={onHowTo}>
           طريقة اللعب
         </button>
+        <InstallButton autoOpen from="home" />
         <p className="muted center">
           {CARDS.length} بطاقة · {CATEGORIES.length} فئات · تمثيل وعالجبين
         </p>

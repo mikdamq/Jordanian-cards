@@ -1,4 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { installMode, subscribe, type InstallMode } from './lib/install';
 import { nextTiltState, screenFacing, type TiltState } from './lib/tilt';
 
 /** Counts down while running; returns whole seconds left. */
@@ -169,4 +170,11 @@ export function useFitText<B extends HTMLElement, I extends HTMLElement>(text: s
   }, [text, max, min]);
 
   return [box, inner] as const;
+}
+
+/** Whether and how the game can be added to the home screen right now. */
+export function useInstallMode(): InstallMode | null {
+  const [mode, setMode] = useState(installMode);
+  useEffect(() => subscribe(() => setMode(installMode())), []);
+  return mode;
 }

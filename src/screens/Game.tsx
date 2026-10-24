@@ -3,6 +3,7 @@ import {
   CategoryIcon,
   Confetti,
   HeadsUpWord,
+  InstallInvite,
   PromptCard,
   RotatePrompt,
   Screen,
@@ -500,6 +501,7 @@ function Final({ g, onHome, onReplay }: { g: Game; onHome: () => void; onReplay:
         <button className="btn btn--ghost" onClick={onHome}>
           الرئيسية
         </button>
+        <InstallInvite />
         <a className="link-btn center" href={`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent('ولا كلمة — ملاحظات')}`}>
           عندك ملاحظة أو فكرة بطاقة؟ ابعتلنا
         </a>

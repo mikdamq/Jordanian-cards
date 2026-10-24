@@ -289,7 +289,7 @@ def home(c):
       <span class="eyebrow">{t('hero_eyebrow', lang)}</span>
       <h1 id="hero-h">{t('hero_h1', lang)}</h1>
       <p class="lead">{t('hero_sub', lang)}</p>
-      <div class="ctas"><a class="btn btn-red" href="{PLAY}">{t('play', lang)}</a><a class="btn btn-ghost" href="#faq-install">{t('install', lang)}</a></div>
+      <div class="ctas"><a class="btn btn-red" href="{PLAY}">{t('play', lang)}</a><a class="btn btn-ghost" href="{PLAY}?install=1">{t('install', lang)}</a></div>
       <ul class="facts">{facts}</ul>
       <div class="stores">{stores}</div>
     </div>

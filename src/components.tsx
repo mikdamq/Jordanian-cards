@@ -1,7 +1,9 @@
-import { useId, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react';
+import { useEffect, useId, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { avatarById, CATEGORY_ART, TATREEZ_BAND, type AvatarId, type StitchArt, type Thread } from './art';
 import { categoryById, type Card } from './data/cards';
-import { useFitText, type ThemePref } from './hooks';
+import { useFitText, useInstallMode, type ThemePref } from './hooks';
+import { askedToInstall, inviteSnoozed, promptInstall, snoozeInvite, type InstallMode } from './lib/install';
+import { track } from './lib/analytics';
 
 const THREADS: Thread[] = ['r', 'g', 'y', 'k', 'b'];
 
@@ -360,6 +362,149 @@ export function RotatePrompt() {
       </div>
       <p>اقلب الجوال بالعرض</p>
       <small>عشان الكلمة تبيّن كبيرة لفريقك</small>
+    </div>
+  );
+}
+
+const ShareIcon = () => (
+  <svg className="install-ico" viewBox="0 0 24 24" aria-hidden>
+    <path d="M12 3v12M7.5 7.5 12 3l4.5 4.5M6 11H5v10h14V11h-1" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+const AddIcon = () => (
+  <svg className="install-ico" viewBox="0 0 24 24" aria-hidden>
+    <rect x="4" y="4" width="16" height="16" rx="4" fill="none" stroke="currentColor" strokeWidth="2" />
+    <path d="M12 8.5v7M8.5 12h7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+  </svg>
+);
+
+/** Steps for browsers that can't open an install prompt, plus Android's when it needs a tap first. */
+export function InstallSheet({ mode, onClose }: { mode: InstallMode; onClose: () => void }) {
+  const [copied, setCopied] = useState(false);
+  const closeRef = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    closeRef.current?.focus();
+    const esc = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
+    addEventListener('keydown', esc);
+    return () => removeEventListener('keydown', esc);
+  }, [onClose]);
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(location.origin + location.pathname);
+      setCopied(true);
+    } catch {
+      setCopied(false);
+    }
+  };
+  return (
+    <div
+      className="overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="install-title"
+      onClick={(e) => e.target === e.currentTarget && onClose()}
+    >
+      <div className="sheet install-sheet">
+        <img className="install-sheet__icon" src="icon-192.png" width={72} height={72} alt="" />
+        <h2 id="install-title">{mode === 'inapp' ? 'افتحها بالمتصفح أوّل' : 'ثبّتها على جوالك'}</h2>
+        {mode === 'ios' && (
+          <ol className="steps install-steps">
+            <li>
+              اكبس زر المشاركة <ShareIcon /> <small>(تحت بسفاري، أو فوق بكروم)</small>
+            </li>
+            <li>
+              انزل شوي واختار <b>«إضافة إلى الشاشة الرئيسية»</b> <AddIcon />
+            </li>
+            <li>
+              اكبس <b>«إضافة»</b>… وصارت ولا كلمة عشاشتك، وبتشتغل بدون إنترنت!
+            </li>
+          </ol>
+        )}
+        {mode === 'manual' && (
+          <ol className="steps install-steps">
+            <li>
+              افتح قائمة المتصفح <b>⋮</b>
+            </li>
+            <li>
+              اختار <b>«تثبيت التطبيق»</b> أو <b>«إضافة للشاشة الرئيسية»</b>
+            </li>
+          </ol>
+        )}
+        {mode === 'inapp' && (
+          <>
+            <p className="muted center">انت فاتحها من جوّا تطبيق (انستغرام، تيك توك…)، وهون ما بنقدر نثبّتها.</p>
+            <ol className="steps install-steps">
+              <li>
+                اكبس <b>⋯</b> فوق، واختار <b>«فتح في المتصفح»</b>
+              </li>
+              <li>
+                من هناك اكبس <b>«ثبّتها على جوالك»</b>
+              </li>
+            </ol>
+            <button className="btn btn--ghost" onClick={copy}>
+              {copied ? 'انتسخ الرابط ✓' : 'انسخ الرابط'}
+            </button>
+          </>
+        )}
+        {mode === 'prompt' && <p className="muted center">بكبسة وحدة بتصير عشاشتك، وبتفتح بدون إنترنت.</p>}
+        {mode === 'prompt' ? (
+          <button ref={closeRef} className="btn btn--primary btn--xl" onClick={() => promptInstall().finally(onClose)}>
+            ثبّتها
+          </button>
+        ) : (
+          <button ref={closeRef} className="btn btn--primary btn--xl" onClick={onClose}>
+            تمام
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/** «ثبّتها على جوالك»: one tap on Android, the steps everywhere else, hidden once installed. */
+export function InstallButton({
+  className = 'btn btn--dashed',
+  label = 'ثبّتها على جوالك 📲',
+  autoOpen = false,
+  from,
+}: {
+  className?: string;
+  label?: string;
+  autoOpen?: boolean;
+  from: string;
+}) {
+  const mode = useInstallMode();
+  const [open, setOpen] = useState(autoOpen && askedToInstall);
+  if (!mode) return null;
+  const click = async () => {
+    track(`install/tap-${from}-${mode}`);
+    if (mode === 'prompt') await promptInstall();
+    else setOpen(true);
+  };
+  return (
+    <>
+      <button className={className} onClick={click}>
+        {label}
+      </button>
+      {open && <InstallSheet mode={mode} onClose={() => setOpen(false)} />}
+    </>
+  );
+}
+
+/** After a game, the moment people most want the game one tap away. */
+export function InstallInvite() {
+  const mode = useInstallMode();
+  const [hidden, setHidden] = useState(inviteSnoozed);
+  if (!mode || hidden) return null;
+  return (
+    <div className="install-invite">
+      <button className="install-invite__close" aria-label="سكّر" onClick={() => (snoozeInvite(), setHidden(true))}>
+        ×
+      </button>
+      <p>
+        <b>انبسطتوا؟</b> ثبّتوها على جوالكم، وبتلاقوها بكبسة حتى بدون إنترنت.
+      </p>
+      <InstallButton className="btn btn--primary" label="ثبّتها على جوالك" from="final" />
     </div>
   );
 }
