@@ -114,10 +114,9 @@ T = {
 }
 
 # ---------- suggestion forms ----------
-# Submissions go to Web3Forms, which emails each one to the inbox tied to the access key.
-# The key is public by design (it only allows sending to that inbox). Empty = forms fall back to email.
-SUGGEST_ENDPOINT = 'https://api.web3forms.com/submit'
-WEB3FORMS_KEY = ''
+# Submissions go to our own script on the hosting (static/api/send.php), which emails each one
+# to CONTACT. Empty = forms fall back to opening the visitor's email app.
+SUGGEST_ENDPOINT = '/api/send.php'
 SUGGEST = {
   'card_h': {'ar': 'عندك بطاقة لهالفئة؟', 'en': 'Got a card for this category?'},
   'card_p': {'ar': 'اقترح كلمة أو موقف، وإذا انضافت للعبة بنكتب اسمك بقائمة الشكر (إذا بدك).',

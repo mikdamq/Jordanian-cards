@@ -16,7 +16,7 @@ Graphics live in [`brand/store/`](../../brand/store/): `ar/` and `en/` hold the 
 | Ads | No ads during play. Sponsored packs may come later: always labelled, always opt-in |
 | In-app purchases | No (for now) |
 | Contact email | hello@walakelmeh.com |
-| Privacy policy | https://mikdamq.github.io/Jordanian-cards/privacy.html for now; https://walakelmeh.com/privacy/ once the domain is live (the old address redirects) |
+| Privacy policy | https://walakelmeh.com/privacy/ |
 | App ID | **Not decided yet**, e.g. `com.walakelmeh.app` (permanent once published) |
 
 ## Short description (≤80)

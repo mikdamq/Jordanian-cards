@@ -19,7 +19,7 @@ Printable files for partner cafés and lounges. They match the promises on the w
 
 ## The QR code
 
-For now the QR codes open `https://mikdamq.github.io/Jordanian-cards/?ref=cafe`. When walakelmeh.com is live, rebuild everything with the new address. You can also make a kit for one venue, so its scans can be counted:
+The QR codes open `https://walakelmeh.com/play/?ref=cafe`. You can also make a kit for one venue, so its scans can be counted:
 
 ```
 python3 brand/tools/partner/partner_kit.py --url "https://walakelmeh.com/play/?ref=venue-name"

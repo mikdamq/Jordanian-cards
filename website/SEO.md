@@ -29,7 +29,7 @@ This covers SEO (Google, Bing), AEO (answer boxes, voice assistants) and GEO (AI
 
 ## What we need from Mikdam (when ready)
 
-1. **Domain**: walakelmeh.com, connected to GitHub Pages. All canonical, sitemap and social URLs already use it.
+1. ~~**Domain**~~ Done: walakelmeh.com on Namecheap hosting (see `docs/go-live.md`). All canonical, sitemap and social URLs already use it.
 2. **Google Search Console and Bing Webmaster Tools**: verify the domain and submit `sitemap.xml`. This takes about 10 minutes once the domain is live. I'll walk you through it.
 3. **Social accounts**: once the Instagram, TikTok and other handles exist, they go into the Organization `sameAs` so search engines connect them to the brand.
 4. ~~**Public creator name**~~ Decided: the site names the brand and «فريق ولا كلمة» (The Wala Kelmeh Team) only, never one person.

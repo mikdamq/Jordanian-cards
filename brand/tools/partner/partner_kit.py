@@ -7,7 +7,7 @@ import qrcode, qrcode.image.svg
 HERE = tempfile.mkdtemp(prefix='partner-kit-')
 REPO = '/home/user/Jordanian-cards'
 OUT = os.path.join(REPO, 'brand', 'partner-kit')
-URL = sys.argv[sys.argv.index('--url') + 1] if '--url' in sys.argv else 'https://mikdamq.github.io/Jordanian-cards/?ref=cafe'
+URL = sys.argv[sys.argv.index('--url') + 1] if '--url' in sys.argv else 'https://walakelmeh.com/play/?ref=cafe'
 F = lambda *p: 'file://' + os.path.join(REPO, *p)
 M = lambda k: F('brand', 'mascot', 'svg', f'shammogh-{k}.svg')
 ART = lambda k: F('website', 'out', 'assets', 'art', k + '.svg')

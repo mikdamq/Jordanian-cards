@@ -13,14 +13,14 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.join(HERE, '..')
 sys.path.insert(0, os.path.join(REPO, 'brand', 'tools'))
 
-from content import T, CATEGORIES, SITE, CONTACT, TOTAL_CARDS, SUGGEST, SUGGEST_ENDPOINT, WEB3FORMS_KEY
+from content import T, CATEGORIES, SITE, CONTACT, TOTAL_CARDS, SUGGEST, SUGGEST_ENDPOINT
 from logos import icon_C, xstitch, svg as raw_svg
 from lockups2 import horiz_ar, horiz_en
 from final import BR, CREAM, INK, RED, GOLD
 from poses4 import P as MOODS, svg as msvg
 
 PREVIEW = '--preview' in sys.argv
-PLAY = 'https://mikdamq.github.io/Jordanian-cards/' if PREVIEW else '/play/'
+PLAY = 'https://walakelmeh.com/play/' if PREVIEW else '/play/'
 OUT = os.path.join(HERE, 'out')
 STATIC = os.path.join(HERE, 'static')
 MASCOT_VB = '-24 -34 470 454'
@@ -392,8 +392,7 @@ def suggest_form(c, kind, cid=None, cat_name=None):
     return f'''<section class="suggest" id="suggest" aria-labelledby="{fid}-h"><div class="in">
   <div class="suggest-card">
     <div class="suggest-head"><div class="suggest-art">{mascot_img(mood, lang, c.pre, w=160)}</div><div><h2 id="{fid}-h">{head_h}</h2><p>{head_p}</p></div></div>
-    <form class="sg-form" id="{fid}" data-kind="{kind}" data-subject="{html.escape(subject)}" data-endpoint="{SUGGEST_ENDPOINT if WEB3FORMS_KEY else ''}" data-mail="{CONTACT}" novalidate>
-      <input type="hidden" name="access_key" value="{WEB3FORMS_KEY}">
+    <form class="sg-form" id="{fid}" data-kind="{kind}" data-subject="{html.escape(subject)}" data-endpoint="{SUGGEST_ENDPOINT}" data-mail="{CONTACT}" novalidate>
       <input type="hidden" name="subject" value="{html.escape('ولا كلمة · ' + subject)}">
       <input type="hidden" name="from_name" value="Wala Kelmeh website">
       <input type="hidden" name="kind" value="{kind}"><input type="hidden" name="lang" value="{lang}">
@@ -436,7 +435,7 @@ SUGGEST_JS = """<script>
           .catch(function () { done(false); });
         return;
       }
-      var skip = { access_key: 1, subject: 1, from_name: 1, botcheck: 1 };
+      var skip = { subject: 1, from_name: 1, botcheck: 1 };
       var lines = []; data.forEach(function (v, k) { if (v && !skip[k]) lines.push(k + ': ' + v); });
       location.href = 'mailto:' + f.dataset.mail + '?subject=' + encodeURIComponent(f.dataset.subject) + '&body=' + encodeURIComponent(lines.join('\\n'));
       done(true);
@@ -549,8 +548,7 @@ def partner_form(c):
     return f'''<section class="suggest" id="contact" aria-labelledby="{fid}-h"><div class="in">
   <div class="suggest-card">
     <div class="suggest-head"><div class="suggest-art">{mascot_img('wink', lang, c.pre, w=160)}</div><div><h2 id="{fid}-h">{L('form_h')}</h2><p>{L('form_p')}</p></div></div>
-    <form class="sg-form" id="{fid}" data-kind="partner" data-subject="{html.escape('طلب شراكة')}" data-endpoint="{SUGGEST_ENDPOINT if WEB3FORMS_KEY else ''}" data-mail="{CONTACT}" novalidate>
-      <input type="hidden" name="access_key" value="{WEB3FORMS_KEY}">
+    <form class="sg-form" id="{fid}" data-kind="partner" data-subject="{html.escape('طلب شراكة')}" data-endpoint="{SUGGEST_ENDPOINT}" data-mail="{CONTACT}" novalidate>
       <input type="hidden" name="subject" value="{html.escape('ولا كلمة · طلب شراكة')}">
       <input type="hidden" name="from_name" value="Wala Kelmeh website">
       <input type="hidden" name="kind" value="partner"><input type="hidden" name="lang" value="{lang}">

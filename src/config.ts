@@ -1,5 +1,5 @@
 /** Public site address, used in the shared result image. */
-export const SITE_URL = 'mikdamq.github.io/Jordanian-cards';
+export const SITE_URL = 'walakelmeh.com';
 
 export const CONTACT_EMAIL = 'hello@walakelmeh.com';
 

@@ -23,18 +23,16 @@ python3 website/build.py --preview  # links to the live game + out/preview.html 
 | شمّوغ stickers | Built, in review |
 | Privacy | Built: covers the game, website, forms and third parties. `/privacy.html` redirects here. |
 | Blog | Built: index + 3 launch articles (party games, charades in Arabic, winter and New Year). Ramadan article to add in January. |
-| Go live | Domain on Cloudflare, Cloudflare Pages hosting, game at `/play/`, own suggestion backend, Search Console |
+| Go live | Namecheap hosting with automatic deploys, game at `/play/`, own PHP form script, old address redirects. Steps: [docs/go-live.md](../docs/go-live.md) |
 
 Search setup and what we still need: see [SEO.md](SEO.md). Static images (share cards, favicons) are rendered by `make_og.py` into `static/`.
 
-## Suggestion forms
+## Forms
 
-Every category page has a "suggest a card" form, and the Categories page has a "suggest a category" form. They post to [Web3Forms](https://web3forms.com), which emails each suggestion to the inbox tied to the access key.
+Every category page has a "suggest a card" form, the Categories page has a "suggest a category" form, and the Cafés page has a partner form. They all post to our own script, `static/api/send.php`, on the Namecheap hosting. It emails each submission to hello@walakelmeh.com. No third-party service is involved.
 
-- Put the key in `WEB3FORMS_KEY` in `content.py` and rebuild. While it's empty, the forms open the visitor's email app with the suggestion filled in instead.
-- Fields sent: `kind`, `lang`, `category`, `word`, `arabizi`, `level`, `category_name`, `examples`, `name`, `page`. The email subject says what was suggested and where.
-- `botcheck` is a hidden honeypot that Web3Forms uses to drop spam.
+- Fields sent: `kind`, `lang`, `category`, `word`, `arabizi`, `level`, `category_name`, `examples`, `venue`, `city`, `type`, `contact`, `message`, `name`, `page`. The email subject says what was sent and from where.
+- Spam protection: a hidden `botcheck` honeypot, a same-site check, field length limits, and a limit of 5 submissions per visitor every 10 minutes.
+- If the endpoint is empty, or in the preview, the forms open the visitor's email app with the message filled in instead.
 
-The privacy page must mention suggestions before launch.
-
-**Decision (2026-10-23):** Web3Forms now, our own backend later. At go-live, host the site and game on Cloudflare Pages and replace Web3Forms with our own `/api/suggest` (Pages Function), a D1 database, Turnstile anti-spam, and a private `/admin` page to approve suggestions. The form markup stays the same; only `SUGGEST_ENDPOINT` and the fields change.
+**Decision (2026-10-24):** our own PHP script on the Namecheap hosting, instead of Web3Forms. A database and a private /admin page to approve suggestions can come later on the same hosting.
