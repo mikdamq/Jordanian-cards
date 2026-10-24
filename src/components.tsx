@@ -83,37 +83,18 @@ export function TatreezBand({ cell = 4, className = '' }: { cell?: number; class
   );
 }
 
-function starPoints(points: number, outer: number, inner: number, c = 50): string {
-  return Array.from({ length: points * 2 }, (_, i) => {
-    const r = i % 2 ? inner : outer;
-    const a = (Math.PI * i) / points - Math.PI / 2;
-    return `${(c + r * Math.cos(a)).toFixed(2)},${(c + r * Math.sin(a)).toFixed(2)}`;
-  }).join(' ');
-}
-
-/** The seven-pointed star from the Jordanian flag. */
-export function Star({ size = 40, className }: { size?: number; className?: string }) {
+export function Logo() {
+  // Brand lockup: the red patch and the stitched wordmarks. Each wordmark has a light and a dark
+  // version; CSS shows the one that matches the current theme.
   return (
-    <svg width={size} height={size} viewBox="0 0 100 100" className={className} aria-hidden>
-      <polygon points={starPoints(7, 48, 22)} fill="currentColor" />
-    </svg>
-  );
-}
-
-export function Logo({ small }: { small?: boolean }) {
-  return (
-    <div className={`logo ${small ? 'logo--small' : ''}`}>
-      <div className="logo__badge">
-        <Star size={small ? 20 : 46} />
-      </div>
-      <div className="logo__text">
-        <div className="logo__ar">ولا كلمة</div>
-        {!small && (
-          <div className="logo__en" dir="ltr">
-            Wala Kelmeh
-          </div>
-        )}
-      </div>
+    <div className="logo">
+      <img className="logo__symbol" src="brand/symbol-primary.svg" alt="" width={104} height={104} />
+      <h1 className="logo__name">
+        <img className="logo__ar logo--on-light" src="brand/wordmark-arabic-on-light.svg" alt="ولا كلمة" />
+        <img className="logo__ar logo--on-dark" src="brand/wordmark-arabic-on-dark.svg" alt="ولا كلمة" />
+      </h1>
+      <img className="logo__en logo--on-light" src="brand/wordmark-english-on-light.svg" alt="Wala Kelmeh" />
+      <img className="logo__en logo--on-dark" src="brand/wordmark-english-on-dark.svg" alt="" />
     </div>
   );
 }

@@ -467,66 +467,49 @@ h2 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
 }
 
-.logo__badge {
-  width: 96px;
-  height: 96px;
-  display: grid;
-  place-items: center;
-  color: var(--on-red);
-  border-radius: 28px;
-  background: linear-gradient(160deg, var(--red), var(--red-2));
-  box-shadow: 0 0 0 5px var(--bg), 0 0 0 7px var(--stitch), 0 14px 30px color-mix(in srgb, var(--red) 40%, transparent);
-  transform: rotate(45deg);
-  position: relative;
+.logo__symbol {
+  width: 104px;
+  height: 104px;
+  filter: drop-shadow(0 14px 22px color-mix(in srgb, var(--red) 35%, transparent));
 }
 
-.logo__badge::before {
-  content: '';
-  position: absolute;
-  inset: 7px;
-  border-radius: 21px;
-  border: 2px dashed rgba(255, 248, 238, 0.5);
-}
-
-.logo__badge svg {
-  transform: rotate(-45deg);
-}
-
-.logo__text {
-  text-align: center;
+.logo__name {
+  margin: 0;
+  line-height: 0;
 }
 
 .logo__ar {
-  font-family: var(--display);
-  font-size: 3.6rem;
-  font-weight: 700;
-  line-height: 1.15;
-  color: var(--text);
+  width: min(280px, 72vw);
+  height: auto;
 }
 
 .logo__en {
-  font-size: 0.85rem;
-  letter-spacing: 0.35em;
-  color: var(--red-text);
-  text-transform: uppercase;
-  font-weight: 700;
+  width: min(170px, 44vw);
+  height: auto;
 }
 
-.logo--small {
-  flex-direction: row;
+.logo--on-dark {
+  display: none;
 }
 
-.logo--small .logo__badge {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .logo--on-light {
+    display: none;
+  }
+  :root:not([data-theme='light']) .logo--on-dark {
+    display: block;
+  }
 }
 
-.logo--small .logo__ar {
-  font-size: 1.4rem;
+:root[data-theme='dark'] .logo--on-light {
+  display: none;
+}
+
+:root[data-theme='dark'] .logo--on-dark {
+  display: block;
 }
 
 /* ---------- home ---------- */
