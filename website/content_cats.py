@@ -18,7 +18,7 @@ C = {
   'level_h': {'ar': 'المستويات', 'en': 'Difficulty'},
   'best_h': {'ar': 'الأحسن لـ', 'en': 'Best for'},
   'related_h': {'ar': 'فئات ثانية ممكن تعجبكم', 'en': 'More categories you might like'},
-  'play_cat': {'ar': 'العب هالفئة هسّا', 'en': 'Play this category now'},
+  'play_cat': {'ar': 'يلا نلعب هالفئة', 'en': 'Let’s play this category'},
   'cat_title': {'ar': '{name}: {n} بطاقة تمثيل | ولا كلمة', 'en': '{name}: {n} Charades Cards | Wala Kelmeh'},
   'cat_h1': {'ar': 'فئة {name}', 'en': '{name}'},
   'cta_h': {'ar': 'جاهزين تمثّلوها؟', 'en': 'Ready to act them out?'},

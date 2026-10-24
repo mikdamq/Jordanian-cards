@@ -207,6 +207,9 @@ def header(c):
     items = (('how', 'how'), ('categories', 'categories'), ('cafes', 'cafes'), ('stickers', 'stickers'), ('blog', 'blog'))
     cur = 'categories' if c.key.startswith('cat-') else 'blog' if c.key.startswith('post-') else c.key
     nav = ''.join(f'<a href={c.href(k)}{" aria-current=page" if k == cur else ""}>{T["nav"][n][lang]}</a>' for n, k in items)
+    home_label = 'الرئيسية' if lang == 'ar' else 'Home'
+    mnav = f'<a href={c.href("home")}{" aria-current=page" if cur == "home" else ""}>{home_label}</a>' + nav
+    panel_id = f'mnav-{c.key}-{lang}'
     return f'''<a class="skip" href="#main">{t('skip', lang)}</a>
 <header class="top">
   <div class="in">
@@ -215,6 +218,14 @@ def header(c):
     <div class="actions">
       <a class="lang" href={c.href(c.key, other)} hreflang="{other}" lang="{other}">{t('lang_switch', lang)}</a>
       <a class="btn btn-red btn-sm" href="{PLAY}">{t('play', lang)}</a>
+      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="{panel_id}" data-open="{'افتح القائمة' if lang == 'ar' else 'Open menu'}" data-close="{'سكّر القائمة' if lang == 'ar' else 'Close menu'}" aria-label="{'افتح القائمة' if lang == 'ar' else 'Open menu'}"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="mnav" id="{panel_id}" hidden>
+    <nav aria-label="{'القائمة' if lang == 'ar' else 'Menu'}">{mnav}</nav>
+    <div class="mnav-foot">
+      <a class="lang" href={c.href(c.key, other)} hreflang="{other}" lang="{other}">{t('lang_switch', lang)}</a>
+      <a class="btn btn-red" href="{PLAY}">{t('play', lang)}</a>
     </div>
   </div>
 </header>'''
@@ -238,6 +249,7 @@ def footer(c):
   <nav class="foot-links" aria-label="{'روابط' if lang == 'ar' else 'Footer'}">{nav}</nav>
   <p class="rights">{t('rights', lang)}</p>
 </div></footer>
+{SITE_JS}
 {SUGGEST_JS if c.key.startswith('cat') or c.key in ('categories', 'cafes') else ''}
 </body>
 </html>'''
@@ -404,6 +416,55 @@ def suggest_form(c, kind, cid=None, cat_name=None):
       <p class="f-status" role="status" aria-live="polite" data-ok="{S('thanks')}" data-err="{S('error')}"></p>
     </form>
   </div></div></section>'''
+
+SITE_JS = """<script>
+(function () {
+  var root = document.documentElement;
+  root.classList.add('js');
+  // Mobile menu: one handler for every header (the preview bundle has many).
+  function setMenu(btn, open) {
+    var panel = document.getElementById(btn.getAttribute('aria-controls'));
+    if (!panel) return;
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    btn.setAttribute('aria-label', open ? btn.dataset.close : btn.dataset.open);
+    panel.hidden = !open;
+    root.classList.toggle('menu-open', open);
+    if (open) { var first = panel.querySelector('a'); if (first) first.focus(); }
+  }
+  function openBtn() { return document.querySelector('.menu-btn[aria-expanded="true"]'); }
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('.menu-btn');
+    if (btn) { setMenu(btn, btn.getAttribute('aria-expanded') !== 'true'); return; }
+    var b = openBtn();
+    if (b && (e.target.closest('.mnav a') || !e.target.closest('.top'))) setMenu(b, false);
+  });
+  document.addEventListener('keydown', function (e) {
+    var b = openBtn();
+    if (e.key === 'Escape' && b) { setMenu(b, false); b.focus(); }
+  });
+  window.addEventListener('resize', function () { var b = openBtn(); if (b && window.innerWidth > 860) setMenu(b, false); });
+  // Header shadow once the page scrolls.
+  var onScroll = function () { root.classList.toggle('scrolled', window.scrollY > 8); };
+  window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+  // Scroll reveals. Without JS, or with reduced motion, everything simply shows.
+  if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var groups = '.cats, .catlist, .modes, .scards, .stickers, .sgallery, .faq, .rule-steps, .post-list, .kit-list, .why-grid, .how-steps';
+  var items = 'main section:not(.hero) > .in > *, main .rule-block, .cta-band .cta-art';
+  var seen = new Set();
+  document.querySelectorAll(groups).forEach(function (g) {
+    Array.prototype.forEach.call(g.children, function (el, i) { el.style.setProperty('--i', Math.min(i, 8)); el.classList.add('rv', 'rv-item'); seen.add(el); });
+  });
+  document.querySelectorAll(items).forEach(function (el) {
+    if (seen.has(el) || el.closest('.rv-item')) return;
+    el.classList.add('rv');
+    if (el.querySelector(':scope > img, :scope > .pv-img') && el.matches('[class*="art"], [class*="mascot"]')) el.classList.add('rv-pop');
+  });
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('in-view'); io.unobserve(en.target); } });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.12 });
+  document.querySelectorAll('.rv').forEach(function (el) { io.observe(el); });
+})();
+</script>"""
 
 SUGGEST_JS = """<script>
 (function () {

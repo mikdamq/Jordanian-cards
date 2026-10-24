@@ -32,7 +32,7 @@ T = {
     'stickers': {'ar': 'ستيكرات شمّوغ', 'en': 'Stickers'},
     'blog': {'ar': 'المدونة', 'en': 'Blog'},
   },
-  'play': {'ar': 'العب هسّا', 'en': 'Play now'},
+  'play': {'ar': 'يلا نلعب', 'en': 'Let’s play'},
   'install': {'ar': 'ثبّتها على جوالك', 'en': 'Install on your phone'},
   'meta_title': {'ar': 'ولا كلمة: لعبة التمثيل الأردنية للسهرات', 'en': 'Wala Kelmeh: The Jordanian Charades Party Game'},
   'meta_desc': {

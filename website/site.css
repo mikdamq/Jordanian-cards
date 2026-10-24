@@ -370,3 +370,49 @@ a:focus-visible, summary:focus-visible { outline: 3px solid var(--gold); outline
 .tip p { margin: 0; font-weight: 700; font-size: 16px; }
 .menu a { padding: 8px 10px; }
 .toc-plain { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 15px; }
+
+/* mobile menu */
+.menu-btn { display: none; width: 44px; height: 44px; flex: none; border: 2px solid var(--line); border-radius: 12px; background: var(--surface); color: var(--text); padding: 0; cursor: pointer; place-content: center; gap: 5px; }
+.menu-btn span { display: block; width: 20px; height: 2.5px; border-radius: 2px; background: currentColor; transition: transform .25s ease, opacity .2s ease; }
+.menu-btn[aria-expanded="true"] span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+.menu-btn[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.menu-btn[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+.menu-btn:focus-visible { outline: 3px solid var(--red); outline-offset: 2px; }
+.mnav { border-top: 2px dashed var(--stitch); background: var(--surface); padding: 12px 16px 20px; max-height: calc(100dvh - 70px); overflow-y: auto; }
+.mnav[hidden] { display: none; }
+.mnav nav { display: grid; gap: 4px; }
+.mnav nav a { display: block; text-decoration: none; font-weight: 800; font-size: 18px; padding: 13px 14px; border-radius: 12px; }
+.mnav nav a:hover, .mnav nav a:focus-visible { background: var(--surface-2); }
+.mnav nav a[aria-current="page"] { background: var(--red); color: var(--on-red); }
+.mnav-foot { display: flex; gap: 10px; align-items: center; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
+.mnav-foot .btn { flex: 1; justify-content: center; text-align: center; }
+@media (max-width: 860px) { .menu-btn { display: grid; } }
+@media (min-width: 861px) { .mnav { display: none !important; } }
+@media (max-width: 420px) { .top .actions > .lang { display: none; } }
+.js .mnav:not([hidden]) { animation: mnav-in .22s ease-out; }
+@keyframes mnav-in { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
+.scrolled .top { box-shadow: 0 6px 18px rgba(42, 31, 26, .10); }
+
+/* motion: playful but light */
+.js .rv { opacity: 0; transform: translateY(26px); transition: opacity .6s ease, transform .6s cubic-bezier(.2, .7, .2, 1); }
+.js .rv-item { transition-delay: calc(var(--i, 0) * 70ms); }
+.js .rv-pop { transform: scale(.82) rotate(-3deg); transition: opacity .5s ease, transform .7s cubic-bezier(.34, 1.56, .64, 1); }
+.js .rv.in-view { opacity: 1; transform: none; }
+.hero-text > * { animation: rise .7s cubic-bezier(.2, .7, .2, 1) both; }
+.hero-text > :nth-child(2) { animation-delay: .08s; } .hero-text > :nth-child(3) { animation-delay: .16s; }
+.hero-text > :nth-child(4) { animation-delay: .24s; } .hero-text > :nth-child(n+5) { animation-delay: .32s; }
+.phone { animation: rise .8s .1s cubic-bezier(.2, .7, .2, 1) both, float 6s 1s ease-in-out infinite; }
+.hero-mascot { animation: bounce-in .9s .45s cubic-bezier(.34, 1.56, .64, 1) both; }
+.page-hero-art { animation: bounce-in .9s .2s cubic-bezier(.34, 1.56, .64, 1) both; }
+.hero-mascot img:hover, .how-mascot img:hover, .cafes-art img:hover, .cta-art:hover > *, .suggest-art:hover > * { animation: wiggle .6s ease; }
+@keyframes rise { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+@keyframes float { 0%, 100% { transform: rotate(-4deg) translateY(0); } 50% { transform: rotate(-2.5deg) translateY(-10px); } }
+@keyframes bounce-in { from { opacity: 0; transform: translateY(40px) scale(.8); } to { opacity: 1; transform: none; } }
+@keyframes wiggle { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-6deg); } 50% { transform: rotate(5deg); } 75% { transform: rotate(-3deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .js .rv, .js .rv-pop { opacity: 1; transform: none; transition: none; }
+  .hero-text > *, .phone, .hero-mascot, .page-hero-art, .js .mnav:not([hidden]) { animation: none; }
+  .phone { transform: rotate(-4deg); }
+  .hero-mascot img:hover, .how-mascot img:hover, .cafes-art img:hover, .cta-art:hover > *, .suggest-art:hover > * { animation: none; }
+  .menu-btn span { transition: none; }
+}
