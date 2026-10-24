@@ -15,6 +15,9 @@
   --muted: #7a6650;
   --red: #b5121b;
   --red-2: #8e0e16;
+  /* Small text in red or gold, tuned for 4.5:1 contrast */
+  --red-text: #b5121b;
+  --warn-text: #86600f;
   --on-red: #fff8ee;
   --olive: #4f6b2c;
   --gold: #b9861f;
@@ -58,6 +61,8 @@
     --muted: #b5a28a;
     --red: #d42630;
     --red-2: #a3161f;
+  --red-text: #ec5f66;
+  --warn-text: #ddae4a;
     --olive: #8aa75a;
     --gold: #ddae4a;
     --indigo: #8d92d6;
@@ -86,6 +91,8 @@
   --muted: #b5a28a;
   --red: #d42630;
   --red-2: #a3161f;
+  --red-text: #ec5f66;
+  --warn-text: #ddae4a;
   --olive: #8aa75a;
   --gold: #ddae4a;
   --indigo: #8d92d6;
@@ -168,7 +175,7 @@ h2 {
 }
 
 .warn {
-  color: var(--gold);
+  color: var(--warn-text);
 }
 
 :focus-visible {
@@ -319,7 +326,7 @@ h2 {
   font-family: var(--display);
   font-weight: 700;
   font-size: 1.15rem;
-  color: var(--red);
+  color: var(--red-text);
 }
 
 /* ---------- buttons ---------- */
@@ -447,7 +454,7 @@ h2 {
 }
 
 .link-btn {
-  color: var(--red);
+  color: var(--red-text);
   font-weight: 700;
   text-decoration: underline dashed;
   text-underline-offset: 5px;
@@ -460,66 +467,49 @@ h2 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
 }
 
-.logo__badge {
-  width: 96px;
-  height: 96px;
-  display: grid;
-  place-items: center;
-  color: var(--on-red);
-  border-radius: 28px;
-  background: linear-gradient(160deg, var(--red), var(--red-2));
-  box-shadow: 0 0 0 5px var(--bg), 0 0 0 7px var(--stitch), 0 14px 30px color-mix(in srgb, var(--red) 40%, transparent);
-  transform: rotate(45deg);
-  position: relative;
+.logo__symbol {
+  width: 104px;
+  height: 104px;
+  filter: drop-shadow(0 14px 22px color-mix(in srgb, var(--red) 35%, transparent));
 }
 
-.logo__badge::before {
-  content: '';
-  position: absolute;
-  inset: 7px;
-  border-radius: 21px;
-  border: 2px dashed rgba(255, 248, 238, 0.5);
-}
-
-.logo__badge svg {
-  transform: rotate(-45deg);
-}
-
-.logo__text {
-  text-align: center;
+.logo__name {
+  margin: 0;
+  line-height: 0;
 }
 
 .logo__ar {
-  font-family: var(--display);
-  font-size: 3.6rem;
-  font-weight: 700;
-  line-height: 1.15;
-  color: var(--text);
+  width: min(280px, 72vw);
+  height: auto;
 }
 
 .logo__en {
-  font-size: 0.85rem;
-  letter-spacing: 0.35em;
-  color: var(--red);
-  text-transform: uppercase;
-  font-weight: 700;
+  width: min(170px, 44vw);
+  height: auto;
 }
 
-.logo--small {
-  flex-direction: row;
+.logo--on-dark {
+  display: none;
 }
 
-.logo--small .logo__badge {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .logo--on-light {
+    display: none;
+  }
+  :root:not([data-theme='light']) .logo--on-dark {
+    display: block;
+  }
 }
 
-.logo--small .logo__ar {
-  font-size: 1.4rem;
+:root[data-theme='dark'] .logo--on-light {
+  display: none;
+}
+
+:root[data-theme='dark'] .logo--on-dark {
+  display: block;
 }
 
 /* ---------- home ---------- */
@@ -930,7 +920,7 @@ h2 {
 
 .segmented button.on {
   background: var(--surface);
-  color: var(--red);
+  color: var(--red-text);
   box-shadow: var(--shadow);
   outline: 1.5px dashed var(--stitch);
   outline-offset: -5px;
@@ -1027,7 +1017,7 @@ h2 {
 }
 
 .slider__ticks button.on {
-  color: var(--red);
+  color: var(--red-text);
   transform: scale(1.35);
   font-family: var(--display);
 }

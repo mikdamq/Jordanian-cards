@@ -1,4 +1,10 @@
-name: Deploy to GitHub Pages
+name: Deploy
+
+# On every push to main:
+# 1. Build the game and the website into one folder: the website at /, the game at /play/.
+# 2. Upload it to the Namecheap hosting over FTPS (skipped until the FTP secrets exist).
+# 3. GitHub Pages (the old address): the game as before, or, once the repository variable
+#    DOMAIN_LIVE is "true", a redirect to walakelmeh.com that also removes old installs.
 
 on:
   push:
@@ -11,7 +17,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
+  group: deploy
   cancel-in-progress: true
 
 jobs:
@@ -23,15 +29,58 @@ jobs:
         with:
           node-version: 22
           cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
       - run: npm ci
       - run: npm test
       - run: npm run build
+      - run: python3 website/build.py
+      - name: Assemble the site
+        run: |
+          mkdir -p site/play
+          cp -a website/out/. site/
+          rm -f site/preview.html
+          cp -a dist/. site/play/
+          cp website/deploy/play.htaccess site/play/.htaccess
+          test -f site/index.html && test -f site/play/index.html && test -f site/api/send.php && test -f site/.htaccess
+      - uses: actions/upload-artifact@v4
+        with:
+          name: site
+          path: site
+          include-hidden-files: true
+      - name: Pick the GitHub Pages content
+        run: |
+          if [ "${{ vars.DOMAIN_LIVE }}" = "true" ]; then cp -a website/deploy/old-site pages; else cp -a dist pages; fi
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: pages
 
-  deploy:
+  hosting:
+    needs: build
+    runs-on: ubuntu-latest
+    env:
+      FTP_SERVER: ${{ secrets.FTP_SERVER }}
+    steps:
+      - uses: actions/download-artifact@v4
+        if: env.FTP_SERVER != ''
+        with:
+          name: site
+          path: site
+      - uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        if: env.FTP_SERVER != ''
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          local-dir: site/
+          server-dir: ${{ vars.FTP_DIR || './' }}
+      - if: env.FTP_SERVER == ''
+        run: echo "::notice::FTP secrets are not set yet, so nothing was uploaded to walakelmeh.com."
+
+  pages:
     needs: build
     runs-on: ubuntu-latest
     environment:

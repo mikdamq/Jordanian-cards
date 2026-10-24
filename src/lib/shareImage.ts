@@ -215,7 +215,7 @@ export async function renderResultImage({ teams, scores, winners }: ShareResult)
 /** Opens the share sheet with the image where supported (phones), otherwise downloads it. */
 export async function shareResult(result: ShareResult): Promise<'shared' | 'downloaded' | 'cancelled'> {
   const blob = await renderResultImage(result);
-  const file = new File([blob], 'wala-kilmeh.png', { type: 'image/png' });
+  const file = new File([blob], 'wala-kelmeh.png', { type: 'image/png' });
   const text = `لعبنا ولا كلمة 🇯🇴 العبوها: https://${SITE_URL}`;
   if (navigator.canShare?.({ files: [file] })) {
     try {

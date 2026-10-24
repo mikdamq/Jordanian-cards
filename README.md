@@ -1,4 +1,4 @@
-# ولا كلمة — Wala Kilmeh
+# ولا كلمة — Wala Kelmeh
 
 A Jordanian charades and heads-up party game, built as an installable web app (PWA).
 
@@ -28,4 +28,4 @@ Anonymous, cookie-free counts via [GoatCounter](https://www.goatcounter.com). Se
 
 ## Store listing
 
-Draft Google Play listing text and checklists: `docs/google-play-listing.md`. Privacy policy: `public/privacy.html`.
+Draft Google Play listing text and checklists: `docs/store/listing.md`. Privacy policy: `public/privacy.html`.

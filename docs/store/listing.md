@@ -1,21 +1,23 @@
-# Google Play listing: ولا كلمة (Wala Kilmeh)
+# Store listings: ولا كلمة (Wala Kelmeh)
 
-Draft text for the Play Console. Character limits are Google's.
+Listing copy and graphics for **Google Play**, **Huawei AppGallery** and **Samsung Galaxy Store**. The same copy works in all three; store-specific fields are at the end. Character limits are Google's; check each console for its current limits before submitting.
+
+Graphics live in [`brand/store/`](../../brand/store/): `ar/` and `en/` hold the screenshots and feature graphic for each listing language, and `icons/` holds the icon for each store.
 
 ## Basics
 
 | Field | Value |
 | --- | --- |
 | App name (≤30) | ولا كلمة - لعبة تمثيل أردنية |
-| App name, English (≤30) | Wala Kilmeh: Arabic Charades |
+| App name, English (≤30) | Wala Kelmeh: Arabic Charades |
 | Category | Games › Word (alternative: Casual) |
 | Tags | Party, Charades, Word, Family, Multiplayer |
 | Price | Free |
-| Ads | No |
+| Ads | No ads during play. Sponsored packs may come later: always labelled, always opt-in |
 | In-app purchases | No (for now) |
-| Contact email | info@mikdam.com |
-| Privacy policy | https://mikdamq.github.io/Jordanian-cards/privacy.html |
-| App ID | **Not decided yet**, e.g. `com.walakilmeh.app` (permanent once published) |
+| Contact email | hello@walakelmeh.com |
+| Privacy policy | https://walakelmeh.com/privacy/ |
+| App ID | **Not decided yet**, e.g. `com.walakelmeh.app` (permanent once published) |
 
 ## Short description (≤80)
 
@@ -46,13 +48,14 @@ Draft text for the Play Console. Character limits are Google's.
 > • تصميم مستوحى من الشماغ والتطريز الأردني، بوضع فاتح وغامق
 > • أصوات دربكة 🥁 واحتفال بالفريق الفائز
 > • شارك صورة النتيجة على واتساب وإنستغرام
-> • بتشتغل بدون إنترنت، وبدون حساب، وبدون إعلانات
+> • اللعبة الأساسية مجانية دايماً، وما في إعلانات بنص اللعب
+> • بتشتغل بدون إنترنت، وبدون حساب
 >
 > جمعة رمضان؟ عزومة؟ سهرة صحاب؟ **ولا كلمة** بتولّعها! 🔥
 
 ## Full description, English (≤4000)
 
-> **Wala Kilmeh** ("not a word!") is the Jordanian charades game for family and friends. 🎭
+> **Wala Kelmeh** ("not a word!") is the Jordanian charades game for family and friends. 🎭
 >
 > Draw a card, act it out with gestures only, and your team races to guess before time runs out. No talking allowed! 🤐
 >
@@ -69,19 +72,33 @@ Draft text for the Play Console. Character limits are Google's.
 > • Shemagh and tatreez-inspired design, light and dark modes
 > • Darbuka sound effects and a winner celebration
 > • Share your result to WhatsApp and Instagram
-> • Works offline, no account, no ads
+> • Core deck free forever, never an ad mid-game
+> • Works offline, no account needed
 
-## Graphics checklist
+## Graphics (done)
 
-- [ ] App icon 512×512 PNG (have: `public/icon-512.png`)
-- [ ] Feature graphic 1024×500: shemagh band, logo, "مثّلها… بس ولا كلمة!"
-- [ ] Phone screenshots (2–8, 1080×1920 or similar), with Arabic captions:
-  1. Home: «لعبة التمثيل الأردنية»
-  2. Setup with team avatars: «من ٢ لـ ٤ فرق»
-  3. Classic card mid-swipe: «اسحب يمين إذا عرفوها»
-  4. Heads Up sideways: «الجوال على جبينك»
-  5. Winner screen with confetti: «مين النشامى؟»
-  6. Dark mode: «فاتح وغامق»
+| Asset | Size | File |
+| --- | --- | --- |
+| Google Play icon | 512×512 PNG | `brand/store/icons/google-play-512.png` |
+| AppGallery icon | 216×216 PNG | `brand/store/icons/appgallery-216.png` |
+| Galaxy Store icon | 512×512 PNG | `brand/store/icons/galaxy-store-512.png` |
+| Feature graphic | 1024×500 PNG, no transparency | `brand/store/{ar,en}/feature-graphic-1024x500.png` |
+| Phone screenshots | 8 × 1080×1920 PNG per language | `brand/store/{ar,en}/screenshot-0N-*.png` |
+
+Screenshots are real game screens in a branded frame. Upload them in this order:
+
+| # | Screen | Arabic caption | English caption |
+| --- | --- | --- | --- |
+| 1 | Home | لعبة التمثيل الأردنية | The Jordanian charades game |
+| 2 | A card mid-turn | مثّلها… بس ولا كلمة! | Act it out. Not a word. |
+| 3 | Heads up, landscape | عالجبين | Heads up |
+| 4 | Who's fastest? picker | مين أسرع؟ | Who’s fastest? |
+| 5 | Categories, all selected | ٥١٠ بطاقة أردنية | 510 Jordanian cards |
+| 6 | Setup with teams | من ٢ لـ ٤ فرق | 2 to 4 teams |
+| 7 | Winner screen | مين النشامى؟ | Crown the winners |
+| 8 | Dark mode card | فاتح وغامق | Light and dark |
+
+AppGallery shows up to 5 screenshots: use 1, 2, 3, 4 and 7. To redo the screenshots after the game changes, see `brand/tools/store/`.
 
 ## Content rating answers (IARC)
 
@@ -93,3 +110,34 @@ No violence, no sexual content, no gambling, no user-to-user communication, no l
 - Data shared: None.
 - Encryption in transit: Yes (HTTPS).
 - Data deletion: no account; local data cleared via app storage.
+
+## Huawei AppGallery
+
+| Field | Value |
+| --- | --- |
+| App name | ولا كلمة - لعبة تمثيل أردنية / Wala Kelmeh: Arabic Charades |
+| Brief introduction (≤80) | Use the short description above |
+| Description | Use the full descriptions above |
+| Category | Games › Casual (or Puzzle & Word, if offered) |
+| Icon | `brand/store/icons/appgallery-216.png` |
+| Screenshots | 5 portrait 1080×1920: numbers 1, 2, 3, 4, 7 |
+| Age rating | 3+ |
+
+## Samsung Galaxy Store
+
+| Field | Value |
+| --- | --- |
+| App name | ولا كلمة - لعبة تمثيل أردنية / Wala Kelmeh: Arabic Charades |
+| Description | Use the full descriptions above |
+| Category | Games › Casual |
+| Icon | `brand/store/icons/galaxy-store-512.png` |
+| Screenshots | All 8, 1080×1920 |
+| Cover image (optional, for featuring) | Use the feature graphic as a starting point; size per Samsung's current spec |
+| Age rating | All ages |
+
+## Before submitting
+
+- [ ] Decide the permanent app ID (e.g. `com.walakelmeh.app`)
+- [ ] Wrap the web game as an Android app (Trusted Web Activity) for the stores
+- [ ] Developer accounts: Google Play, Huawei AppGallery, Samsung Galaxy Store
+- [ ] Switch the privacy URL to the domain once it's live

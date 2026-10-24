@@ -1,0 +1,21 @@
+{
+  "name": "Sahra",
+  "light": {
+    "bg": "#f4ecdd", "surface": "#fbf6ec", "surface2": "#efe4cf", "line": "#dccbae", "stitch": "#c7b08a",
+    "text": "#2a1f1a", "muted": "#7a6650",
+    "red": "#b5121b", "red2": "#8e0e16", "redText": "#b5121b", "warnText": "#86600f", "onRed": "#fff8ee",
+    "olive": "#4f6b2c", "gold": "#b9861f", "indigo": "#3b3f7a", "ok": "#3f7a2e"
+  },
+  "dark": {
+    "bg": "#17110e", "surface": "#231a15", "surface2": "#2e231c", "line": "#3f3128", "stitch": "#6a5442",
+    "text": "#f4ecdd", "muted": "#b5a28a",
+    "red": "#d42630", "red2": "#a3161f", "redText": "#ec5f66", "warnText": "#ddae4a", "onRed": "#fff8ee",
+    "olive": "#8aa75a", "gold": "#ddae4a", "indigo": "#8d92d6", "ok": "#4d8f39"
+  },
+  "logo": { "patchRed": "#b5121b", "patchHighlight": "#e0293b", "patchShadow": "#8f0b1a", "cream": "#f6efe3", "ink": "#2a1f1a", "starOnDark": "#e0293b", "starOnRed": "#d9a33a" },
+  "type": {
+    "display": { "family": "Almarai", "weights": [700, 800] },
+    "body": { "family": "Cairo", "weights": [400, 600, 800] },
+    "scale": { "display": 40, "h1": 32, "h2": 24, "h3": 20, "body": 16, "small": 14, "caption": 12 }
+  }
+}

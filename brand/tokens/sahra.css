@@ -1,0 +1,44 @@
+/* ولا كلمة: Sahra design tokens. Mirrors src/styles.css; change both together. */
+:root {
+  /* Fabric (light) */
+  --bg: #f4ecdd;          /* cream fabric */
+  --surface: #fbf6ec;
+  --surface-2: #efe4cf;
+  --line: #dccbae;
+  --stitch: #c7b08a;      /* running-stitch borders */
+  --text: #2a1f1a;        /* ink */
+  --muted: #7a6650;
+  /* Threads */
+  --red: #b5121b;         /* shemagh red: brand, primary action */
+  --red-2: #8e0e16;
+  --on-red: #fff8ee;
+  --olive: #4f6b2c;
+  --gold: #b9861f;        /* decoration only on cream, never body text */
+  --red-text: #b5121b;    /* small red text */
+  --warn-text: #86600f;   /* small gold/warning text */
+  --indigo: #3b3f7a;
+  --ok: #3f7a2e;
+  /* Fonts */
+  --display: 'Almarai', 'Cairo', system-ui, sans-serif;
+  --font: 'Cairo', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --radius: 20px;
+}
+
+/* Night majlis (dark) */
+:root[data-theme='dark'] {
+  --bg: #17110e;
+  --surface: #231a15;
+  --surface-2: #2e231c;
+  --line: #3f3128;
+  --stitch: #6a5442;
+  --text: #f4ecdd;
+  --muted: #b5a28a;
+  --red: #d42630;         /* fills and large text; small red text uses --red-text */
+  --red-2: #a3161f;
+  --red-text: #ec5f66;
+  --warn-text: #ddae4a;
+  --olive: #8aa75a;
+  --gold: #ddae4a;
+  --indigo: #8d92d6;
+  --ok: #4d8f39;
+}
