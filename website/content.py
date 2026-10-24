@@ -30,6 +30,7 @@ T = {
     'categories': {'ar': 'الفئات', 'en': 'Categories'},
     'cafes': {'ar': 'للمقاهي', 'en': 'For cafés'},
     'stickers': {'ar': 'ستيكرات شمّوغ', 'en': 'Stickers'},
+    'blog': {'ar': 'المدونة', 'en': 'Blog'},
   },
   'play': {'ar': 'العب هسّا', 'en': 'Play now'},
   'install': {'ar': 'ثبّتها على جوالك', 'en': 'Install on your phone'},

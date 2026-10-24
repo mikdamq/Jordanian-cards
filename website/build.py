@@ -105,8 +105,10 @@ def art_img(kind, key, rows, label, pre, size=72):
 CSS = open(os.path.join(HERE, 'site.css'), encoding='utf-8').read()
 
 # ---------- routing ----------
-PAGES = {'home': '', 'how': 'how-to-play/', 'categories': 'categories/', 'cafes': 'cafes/', 'stickers': 'stickers/', 'privacy': 'privacy/'}
+PAGES = {'home': '', 'how': 'how-to-play/', 'categories': 'categories/', 'cafes': 'cafes/', 'stickers': 'stickers/', 'privacy': 'privacy/', 'blog': 'blog/'}
 PAGES.update({f'cat-{cid}': f'categories/{cid}/' for cid, *_ in CATEGORIES})
+import content_blog as CB
+PAGES.update({f'post-{p["slug"]}': f'blog/{p["slug"]}/' for p in CB.POSTS})
 
 class Ctx:
     """Where a page sits: language, its own route, and prefixes back to the site and language roots."""
@@ -202,8 +204,8 @@ def head(c, title, desc, graph):
 
 def header(c):
     lang, other = c.lang, ('en' if c.lang == 'ar' else 'ar')
-    items = (('how', 'how'), ('categories', 'categories'), ('cafes', 'cafes'), ('stickers', 'stickers'))
-    cur = 'categories' if c.key.startswith('cat-') else c.key
+    items = (('how', 'how'), ('categories', 'categories'), ('cafes', 'cafes'), ('stickers', 'stickers'), ('blog', 'blog'))
+    cur = 'categories' if c.key.startswith('cat-') else 'blog' if c.key.startswith('post-') else c.key
     nav = ''.join(f'<a href={c.href(k)}{" aria-current=page" if k == cur else ""}>{T["nav"][n][lang]}</a>' for n, k in items)
     return f'''<a class="skip" href="#main">{t('skip', lang)}</a>
 <header class="top">
@@ -227,7 +229,7 @@ def crumbs_html(c, crumbs):
 def footer(c):
     lang = c.lang
     links = [(T['nav']['how'][lang], c.href('how')), (T['nav']['categories'][lang], c.href('categories')), (T['nav']['cafes'][lang], c.href('cafes')),
-             (T['nav']['stickers'][lang], c.href('stickers')), (t('privacy', lang), c.href('privacy')), (t('contact', lang), f'"mailto:{CONTACT}"')]
+             (T['nav']['stickers'][lang], c.href('stickers')), (T['nav']['blog'][lang], c.href('blog')), (t('privacy', lang), c.href('privacy')), (t('contact', lang), f'"mailto:{CONTACT}"')]
     nav = ''.join(f'<a href={h}>{n}</a>' for n, h in links)
     return f'''</main>
 <div class="band" aria-hidden="true"></div>
@@ -670,7 +672,90 @@ def privacy_page(c):
     graph = base_graph(c) + [page, breadcrumbs_ld(c, [(home_name, c.abs('home')), (L('crumb'), c.url)])]
     return head(c, title, desc, graph) + header(c) + '<main id="main">' + main + footer(c)
 
-BUILT = {'home': home, 'how': how_page, 'categories': categories_page, 'cafes': cafes_page, 'stickers': stickers_page, 'privacy': privacy_page}
+# ---------- blog ----------
+import math
+MONTHS_AR = ['كانون الثاني', 'شباط', 'آذار', 'نيسان', 'أيار', 'حزيران', 'تموز', 'آب', 'أيلول', 'تشرين الأول', 'تشرين الثاني', 'كانون الأول']
+MONTHS_EN = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+def nice_date(iso, lang):
+    y, m, d = map(int, iso.split('-'))
+    return f'{ar_digits(d)} {MONTHS_AR[m - 1]} {ar_digits(y)}' if lang == 'ar' else f'{d} {MONTHS_EN[m - 1]} {y}'
+
+def post_words(p, lang):
+    return sum(len((x[lang] if isinstance(x, dict) else ' '.join(i[lang] for i in x)).split()) for _, x in p['body'])
+
+def read_time(p, lang):
+    n = max(1, math.ceil(post_words(p, lang) / 180))
+    if lang == 'ar' and n <= 2:
+        return 'دقيقة قراءة' if n == 1 else 'دقيقتين قراءة'
+    return CB.B['minutes'][lang].format(n=num(n, lang))
+
+def post_card(c, p):
+    lang = c.lang
+    return f'''<li><a class="post-card" href={c.href('post-' + p['slug'])}>
+      <span class="post-art">{mascot_img(p['mood'], lang, c.pre, w=160)}</span>
+      <span class="post-meta"><time datetime="{p['date']}">{nice_date(p['date'], lang)}</time> · {read_time(p, lang)}</span>
+      <b>{p['title'][lang]}</b><span class="post-ex">{p['excerpt'][lang]}</span><span class="more">{CB.B['read'][lang]}</span></a></li>'''
+
+def blog_index(c):
+    lang, L = c.lang, (lambda k: CB.B[k][c.lang])
+    home_name = 'الرئيسية' if lang == 'ar' else 'Home'
+    posts = sorted(CB.POSTS, key=lambda p: p['date'], reverse=True)
+    main = f'''<section class="page-hero"><div class="in">
+  {crumbs_html(c, [(home_name, 'home'), (L('crumb'), 'blog')])}
+  <div class="page-hero-grid"><div class="page-hero-text"><h1>{L('h1')}</h1><p class="answer">{L('intro')}</p></div>
+  <div class="page-hero-art">{mascot_img('think', lang, c.pre, eager=True, w=260)}</div></div></div></section>
+<div class="band" aria-hidden="true"></div>
+<section class="sec"><div class="in"><ul class="posts">{''.join(post_card(c, p) for p in posts)}</ul></div></section>'''
+    title, desc = L('title'), L('desc')
+    blog = {'@type': 'Blog', '@id': c.url + '#blog', 'name': L('h1'), 'description': desc, 'inLanguage': lang, 'publisher': {'@id': SITE + '/#org'},
+            'blogPost': [{'@type': 'BlogPosting', 'headline': p['title'][lang], 'url': c.abs('post-' + p['slug']), 'datePublished': p['date']} for p in posts]}
+    graph = base_graph(c) + [webpage(c, title, desc), breadcrumbs_ld(c, [(home_name, c.abs('home')), (L('crumb'), c.url)]), blog]
+    return head(c, title, desc, graph) + header(c) + '<main id="main">' + main + footer(c)
+
+def render_block(kind, x, lang, idx):
+    if kind == 'p': return f'<p>{x[lang]}</p>'
+    if kind == 'h2': return f'<h2 id="s{idx}">{x[lang]}</h2>'
+    if kind == 'tip': return f'<aside class="tip"><p>{x[lang]}</p></aside>'
+    tag = 'ol' if kind == 'ol' else 'ul'
+    return f'<{tag}>' + ''.join(f'<li>{i[lang]}</li>' for i in x) + f'</{tag}>'
+
+def post_page(p):
+    def render(c):
+        lang, L = c.lang, (lambda k: CB.B[k][c.lang])
+        home_name = 'الرئيسية' if lang == 'ar' else 'Home'
+        body = ''.join(render_block(k, x, lang, i) for i, (k, x) in enumerate(p['body']))
+        toc = ''.join(f'<li><a href="#s{i}">{x[lang]}</a></li>' for i, (k, x) in enumerate(p['body']) if k == 'h2')
+        others = [o for o in CB.POSTS if o['slug'] != p['slug']]
+        main = f'''<article class="post">
+<section class="page-hero"><div class="in">
+  {crumbs_html(c, [(home_name, 'home'), (L('crumb'), 'blog'), (p['title'][lang], 'post-' + p['slug'])])}
+  <div class="page-hero-grid"><div class="page-hero-text"><h1>{p['title'][lang]}</h1>
+    <p class="post-byline"><span>{L('author')}</span> · <time datetime="{p['date']}">{nice_date(p['date'], lang)}</time> · {read_time(p, lang)}</p>
+    <p class="answer">{p['desc'][lang]}</p></div>
+  <div class="page-hero-art">{mascot_img(p['mood'], lang, c.pre, eager=True, w=260)}</div></div></div></section>
+<div class="band" aria-hidden="true"></div>
+<div class="in doc">
+  <aside class="toc" aria-label="{L('contents')}"><h2>{L('contents')}</h2><ul class="toc-plain">{toc}</ul></aside>
+  <div class="doc-body post-body">{body}</div>
+</div>
+</article>
+<section class="sec related" aria-labelledby="more-h"><div class="in">
+  <div class="sec-head"><h2 id="more-h">{L('more_h')}</h2></div><ul class="posts">{''.join(post_card(c, o) for o in others)}</ul></div></section>
+{cta_band(c, L('cta_h'), 'card')}'''
+        title = p['title'][lang] + (' | ولا كلمة' if lang == 'ar' else ' | Wala Kelmeh')
+        if len(title) > 70: title = p['title'][lang]
+        desc = p['desc'][lang]
+        posting = {'@type': 'BlogPosting', '@id': c.url + '#post', 'headline': p['title'][lang], 'description': desc, 'inLanguage': lang,
+                   'datePublished': p['date'], 'dateModified': p['date'], 'wordCount': post_words(p, lang),
+                   'author': {'@type': 'Organization', 'name': L('author'), '@id': SITE + '/#org'}, 'publisher': {'@id': SITE + '/#org'},
+                   'image': SITE + f'/assets/og-{lang}.png', 'mainEntityOfPage': c.url, 'isPartOf': {'@id': c.abs('blog') + '#blog'}}
+        graph = base_graph(c) + [webpage(c, title, desc), breadcrumbs_ld(c, [(home_name, c.abs('home')), (L('crumb'), c.abs('blog')), (p['title'][lang], c.url)]), posting]
+        h = head(c, title, desc, graph).replace('<meta property="og:type" content="website">', f'<meta property="og:type" content="article">\n<meta property="article:published_time" content="{p["date"]}">')
+        return h + header(c) + '<main id="main">' + main + footer(c)
+    return render
+
+BUILT = {'home': home, 'how': how_page, 'categories': categories_page, 'cafes': cafes_page, 'stickers': stickers_page, 'privacy': privacy_page, 'blog': blog_index}
+BUILT.update({f'post-{p["slug"]}': post_page(p) for p in CB.POSTS})
 BUILT.update({f'cat-{cid}': category_page(cid) for cid, *_ in CATEGORIES})
 
 # ---------- site files ----------
@@ -695,6 +780,7 @@ def llms():
     cats = '\n'.join(f'- {ar} ({en}): {n} cards' for cid, ar, en, n in CATEGORIES)
     faq = '\n'.join(f'**{q["en"]}** {a["en"]}' for q, a in T['faq'] + H['faq'])
     rules = '\n'.join(f'{i}. {s["en"]}' for i, s in enumerate(H['setup'], 1))
+    blog = '\n'.join(f'- [{p["title"]["en"]}]({SITE}/en/blog/{p["slug"]}/): {p["desc"]["en"]}' for p in CB.POSTS)
     return f'''# ولا كلمة — Wala Kelmeh
 
 > {T['about_p']['en']}
@@ -714,6 +800,9 @@ def llms():
 
 ## Categories ({TOTAL_CARDS} cards)
 {cats}
+
+## Blog
+{blog}
 
 ## FAQ
 {faq}

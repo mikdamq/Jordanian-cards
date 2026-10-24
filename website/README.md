@@ -22,7 +22,7 @@ python3 website/build.py --preview  # links to the live game + out/preview.html 
 | For cafés and partners | Built, in review |
 | شمّوغ stickers | Built, in review |
 | Privacy | Built: covers the game, website, forms and third parties. `/privacy.html` redirects here. |
-| Blog | Planned |
+| Blog | Built: index + 3 launch articles (party games, charades in Arabic, winter and New Year). Ramadan article to add in January. |
 | Go live | Domain on Cloudflare, Cloudflare Pages hosting, game at `/play/`, own suggestion backend, Search Console |
 
 Search setup and what we still need: see [SEO.md](SEO.md). Static images (share cards, favicons) are rendered by `make_og.py` into `static/`.

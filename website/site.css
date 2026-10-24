@@ -344,3 +344,29 @@ a:focus-visible, summary:focus-visible { outline: 3px solid var(--gold); outline
 .updated { color: var(--muted); font-weight: 700; font-size: 15px; }
 .plain { margin: 0; padding-inline-start: 20px; display: grid; gap: 8px; }
 .sel { user-select: all; font-weight: 800; }
+
+/* ---------- blog ---------- */
+.posts { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+.post-card { height: 100%; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; display: grid; gap: 8px; align-content: start; text-decoration: none; transition: transform .15s, border-color .15s; }
+.post-card:hover { transform: translateY(-3px); border-color: var(--red); }
+@media (prefers-reduced-motion: reduce) { .post-card { transition: none; } .post-card:hover { transform: none; } }
+.post-art { width: 110px; background: #f6efe3; border-radius: 18px; padding: 6px; }
+.post-art img { width: 100%; height: auto; display: block; }
+.post-meta { font-size: 13px; color: var(--muted); font-weight: 700; }
+.post-card b { font: 800 21px/1.35 var(--display); }
+.post-ex { color: var(--muted); }
+.more { color: var(--red-text); font-weight: 800; font-size: 15px; }
+.more::after { content: " ←"; }
+:lang(en) .more::after { content: " →"; }
+.post-byline { color: var(--muted); font-weight: 700; font-size: 15px; }
+.post-byline span { color: var(--text); }
+.post-body { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: clamp(20px, 4vw, 40px); display: block; font-size: 18px; line-height: 1.85; }
+.post-body > * + * { margin-top: 16px; }
+.post-body h2 { font-size: clamp(22px, 2.8vw, 28px); margin-top: 34px; scroll-margin-top: 90px; }
+.post-body h2:first-child { margin-top: 0; }
+.post-body ul, .post-body ol { padding-inline-start: 22px; display: grid; gap: 6px; margin-bottom: 0; }
+.post-body p { max-width: 70ch; }
+.tip { background: color-mix(in srgb, var(--gold) 14%, var(--surface)); border-inline-start: 5px solid var(--gold); border-radius: 12px; padding: 12px 16px; }
+.tip p { margin: 0; font-weight: 700; font-size: 16px; }
+.menu a { padding: 8px 10px; }
+.toc-plain { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 15px; }
