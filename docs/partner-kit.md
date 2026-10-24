@@ -27,6 +27,8 @@ python3 brand/tools/partner/partner_kit.py --url "https://walakelmeh.com/play/?r
 
 The script needs `qrcode` (`pip install qrcode`) and the Playwright install in the container. Fonts come from Google Fonts at render time.
 
+The night format, prizes, theme nights and partnership levels are in `docs/partner-playbook.md`.
+
 ## Still to decide
 
 - A story template for venues (one already exists in the social kit, `brand/social/stories/`)
