@@ -3,7 +3,7 @@
 // Called by the website forms (see SUGGEST_JS in website/build.py). Replies with JSON.
 
 const TO = 'hello@walakelmeh.com';
-const FROM = 'no-reply@walakelmeh.com';
+const FROM = 'hello@walakelmeh.com';   // a real mailbox, so the hosting's mail server accepts it as sender
 const SITE_HOSTS = ['walakelmeh.com', 'www.walakelmeh.com'];
 const MAX_PER_WINDOW = 5;      // submissions per visitor
 const WINDOW_SECONDS = 600;    // every 10 minutes
