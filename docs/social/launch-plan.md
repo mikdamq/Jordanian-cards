@@ -1,5 +1,7 @@
 # Social kit and launch plan
 
+The dated launch campaign (5 November 2026) that schedules these posts is in [`docs/marketing/launch-plan.md`](../marketing/launch-plan.md).
+
 Instagram first, TikTok alongside. Graphics are in [`brand/social/`](../../brand/social/); regenerate them with `brand/tools/social/social.py` (it needs `website/out/` built for the stitch art).
 
 Handle: **@walakelmeh** on every platform (placeholder until the accounts exist; change `HANDLE` in the script if it differs).
@@ -10,8 +12,8 @@ Handle: **@walakelmeh** on every platform (placeholder until the accounts exist;
 | --- | --- |
 | Profile picture | `profile/profile-patch.png` (recommended, matches the app icon) or `profile/profile-shammogh.png` |
 | Name | ولا كلمة · Wala Kelmeh |
-| Bio | 🎭 لعبة التمثيل الأردنية<br>🤫 مثّلها… بس ولا كلمة!<br>📱 مجانية · بدون حساب · بدون إنترنت<br>⬇️ العبها هسّا |
-| Link | walakelmeh.com (the GitHub address until the domain is live) |
+| Bio | 🎭 لعبة التمثيل الأردنية<br>🤫 مثّلها… بس ولا كلمة!<br>📱 مجانية · بدون حساب · بدون إنترنت<br>⬇️ يلا نلعب |
+| Link | walakelmeh.com |
 | Highlights | `profile/highlight-*.png`: كيف تلعب · الفئات · شمّوغ · سهراتكم · للمقاهي · قريباً |
 
 ## The 9 launch posts (1080×1350)

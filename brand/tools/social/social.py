@@ -74,7 +74,7 @@ post('heads-up', 'cream', f'''<div class="band" style="top:0"></div>
 <div style="position:absolute;top:560px;left:90px;width:620px;height:350px;border-radius:44px;background:#17110e;padding:14px;transform:rotate(-5deg);box-shadow:0 24px 48px rgba(23,17,14,.3)"><img src="{RAW('headsup')}" style="width:100%;height:100%;border-radius:32px;object-fit:cover"></div>
 <img class="masc" src="{M('headsup')}" style="width:420px;bottom:110px;right:40px">{foot('cream', False)}''')
 post('play-now', 'night', f'''<div class="band" style="top:0"></div>
-<div style="position:absolute;top:120px;left:0;right:0;text-align:center;display:grid;gap:22px"><h1 style="font-size:110px">العبوها هسّا</h1><p>مجانية · بدون حساب · بتشتغل بدون إنترنت</p>
+<div style="position:absolute;top:120px;left:0;right:0;text-align:center;display:grid;gap:22px"><h1 style="font-size:110px">يلا نلعبها</h1><p>مجانية · بدون حساب · بتشتغل بدون إنترنت</p>
 <span class="chip" style="justify-self:center;font-size:40px">الرابط بالبايو 🔗</span></div>
 <img class="masc" src="{M('yay')}" style="width:600px;bottom:120px;left:50%;transform:translateX(-50%)">{foot('night', False)}''')
 
