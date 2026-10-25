@@ -8,7 +8,7 @@ The website is at `https://walakelmeh.com/` and the game at `https://walakelmeh.
 - Forms post to our own script, `/api/send.php`, which emails hello@walakelmeh.com. It has a honeypot, a same-site check, length limits and a rate limit.
 - `.htaccess` forces https, sends `www` to the bare domain, sets caching (and no caching for the game's service worker), and sends the old `/privacy.html` to `/privacy/`.
 - The share image, partner-kit QR codes, store listing and privacy URL all use walakelmeh.com.
-- The old GitHub Pages address has a redirect ready. It switches on only when you say the domain is live (step 6).
+- walakelmeh.com is the only home. GitHub Pages is no longer deployed to (step 6 takes the old copy down).
 
 ## Your steps (about 20 minutes)
 
@@ -51,10 +51,8 @@ Merge the work branch into `main` (or ask Claude to open a pull request). Then w
 - Send a test suggestion from any category page and check that it reaches hello@walakelmeh.com (look in spam too, the first time)
 - Delete any old default files Namecheap put in the domain's folder (like a default `index.php`). Leave `cgi-bin` and `.well-known` alone.
 
-### 6. Switch the old address to a redirect
-Only after step 5 works. Add a repository **variable** `DOMAIN_LIVE` = `true`, then run **Actions → Deploy → Run workflow**. From then on:
-- Anyone opening `mikdamq.github.io/Jordanian-cards` goes to `walakelmeh.com/play/`, and the old privacy page goes to `walakelmeh.com/privacy/`.
-- Installed copies of the old address clean themselves up and redirect too. Players' saved names and settings can't move between addresses, so they set them once again.
+### 6. Take down the old GitHub Pages copy
+The deploy no longer publishes to GitHub Pages, but the last copy stays online until it's unpublished. In the repository, go to **Settings → Pages**, click the **⋯** menu next to the site address, then **Unpublish site**. After that, `mikdamq.github.io/Jordanian-cards` shows GitHub's "not found" page, and walakelmeh.com is the only address.
 
 ### 7. Tell the search engines
 - **Google Search Console**: add the domain property `walakelmeh.com`, verify it with the TXT record it gives you (Namecheap → Domain List → Manage → Advanced DNS), then submit `https://walakelmeh.com/sitemap.xml`.
