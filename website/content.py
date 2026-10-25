@@ -118,6 +118,7 @@ T = {
 # to CONTACT. Empty = forms fall back to opening the visitor's email app.
 SUGGEST_ENDPOINT = '/api/send.php'
 SUGGEST = {
+  'by_email': {'ar': 'ابعتها بالإيميل', 'en': 'Send it by email'},
   'card_h': {'ar': 'عندك بطاقة لهالفئة؟', 'en': 'Got a card for this category?'},
   'card_p': {'ar': 'اقترح كلمة أو موقف، وإذا انضافت للعبة بنكتب اسمك بقائمة الشكر (إذا بدك).',
              'en': 'Suggest a word or a moment. If it makes it into the game, we’ll thank you by name (if you like).'},

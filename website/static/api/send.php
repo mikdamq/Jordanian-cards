@@ -21,16 +21,36 @@ header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store');
 header('X-Content-Type-Options: nosniff');
 
-function reply(int $code, bool $ok, string $error = ''): void {
+// Written for PHP 7.0 and newer, without optional extensions, so it runs on any shared hosting.
+function reply($code, $ok, $error = '') {
   http_response_code($code);
+  if (!$ok) error_log('walakelmeh form: ' . $error);
   echo json_encode($ok ? ['success' => true] : ['success' => false, 'error' => $error]);
   exit;
 }
 
-function clean(string $v, int $max): string {
+function cut($v, $max) {
+  if (function_exists('mb_substr')) return mb_substr($v, 0, $max, 'UTF-8');
+  preg_match('/^.{0,' . (int) $max . '}/us', $v, $m);
+  return isset($m[0]) ? $m[0] : '';
+}
+
+function clean($v, $max) {
   $v = str_replace(["\r\n", "\r"], "\n", trim($v));
-  $v = preg_replace('/[\x00-\x09\x0B-\x1F\x7F]/u', '', $v) ?? '';
-  return mb_substr($v, 0, $max);
+  $v = preg_replace('/[\x00-\x09\x0B-\x1F\x7F]/u', '', $v);
+  return cut($v === null ? '' : $v, $max);
+}
+
+// Health check for whoever runs the site: /api/send.php?check
+if (($_SERVER['REQUEST_METHOD'] ?? '') === 'GET' && isset($_GET['check'])) {
+  $disabled = array_map('trim', explode(',', (string) ini_get('disable_functions')));
+  echo json_encode([
+    'php' => PHP_VERSION_ID >= 70000,
+    'mail' => function_exists('mail') && !in_array('mail', $disabled, true),
+    'utf8' => @preg_match('/./u', 'ك') === 1,
+    'mbstring' => function_exists('mb_substr'),
+  ]);
+  exit;
 }
 
 if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') reply(405, false, 'method');
@@ -48,7 +68,9 @@ $dir = sys_get_temp_dir() . '/walakelmeh-forms';
 if (!is_dir($dir)) @mkdir($dir, 0700, true);
 $file = $dir . '/' . hash('sha256', ($_SERVER['REMOTE_ADDR'] ?? '') . __FILE__);
 $now = time();
-$hits = array_filter(array_map('intval', @file($file, FILE_IGNORE_NEW_LINES) ?: []), fn($t) => $t > $now - WINDOW_SECONDS);
+$hits = array_filter(array_map('intval', @file($file, FILE_IGNORE_NEW_LINES) ?: []), function ($t) use ($now) {
+  return $t > $now - WINDOW_SECONDS;
+});
 if (count($hits) >= MAX_PER_WINDOW) reply(429, false, 'rate');
 $hits[] = $now;
 @file_put_contents($file, implode("\n", $hits), LOCK_EX);
@@ -80,5 +102,9 @@ $headers = [
 // Partners can be answered directly when they left an email.
 if (filter_var($data['contact'] ?? '', FILTER_VALIDATE_EMAIL)) $headers[] = 'Reply-To: ' . $data['contact'];
 
-$sent = mail(TO, '=?UTF-8?B?' . base64_encode($subject) . '?=', $body, implode("\r\n", $headers), '-f' . FROM);
+if (!function_exists('mail')) reply(500, false, 'nomail');
+$encoded = '=?UTF-8?B?' . base64_encode($subject) . '?=';
+$sent = @mail(TO, $encoded, $body, implode("\r\n", $headers), '-f' . FROM);
+// Some hosts refuse the -f envelope sender; try once more without it.
+if (!$sent) $sent = @mail(TO, $encoded, $body, implode("\r\n", $headers));
 reply($sent ? 200 : 500, $sent, $sent ? '' : 'mail');
