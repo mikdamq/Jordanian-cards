@@ -88,7 +88,7 @@ POSTS = [
            {'ar': 'مين أسرع؟: بدون فرق، وأول واحد بيحزر بياخذ النقطة.', 'en': 'Who’s fastest?: no teams, and the first right answer wins the point.'},
            {'ar': 'جولة سريعة: ٣٠ ثانية بس للمحترفين.', 'en': 'Speed round: just 30 seconds, for the pros.'},
            {'ar': 'عقوبة مضحكة للخسرانين: يعملوا الشاي، أو يمثّلوا أغنية للكل.', 'en': 'A funny forfeit for the losers: make the tea, or act out a song for everyone.'}]),
-   ('h2', {'ar': 'العبوها هسّا', 'en': 'Play it now'}),
+   ('h2', {'ar': 'يلا نلعبها', 'en': 'Let’s play it'}),
    ('p', {'ar': '«ولا كلمة» مجانية، بتشتغل على الجوال من المتصفح بدون حساب، وبعد أول مرة بتشتغل حتى بدون إنترنت. افتحوها، اختاروا الفئات، وابلشوا.',
           'en': 'Wala Kelmeh is free, runs on your phone in the browser with no account, and works offline after the first visit. Open it, pick your categories and start.'}),
   ],

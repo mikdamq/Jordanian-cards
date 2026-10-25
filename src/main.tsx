@@ -9,8 +9,10 @@ import './styles.css';
 import App from './App';
 import { ErrorBoundary } from './ErrorBoundary';
 import { startAnalytics } from './lib/analytics';
+import { initInstall } from './lib/install';
 
 startAnalytics();
+initInstall();
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
