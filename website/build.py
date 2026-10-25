@@ -413,7 +413,7 @@ def suggest_form(c, kind, cid=None, cat_name=None):
       <div class="hp" aria-hidden="true"><label>Website<input type="checkbox" name="botcheck" tabindex="-1"></label></div>
       <div class="f-actions"><button class="btn btn-red" type="submit" data-label="{S('send')}" data-busy="{S('sending')}">{S('send')}</button>
         <p class="f-note">{S('privacy')}</p></div>
-      <p class="f-status" role="status" aria-live="polite" data-ok="{S('thanks')}" data-err="{S('error')}"></p>
+      <p class="f-status" role="status" aria-live="polite" data-ok="{S('thanks')}" data-err="{S('error')}" data-mail-label="{S('by_email')}"></p>
     </form>
   </div></div></section>'''
 
@@ -489,16 +489,26 @@ SUGGEST_JS = """<script>
       };
       btn.disabled = true; btn.textContent = btn.dataset.busy;
       var url = f.dataset.endpoint;
+      var skip = { subject: 1, from_name: 1, botcheck: 1 };
+      var lines = []; data.forEach(function (v, k) { if (v && !skip[k]) lines.push(k + ': ' + v); });
+      var mailto = 'mailto:' + f.dataset.mail + '?subject=' + encodeURIComponent(f.dataset.subject) + '&body=' + encodeURIComponent(lines.join('\\n'));
+      // If our server can't send it, the reason shows and the visitor can still send it by email.
+      var failed = function (code) {
+        done(false);
+        status.textContent = status.dataset.err + ' (' + code + ') ';
+        var a = document.createElement('a'); a.href = mailto; a.textContent = status.dataset.mailLabel; status.appendChild(a);
+      };
       if (window.__PREVIEW__) { setTimeout(function () { done(true); }, 500); return; }
       if (url) {
         fetch(url, { method: 'POST', body: data, headers: { Accept: 'application/json' } })
-          .then(function (r) { return r.json().then(function (j) { done(r.ok && j.success !== false); }); })
-          .catch(function () { done(false); });
+          .then(function (r) { return r.text().then(function (t) {
+            var j = null; try { j = JSON.parse(t); } catch (err) { j = null; }
+            if (r.ok && j && j.success) done(true); else failed((j && j.error) || ('http ' + r.status));
+          }); })
+          .catch(function () { failed('network'); });
         return;
       }
-      var skip = { subject: 1, from_name: 1, botcheck: 1 };
-      var lines = []; data.forEach(function (v, k) { if (v && !skip[k]) lines.push(k + ': ' + v); });
-      location.href = 'mailto:' + f.dataset.mail + '?subject=' + encodeURIComponent(f.dataset.subject) + '&body=' + encodeURIComponent(lines.join('\\n'));
+      location.href = mailto;
       done(true);
     });
   });
@@ -624,7 +634,7 @@ def partner_form(c):
       <div class="hp" aria-hidden="true"><label>Website<input type="checkbox" name="botcheck" tabindex="-1"></label></div>
       <div class="f-actions"><button class="btn btn-red" type="submit" data-label="{L('send')}" data-busy="{SUGGEST['sending'][lang]}">{L('send')}</button>
         <p class="f-note">{L('privacy')}</p></div>
-      <p class="f-status" role="status" aria-live="polite" data-ok="{SUGGEST['thanks'][lang]}" data-err="{SUGGEST['error'][lang]}"></p>
+      <p class="f-status" role="status" aria-live="polite" data-ok="{SUGGEST['thanks'][lang]}" data-err="{SUGGEST['error'][lang]}" data-mail-label="{SUGGEST['by_email'][lang]}"></p>
     </form>
   </div></div></section>'''
 
