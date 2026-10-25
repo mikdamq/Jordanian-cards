@@ -2,9 +2,7 @@ name: Deploy
 
 # On every push to main:
 # 1. Build the game and the website into one folder: the website at /, the game at /play/.
-# 2. Upload it to the Namecheap hosting over FTPS (skipped until the FTP secrets exist).
-# 3. GitHub Pages (the old address): the game as before, or, once the repository variable
-#    DOMAIN_LIVE is "true", a redirect to walakelmeh.com that also removes old installs.
+# 2. Upload it to walakelmeh.com on the Namecheap hosting over FTPS (skipped until the FTP secrets exist).
 
 on:
   push:
@@ -13,8 +11,6 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: deploy
@@ -52,13 +48,6 @@ jobs:
           name: site
           path: site
           include-hidden-files: true
-      - name: Pick the GitHub Pages content
-        run: |
-          if [ "${{ vars.DOMAIN_LIVE }}" = "true" ]; then cp -a website/deploy/old-site pages; else cp -a dist pages; fi
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: pages
 
   hosting:
     needs: build
@@ -82,13 +71,3 @@ jobs:
           server-dir: ${{ vars.FTP_DIR || './' }}
       - if: env.FTP_SERVER == ''
         run: echo "::notice::FTP secrets are not set yet, so nothing was uploaded to walakelmeh.com."
-
-  pages:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
