@@ -13,7 +13,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.join(HERE, '..')
 sys.path.insert(0, os.path.join(REPO, 'brand', 'tools'))
 
-from content import T, CATEGORIES, SITE, CONTACT, TOTAL_CARDS, SUGGEST, SUGGEST_ENDPOINT
+from content import T, CATEGORIES, SITE, CONTACT, SOCIAL, GOATCOUNTER, TOTAL_CARDS, SUGGEST, SUGGEST_ENDPOINT
 from logos import icon_C, xstitch, svg as raw_svg
 from lockups2 import horiz_ar, horiz_en
 from final import BR, CREAM, INK, RED, GOLD
@@ -132,7 +132,7 @@ def base_graph(c):
     lang = c.lang
     org = {'@type': 'Organization', '@id': SITE + '/#org', 'name': 'ولا كلمة', 'alternateName': ['Wala Kelmeh', 'Wala Kilmeh', 'Not a Word'],
            'url': SITE + '/', 'logo': SITE + '/assets/logo-512.png', 'email': CONTACT,
-           'foundingLocation': {'@type': 'Place', 'name': 'Amman, Jordan'}}
+           'foundingLocation': {'@type': 'Place', 'name': 'Amman, Jordan'}, 'sameAs': list(SOCIAL.values())}
     site = {'@type': 'WebSite', '@id': SITE + '/#site', 'url': SITE + '/', 'name': 'ولا كلمة — Wala Kelmeh',
             'inLanguage': ['ar', 'en'], 'publisher': {'@id': SITE + '/#org'}}
     app = {'@type': ['SoftwareApplication', 'VideoGame'], '@id': SITE + '/#game', 'name': 'ولا كلمة — Wala Kelmeh',
@@ -217,7 +217,7 @@ def header(c):
     <nav class="menu" aria-label="{'القائمة الرئيسية' if lang == 'ar' else 'Main'}">{nav}</nav>
     <div class="actions">
       <a class="lang" href={c.href(c.key, other)} hreflang="{other}" lang="{other}">{t('lang_switch', lang)}</a>
-      <a class="btn btn-red btn-sm" href="{PLAY}">{t('play', lang)}</a>
+      <a class="btn btn-red btn-sm" href="{PLAY}" data-goatcounter-click="site/play">{t('play', lang)}</a>
       <button class="menu-btn" type="button" aria-expanded="false" aria-controls="{panel_id}" data-open="{'افتح القائمة' if lang == 'ar' else 'Open menu'}" data-close="{'سكّر القائمة' if lang == 'ar' else 'Close menu'}" aria-label="{'افتح القائمة' if lang == 'ar' else 'Open menu'}"><span></span><span></span><span></span></button>
     </div>
   </div>
@@ -225,7 +225,7 @@ def header(c):
     <nav aria-label="{'القائمة' if lang == 'ar' else 'Menu'}">{mnav}</nav>
     <div class="mnav-foot">
       <a class="lang" href={c.href(c.key, other)} hreflang="{other}" lang="{other}">{t('lang_switch', lang)}</a>
-      <a class="btn btn-red" href="{PLAY}">{t('play', lang)}</a>
+      <a class="btn btn-red" href="{PLAY}" data-goatcounter-click="site/play">{t('play', lang)}</a>
     </div>
   </div>
 </header>'''
@@ -242,6 +242,7 @@ def footer(c):
     links = [(T['nav']['how'][lang], c.href('how')), (T['nav']['categories'][lang], c.href('categories')), (T['nav']['cafes'][lang], c.href('cafes')),
              (T['nav']['stickers'][lang], c.href('stickers')), (T['nav']['blog'][lang], c.href('blog')), (t('privacy', lang), c.href('privacy')), (t('contact', lang), f'"mailto:{CONTACT}"')]
     nav = ''.join(f'<a href={h}>{n}</a>' for n, h in links)
+    nav += ''.join(f'<a href="{u}" rel="me noopener" target="_blank" lang="en" dir="ltr">{n}</a>' for n, u in SOCIAL.items())
     return f'''</main>
 <div class="band" aria-hidden="true"></div>
 <footer class="foot"><div class="in">
@@ -250,6 +251,7 @@ def footer(c):
   <p class="rights">{t('rights', lang)}</p>
 </div></footer>
 {SITE_JS}
+{ANALYTICS}
 {SUGGEST_JS if c.key.startswith('cat') or c.key in ('categories', 'cafes') else ''}
 </body>
 </html>'''
@@ -265,7 +267,7 @@ def phone():
 def cta_band(c, heading, mood='yay'):
     return f'''<section class="cta-band"><div class="in">
   <div class="cta-art">{mascot_img(mood, c.lang, c.pre, w=200)}</div>
-  <h2>{heading}</h2><a class="btn btn-red" href="{PLAY}">{t('play', c.lang)}</a></div></section>'''
+  <h2>{heading}</h2><a class="btn btn-red" href="{PLAY}" data-goatcounter-click="site/play">{t('play', c.lang)}</a></div></section>'''
 
 # ---------- home ----------
 def home(c):
@@ -289,7 +291,7 @@ def home(c):
       <span class="eyebrow">{t('hero_eyebrow', lang)}</span>
       <h1 id="hero-h">{t('hero_h1', lang)}</h1>
       <p class="lead">{t('hero_sub', lang)}</p>
-      <div class="ctas"><a class="btn btn-red" href="{PLAY}">{t('play', lang)}</a><a class="btn btn-ghost" href="{PLAY}?install=1">{t('install', lang)}</a></div>
+      <div class="ctas"><a class="btn btn-red" href="{PLAY}" data-goatcounter-click="site/play">{t('play', lang)}</a><a class="btn btn-ghost" href="{PLAY}?install=1" data-goatcounter-click="site/install">{t('install', lang)}</a></div>
       <ul class="facts">{facts}</ul>
       <div class="stores">{stores}</div>
     </div>
@@ -416,6 +418,9 @@ def suggest_form(c, kind, cid=None, cat_name=None):
       <p class="f-status" role="status" aria-live="polite" data-ok="{S('thanks')}" data-err="{S('error')}" data-mail-label="{S('by_email')}"></p>
     </form>
   </div></div></section>'''
+
+# GoatCounter: cookie-free, no personal data. data-goatcounter-click on links counts those clicks too.
+ANALYTICS = '' if PREVIEW or not GOATCOUNTER else f'<script data-goatcounter="https://{GOATCOUNTER}.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>'
 
 SITE_JS = """<script>
 (function () {
@@ -571,7 +576,7 @@ def category_page(cid):
     <div class="page-hero-text"><span class="eyebrow">{num(n, lang)} {L(CC.C['cards_word'])}</span><h1>{h1}</h1>
       <p class="answer">{intro_ar if lang == 'ar' else intro_en}</p>
       <dl class="facts-dl quick"><div><dt>{L(CC.C['best_h'])}</dt><dd>{best_ar if lang == 'ar' else best_en}</dd></div>{levels}</dl>
-      <div class="ctas"><a class="btn btn-red" href="{PLAY}">{L(CC.C['play_cat'])}</a></div></div>
+      <div class="ctas"><a class="btn btn-red" href="{PLAY}" data-goatcounter-click="site/play">{L(CC.C['play_cat'])}</a></div></div>
     <div class="page-hero-art cat-hero-art">{art_img('cat', cid, CAT_ART[cid], (('رسمة تطريز لفئة ' + ar) if lang == 'ar' else ('Cross-stitch art for ' + en)), pre, 220)}</div>
   </div></div></section>
 <div class="band" aria-hidden="true"></div>
@@ -861,6 +866,7 @@ def llms():
 - Players: 2 to 12. Teams: 2 to 4, or none. Turns: 30, 60 or 90 seconds. Rounds: 1 to 10.
 - Modes: classic charades (تمثيل), heads up (عالجبين), who's fastest (مين أسرع؟)
 - Made in Amman, Jordan, 2026. Contact: {CONTACT}
+- Instagram: {SOCIAL['Instagram']}
 
 ## How to play
 {H['answer']['en']}
