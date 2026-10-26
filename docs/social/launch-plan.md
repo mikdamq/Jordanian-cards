@@ -1,8 +1,8 @@
 # Social kit and launch plan
 
-The dated launch campaign (5 November 2026) that schedules these posts is in [`docs/marketing/launch-plan.md`](../marketing/launch-plan.md).
+The dated launch month (from Monday 26 October 2026) that schedules these posts is in [`docs/marketing/launch-plan.md`](../marketing/launch-plan.md).
 
-Instagram first, TikTok alongside. Graphics are in [`brand/social/`](../../brand/social/); regenerate them with `brand/tools/social/social.py` (it needs `website/out/` built for the stitch art).
+Instagram first, TikTok alongside. Graphics are in [`brand/social/`](../../brand/social/); regenerate them with `brand/tools/social/social.py` (it needs `website/out/` built for the stitch art). To render only some files, name them: `python3 brand/tools/social/social.py post-10-one-month`.
 
 Handle: **@walakelmeh** on every platform (placeholder until the accounts exist; change `HANDLE` in the script if it differs).
 
@@ -16,21 +16,22 @@ Handle: **@walakelmeh** on every platform (placeholder until the accounts exist;
 | Link | walakelmeh.com |
 | Highlights | `profile/highlight-*.png`: كيف تلعب · الفئات · شمّوغ · سهراتكم · للمقاهي · قريباً |
 
-## The 9 launch posts (1080×1350)
+## The 10 launch posts (1080×1350)
 
-Post them in this order, so post 1 ends up bottom-right of the first 3×3 grid and post 9 top-left.
+Post them in this order, so post 1 ends up bottom-right of the first 3×3 grid and post 9 top-left. Post 10 marks one month and opens the next row. Dates are from the launch month in the marketing plan.
 
 | # | File | Caption | When |
 | --- | --- | --- | --- |
-| 1 | `post-01-arrived` | «ولا كلمة» وصلت! 🇯🇴 لعبة التمثيل الأردنية للسهرات: مثّلها… بس ولا كلمة! 🤫 الرابط بالبايو. | Launch day |
-| 2 | `post-02-meet-shammogh` | تعرّفوا على شمّوغ 👋 الشماغ اللي ما بقدر يسكت… بلعبة ممنوع فيها الحكي. شو أول كلمة لازم يمثّلها؟ | Day 2 |
-| 3 | `post-03-how-it-works` | كيف تلعب؟ ٣ خطوات بس: طلّع البطاقة، مثّلها بالحركات، وفريقك بحزر قبل ما يخلص الوقت ⏱️ | Day 4 |
-| 4 | `post-04-card-mansaf` | مين بيقدر يمثّل «منسف» بدون ولا كلمة؟ 🍽️ اكتبوا بالتعليقات كيف بتمثّلوها 👇 | Day 6 |
-| 5 | `post-05-three-modes` | ٣ طرق للعب: تمثيل 🎭 عالجبين 📱 ومين أسرع؟ ⏱️ إنتو أي فريق؟ | Day 8 |
-| 6 | `post-06-categories` | ٥١٠ بطاقة بـ١٦ فئة: أكل، أماكن، أعراس، نوستالجيا التسعينات… وفي كمان باكيت الشباب 😎 أي فئة بتبلّشوا فيها؟ | Day 10 |
-| 7 | `post-07-saying` | «يا زلمة!» 🗣️ مثّلها… بدون ما تحكيها 😏 تاجوا صاحبكم اللي ما بقدر يسكت. | Day 12 |
-| 8 | `post-08-heads-up` | عالجبين! 📱 الجوال على جبينك والكل بمثّلك. نزّله إذا عرفتها، ارفعه لتتخطّى. | Day 14 |
-| 9 | `post-09-play-now` | العبوها الليلة 🔥 مجانية، بدون حساب، وبتشتغل بدون إنترنت. الرابط بالبايو 🔗 | Day 16 |
+| 1 | `post-01-arrived` | «ولا كلمة» وصلت! 🇯🇴 لعبة التمثيل الأردنية للسهرات: مثّلها… بس ولا كلمة! 🤫 الرابط بالبايو. | Mon 26 Oct ✅ |
+| 2 | `post-02-meet-shammogh` | تعرّفوا على شمّوغ 👋 الشماغ اللي ما بقدر يسكت… بلعبة ممنوع فيها الحكي. شو أول كلمة لازم يمثّلها؟ | Thu 29 Oct |
+| 3 | `post-03-how-it-works` | كيف تلعب؟ ٣ خطوات بس: طلّع البطاقة، مثّلها بالحركات، وفريقك بحزر قبل ما يخلص الوقت ⏱️ | Tue 3 Nov |
+| 4 | `post-04-card-mansaf` | مين بيقدر يمثّل «منسف» بدون ولا كلمة؟ 🍽️ اكتبوا بالتعليقات كيف بتمثّلوها 👇 | Sat 7 Nov |
+| 5 | `post-05-three-modes` | ٣ طرق للعب: تمثيل 🎭 عالجبين 📱 ومين أسرع؟ ⏱️ إنتو أي فريق؟ | Tue 10 Nov |
+| 6 | `post-06-categories` | ٥١٠ بطاقة بـ١٦ فئة: أكل، أماكن، أعراس، نوستالجيا التسعينات… وفي كمان باكيت الشباب 😎 أي فئة بتبلّشوا فيها؟ | Sat 14 Nov |
+| 7 | `post-07-saying` | «يا زلمة!» 🗣️ مثّلها… بدون ما تحكيها 😏 تاجوا صاحبكم اللي ما بقدر يسكت. | Tue 17 Nov |
+| 8 | `post-08-heads-up` | عالجبين! 📱 الجوال على جبينك والكل بمثّلك. نزّله إذا عرفتها، ارفعه لتتخطّى. | Sat 21 Nov |
+| 9 | `post-09-play-now` | العبوها الليلة 🔥 مجانية، بدون حساب، وبتشتغل بدون إنترنت. الرابط بالبايو 🔗 | Tue 24 Nov |
+| 10 | `post-10-one-month` | شهر على «ولا كلمة» 🎉 شكراً إلكم على كل سهرة، كل ضحكة، وكل بطاقة اقترحتوها. شو أحلى بطاقة لعبتوها لهلّق؟ 👇 | Fri 27 Nov |
 
 Add an English line under captions when the post is for the diaspora (e.g. post 1: *Wala Kelmeh is here: the Jordanian charades game. Act it out, not a word! Link in bio.*). One language leads each line, per the voice guide.
 
@@ -60,6 +61,7 @@ Alt text lets people using a screen reader hear what's in a picture, and helps I
 | `post-07-saying` | بخط كبير من فئة حكي أردني: «يا زلمة!»، وتحتها «مثّلها… بدون ما تحكيها»، وشمّوغ جاهز للتحدّي. | From the Jordanian Sayings category, in big letters: “Ya zalameh!”, then “Act it out… without saying it”, with Shammogh ready for the challenge. |
 | `post-08-heads-up` | جوال بالعرض عليه شاشة وضع عالجبين، وشمّوغ جنبه. النص: «عالجبين! الجوال على جبينك والكل بمثّلك. نزّله إذا عرفتها، ارفعه لتتخطّى». | A phone held sideways showing the Heads Up screen, next to Shammogh. Text: “Heads up! Phone on your forehead, everyone acts. Tilt down if you got it, up to skip.” |
 | `post-09-play-now` | شمّوغ فرحان على خلفية غامقة. النص: «يلا نلعبها: مجانية، بدون حساب، وبتشتغل بدون إنترنت. الرابط بالبايو». | A delighted Shammogh on a dark background. Text: “Let’s play: free, no account, works offline. Link in bio.” |
+| `post-10-one-month` | شمّوغ مبسوط وحواليه قلوب على خلفية حمرا. النص: «شهر على ولا كلمة 🎉 شكراً إلكم، على كل سهرة، كل ضحكة، وكل بطاقة اقترحتوها». | A happy Shammogh surrounded by hearts on red. Text: “One month of Wala Kelmeh 🎉 Thank you, for every night in, every laugh and every card you suggested.” |
 
 ### Stories
 
@@ -70,6 +72,9 @@ Alt text lets people using a screen reader hear what's in a picture, and helps I
 | `story-03-suggest-a-card` | «عندك بطاقة؟ اقترح كلمة أو موقف، وإذا انضاف للعبة بنكتب اسمك بقائمة الشكر»، وشمّوغ متحمّس. | “Got a card? Suggest a word or moment, and if it’s added we’ll thank you by name”, with an excited Shammogh. |
 | `story-04-this-or-that` | «شو أصعب تمثّل؟» بطاقتين: «الجاهة» ولّا «نتايج التوجيهي». | “Which is harder to act?” Two cards: “Il-Jaha” or “Tawjihi results”. |
 | `story-05-new-card-drop` | «بطاقة جديدة انضافت للعبة»: بطاقة حمرا مكتوب عليها «مسخّن»، باقتراح من [الاسم]. | “New card added to the game”: a red card reading “Msakhan”, suggested by [name]. |
+| `story-06-thank-you` | شمّوغ فرحان على خلفية حمرا. النص: «أول ليلة. شكراً إلكم 🙏 كمّلوا لعب وشاركونا النتيجة». | A delighted Shammogh on red. Text: “First night. Thank you 🙏 Keep playing and share your result with us.” |
+| `story-07-thursday-night` | شمّوغ بغمز على خلفية غامقة. النص: «الخميس 🌙 شو بتلعبوا الليلة؟» مع تصويت. | Shammogh winking on a dark background. Text: “Thursday 🌙 What are you playing tonight?” with a poll. |
+| `story-08-install` | «ثبّتها على جوالك، وبتشتغل زي التطبيق، حتى بدون إنترنت». أندرويد: افتحوا walakelmeh.com واكبسوا «ثبّتها على جوالك». آيفون: من Safari، زر المشاركة ثم «إضافة إلى الشاشة الرئيسية». وشمّوغ ماسك بطاقة. | “Install it on your phone; it works like an app, even offline.” Android: open walakelmeh.com and tap “Install”. iPhone: in Safari, tap Share, then “Add to Home Screen”. Shammogh holds a card. |
 
 ### Reel and TikTok covers
 
@@ -98,6 +103,9 @@ Keep the top 250 px and bottom 300 px clear for Instagram's own buttons.
 | `story-03-suggest-a-card` | Ask for card ideas, link to the website form | Question or link |
 | `story-04-this-or-that` | Which is harder to act? | Poll |
 | `story-05-new-card-drop` | Announce a suggested card that made it in, thanking the contributor | — |
+| `story-06-thank-you` | The day after launch: thank everyone who played | Link (walakelmeh.com) |
+| `story-07-thursday-night` | Every Thursday: «شو بتلعبوا الليلة؟» | Poll (e.g. تمثيل / عالجبين) |
+| `story-08-install` | How to install on Android and iPhone; keep it in the «كيف تلعب» highlight | Link (walakelmeh.com) |
 
 ## Reel and TikTok covers (1080×1920)
 

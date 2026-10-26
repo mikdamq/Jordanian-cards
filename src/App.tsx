@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { DEFAULT_SETTINGS, normalizeSettings, type Settings } from './game';
 import { useTheme } from './hooks';
 import { load, save } from './lib/storage';
+import { nightSettings, venueNight } from './lib/venue';
 import { GameView } from './screens/Game';
 import { Home } from './screens/Home';
 import { HowTo } from './screens/HowTo';
@@ -12,8 +13,13 @@ type View = 'home' | 'howto' | 'setup' | 'game';
 const SETTINGS_KEY = 'wk.settings';
 
 export default function App() {
-  const [view, setView] = useState<View>('home');
-  const [settings, setSettings] = useState<Settings>(() => normalizeSettings(load(SETTINGS_KEY, DEFAULT_SETTINGS)));
+  // A café's night link opens straight into setup, already set for the night.
+  const [view, setView] = useState<View>(venueNight ? 'setup' : 'home');
+  const [settings, setSettings] = useState<Settings>(() => {
+    const saved = normalizeSettings(load(SETTINGS_KEY, DEFAULT_SETTINGS));
+    return venueNight ? nightSettings(saved) : saved;
+  });
+  const [nightNotice, setNightNotice] = useState(venueNight);
   const [theme, cycleTheme] = useTheme();
   // Bumped to remount the game for "play again" with a fresh deck.
   const [gameId, setGameId] = useState(0);
@@ -37,8 +43,17 @@ export default function App() {
         <Setup
           settings={settings}
           onChange={setSettings}
-          onBack={() => setView('home')}
+          notice={
+            nightNotice
+              ? '☕ جاهزين لليلة ولا كلمة: تمثيل، ٦٠ ثانية، ٣ جولات، وكل طاولة فريق. اكتبوا أسماء الطاولات وبلّشوا!'
+              : undefined
+          }
+          onBack={() => {
+            setNightNotice(false);
+            setView('home');
+          }}
           onStart={() => {
+            setNightNotice(false);
             const trim = (list: Settings['teams']) => list.map((t) => ({ ...t, name: t.name.trim() }));
             setSettings({ ...settings, teams: trim(settings.teams), players: trim(settings.players) });
             setGameId((n) => n + 1);

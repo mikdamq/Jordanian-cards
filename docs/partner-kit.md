@@ -19,10 +19,10 @@ Printable files for partner cafés and lounges. They match the promises on the w
 
 ## The QR code
 
-The QR codes open `https://walakelmeh.com/play/?ref=cafe`. You can also make a kit for one venue, so its scans can be counted:
+The QR codes open `https://walakelmeh.com/play/?ref=cafe&night=1`. `night=1` opens the game straight into setup, already set for a café night (charades, 60 seconds, 3 rounds, two teams, the family-friendly categories). `ref` counts each scan in GoatCounter as `venue/<name>/night`. You can also make a kit for one venue, so its scans are counted separately:
 
 ```
-python3 brand/tools/partner/partner_kit.py --url "https://walakelmeh.com/play/?ref=venue-name"
+python3 brand/tools/partner/partner_kit.py --url "https://walakelmeh.com/play/?ref=venue-name&night=1"
 ```
 
 The script needs `qrcode` (`pip install qrcode`) and the Playwright install in the container. Fonts come from Google Fonts at render time.

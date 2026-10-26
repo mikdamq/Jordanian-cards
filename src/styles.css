@@ -2160,3 +2160,43 @@ h2 {
   color: var(--red-text);
   font-weight: 700;
 }
+
+.setup-notice {
+  margin: 0;
+  padding: 12px 16px;
+  border-radius: 16px;
+  background: var(--surface);
+  border: 2px dashed var(--stitch);
+  font-weight: 700;
+  line-height: 1.7;
+}
+
+/* What shows before the game starts (also what crawlers without JavaScript read). */
+.boot {
+  min-height: 100dvh;
+  display: grid;
+  place-content: center;
+  gap: 14px;
+  max-width: 34rem;
+  margin-inline: auto;
+  padding: 24px 20px;
+  text-align: center;
+  color: var(--muted);
+}
+
+.boot h1 {
+  margin: 0;
+  color: var(--red-text);
+  font-family: var(--display);
+  font-size: 1.6rem;
+}
+
+.boot p {
+  margin: 0;
+  line-height: 1.8;
+}
+
+.boot a {
+  color: inherit;
+  font-weight: 700;
+}

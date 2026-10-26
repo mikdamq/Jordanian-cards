@@ -176,7 +176,7 @@ a:focus-visible, summary:focus-visible { outline: 3px solid var(--gold); outline
 .foot-links a { text-decoration: none; font-weight: 700; color: #f4ecdd; }
 .foot-links a:hover { text-decoration: underline dashed; }
 .foot a:focus-visible { outline-color: #f6efe3; }
-.rights { font-size: 14px; color: #8a755d; }
+.rights { font-size: 14px; color: #968066; }
 
 /* ---------- inner pages ---------- */
 .menu a[aria-current="page"] { background: var(--red); color: var(--on-red); }
@@ -423,3 +423,7 @@ a:focus-visible, summary:focus-visible { outline: 3px solid var(--gold); outline
 .consent-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .consent-btns .btn { justify-content: center; }
 .foot-btn { background: none; border: 0; padding: 0; font: inherit; color: inherit; text-decoration: underline; cursor: pointer; }
+
+/* category acting tips */
+.tip-list { margin: 14px 0 0; padding-inline-start: 22px; display: grid; gap: 10px; font-size: 18px; line-height: 1.8; }
+.tip-list li::marker { color: var(--red-text); font-weight: 800; }

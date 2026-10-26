@@ -1,17 +1,18 @@
-# Launch plan: Thursday 5 November 2026
+# Launch plan: first posts 26 October, public launch 5 November 2026
 
-The public launch of ولا كلمة. The website and game are already live at walakelmeh.com; this is the night we announce it loudly.
+The launch of ولا كلمة. The website and game are live at walakelmeh.com. Posting on Instagram started on Monday 26 October, so the account already has a few posts when people arrive for the public launch on Thursday 5 November. This plan covers the month from the first post.
 
-- **Launch:** Thursday 5 November 2026, 8 pm Amman time. Thursday night opens the weekend, which is when people gather and play.
+- **First posts (soft start):** Monday 26 October 2026. Post 1 is up; a few posts and stories go out before the launch.
+- **Public launch:** Thursday 5 November 2026, 8 pm Amman time. That's when the launch crew, WhatsApp and the first video go out together.
 - **Budget:** zero. Everything here is organic.
 - **Team:** Mikdam alone, a few hours a week. The plan is sized for that: content is batched once a week and every reply is pre-written.
 - **Posts, stories and video ideas** are in the social kit (`docs/social/launch-plan.md`, graphics in `brand/social/`). This plan schedules them and adds everything around them.
 
 Shareable version with a tick-off checklist and copy buttons: https://claude.ai/artifact/5LgKUt1T8F9xBBwAmehFhn (private until shared).
 
-## Goals for the first 30 days (5 Nov – 3 Dec)
+## Goals for the first month (26 Oct – 26 Nov)
 
-Realistic for organic and solo. We review them on Thursday 3 December.
+Realistic for organic and solo. We review them on Friday 27 November.
 
 | Goal | Target | Where we read it |
 | --- | --- | --- |
@@ -22,65 +23,86 @@ Realistic for organic and solo. We review them on Thursday 3 December.
 | Cafés that agree to a pilot night | 3 | Our own list |
 | Stretch: one video with 10,000+ views | 1 | The apps' own insights |
 
-GoatCounter has to be connected before launch, or the first two goals can't be measured.
-
 ## The free levers
 
-1. **The launch crew.** 15 to 20 friends and family who play on launch night and share the link or their result picture. The first wave of reach always comes from people who know you.
-2. **WhatsApp.** The game's "شارك النتيجة" picture is our built-in loop: every shared result is an ad. Status on launch night, and a "Thursday night" reminder each week.
-3. **Micro-creators.** Jordanian creators with 2,000 to 50,000 followers who post family, comedy or food content. No money: they get early access and a card made for them in the game.
+1. **The launch crew.** 15 to 20 friends and family who play in launch week and share the link or their result picture. The first wave of reach always comes from people who know you.
+2. **WhatsApp.** The game's "شارك النتيجة" picture is our built-in loop: every shared result is an ad. Status in launch week, and a "Thursday night" reminder each week.
+3. **Micro-creators.** Jordanian creators with 2,000 to 50,000 followers who post family, comedy or food content. No money: they get a card made for them in the game.
 4. **Cafés.** The 3-café pilot from the partner playbook (`docs/partner-playbook.md`), with the printed kit (`brand/partner-kit/`).
 5. **Communities.** One honest post each in groups where it's allowed: Jordanians abroad, parents' groups, university student clubs, and r/jordan on Reddit. Always with a real clip, never a bare link.
 6. **Search.** Search Console and Bing are set up, and the blog articles bring people searching for party games.
 
-## Before launch (26 Oct – 4 Nov)
+## The rhythm
 
-| When | Task | Who |
-| --- | --- | --- |
-| Mon 26 – Tue 27 Oct | Create **@walakelmeh** on Instagram and TikTok. Also reserve it on Facebook, X and YouTube so nobody else takes it. | Mikdam |
-| Mon 26 – Tue 27 Oct | Set up the profiles: picture `profile/profile-patch.png`, name, bio and link (below), highlight covers. | Mikdam |
-| Mon 26 – Tue 27 Oct | Send Claude the handles; they go into the website footer and its search data. | Mikdam → Claude |
-| Mon 26 – Tue 27 Oct | Create a free GoatCounter account and send Claude the site code; Claude connects it. | Mikdam → Claude |
-| Mon 26 – Tue 27 Oct | Finish Search Console and Bing. | Mikdam |
-| Wed 28 – Thu 29 Oct | Write the launch crew list (15–20 people) and send them the heads-up message. | Mikdam |
-| Wed 28 – Thu 29 Oct | Pick 10 micro-creators and send the creator message. | Mikdam |
-| Wed 28 – Thu 29 Oct | Pick 5 cafés and send the café message, or visit with a printed table tent. | Mikdam |
-| Fri 30 – Sat 31 Oct | Film the 4 launch videos with family and friends (scripts below), in one 2-hour session. | Mikdam |
-| Sun 1 Nov | Schedule launch week's posts in Meta Business Suite (free, covers Instagram) and TikTok's scheduler. | Mikdam |
-| Sun 1 – Wed 4 Nov | Teasers (below). | Mikdam |
-| Wed 4 Nov | Remind the launch crew: tomorrow at 8. | Mikdam |
+2 feed posts and 1 video a week, stories on 3 or 4 days, everything at **8 pm Amman time**.
 
-### Teasers
+- **Tuesday:** feed post
+- **Thursday:** video (reel and TikTok), plus the «شو بتلعبوا الليلة؟» story
+- **Saturday:** feed post
+- **Monday and Wednesday:** stories
 
-| Day | Story or post | Text |
-| --- | --- | --- |
-| Sun 1 Nov | Story: Shammogh's sticker on a plain background | «في إشي جاي… 🤫» |
-| Mon 2 Nov | Story with a quiz sticker | «شو يعني «ولا كلمة»؟» |
-| Tue 3 Nov | 7-second reel: someone acting a card, cut before the answer | «الجواب الخميس 😏» |
-| Wed 4 Nov | Story with a countdown sticker to Thursday 8 pm | «بكرا الساعة ٨… جهّزوا حالكم» |
+Launch week is the exception, because it started on a Monday and the videos aren't filmed yet.
 
-## Launch night (Thursday 5 November)
+## The month, day by day
 
-| Time | What |
-| --- | --- |
-| 6:00 pm | Open walakelmeh.com and the game on an Android phone and an iPhone. Check play, the install button and a form. |
-| 8:00 pm | Post 1 (`post-01-arrived`, with its alt text) and the best video as the first reel (auto captions on), on Instagram and TikTok. |
-| 8:05 pm | Stories: a link sticker to walakelmeh.com, then «العبوها الليلة وشاركونا النتيجة». |
-| 8:10 pm | WhatsApp: your status, then the launch message to the launch crew and family groups. |
-| 8:30 – 10:30 pm | Reply to every comment and message (quick replies below), and repost every story that tags us. |
-| Fri 6 Nov | Post 2, plus a thank-you story: «أول ليلة: شكراً إلكم 🙏». |
+Post, story and reel-cover files are in `brand/social/`. Captions, hashtags and alt text for each one are in the social kit.
 
-## The first four weeks
+### Week 1 · 26 Oct – 1 Nov: soft start
 
-Sized for one person: 2 feed posts and 1 video a week, plus stories on 3 days. The post numbers refer to the social kit.
+| Day | Feed or video | Stories | Also |
+| --- | --- | --- | --- |
+| Mon 26 Oct | ✅ Post 1 `post-01-arrived` | Link sticker to walakelmeh.com | Reply to every comment. Write the launch crew list (15–20 people) and send them the heads-up for 5 November. |
+| Tue 27 Oct | | `story-06-thank-you` | Pick 10 micro-creators and send the creator message. |
+| Wed 28 Oct | | `story-08-install` (then save it to the «كيف تلعب» highlight) | Pick 5 cafés and send the café message, or visit with a printed table tent. |
+| Thu 29 Oct | Post 2 `post-02-meet-shammogh` | `story-07-thursday-night` with a poll sticker | |
+| Fri 30 – Sat 31 Oct | | | **Film the 4 videos** with family and friends (scripts below), in one 2-hour session. |
+| Sun 1 Nov | | | Schedule week 2 in Meta Business Suite and TikTok's scheduler (90 min). |
 
-| Week | Thursday (video) | Saturday (post) | Tuesday (post) | Stories |
-| --- | --- | --- | --- | --- |
-| 1 · 5–11 Nov | Launch: post 1 + video 1 «لما خالتك تمثّل منسف» | Post 2: meet Shammogh | Post 3: how it works | Thank-you, quiz, suggest-a-card |
-| 2 · 12–18 Nov | Video 2: family vs friends | Post 4: mansaf, «اكتبوا كيف بتمثّلوها» | Post 5: three modes | This-or-that poll, café night |
-| 3 · 19–25 Nov | Video 3: heads-up fails | Post 6: categories | Post 7: «يا زلمة!» | Guess-the-word, first community card |
-| 4 · 26 Nov – 2 Dec | Video 4: guess with us (or a café night recap if one happened) | Post 8: heads-up | Post 9: «يلا نلعبها» | Suggest-a-card, a café winner |
-| Thu 3 Dec | **30-day review** against the goals | | | |
+### Week 2 · 2 – 8 Nov
+
+| Day | Feed or video | Stories | Also |
+| --- | --- | --- | --- |
+| Mon 2 Nov | | `story-03-suggest-a-card` with a link to the website form | |
+| Tue 3 Nov | Post 3 `post-03-how-it-works` | | |
+| Wed 4 Nov | | `story-04-this-or-that` with a poll sticker | Follow up with the cafés that didn't reply. Remind the launch crew: tomorrow at 8. |
+| Thu 5 Nov · **public launch** | 8 pm: **Video 1** «لما خالتك تمثّل منسف» 😂 with `reel-cover-01-auntie-mansaf` | `story-07-thursday-night`, then a link sticker with «العبوها الليلة وشاركونا النتيجة» | 8:10 pm: WhatsApp status, then the launch message to the launch crew and family groups. 8:30–10:30 pm: reply to everything. |
+| Fri 6 Nov | | | Community posts in 2 or 3 groups, with video 1 as the clip. |
+| Sat 7 Nov | Post 4 `post-04-card-mansaf` | | Reply to every «كيف بتمثّلوها» comment. |
+| Sun 8 Nov | | | Schedule week 3. Check the numbers. |
+
+### Week 3 · 9 – 15 Nov
+
+| Day | Feed or video | Stories | Also |
+| --- | --- | --- | --- |
+| Mon 9 Nov | | `story-01-guess-the-word` with a quiz sticker and a short acting clip | |
+| Tue 10 Nov | Post 5 `post-05-three-modes` | | |
+| Wed 11 Nov | | `story-02-game-night` if a café said yes, otherwise `story-08-install` again | |
+| Thu 12 Nov | **Video 2** family vs friends, with `reel-cover-02-family-vs-friends` | `story-07-thursday-night` | |
+| Sat 14 Nov | Post 6 `post-06-categories` | | |
+| Sun 15 Nov | | | Schedule week 4. Pick the first community card. |
+
+### Week 4 · 16 – 22 Nov
+
+| Day | Feed or video | Stories | Also |
+| --- | --- | --- | --- |
+| Mon 16 Nov | | `story-05-new-card-drop`: the first community card, with the contributor's name | Claude adds the card to the game. |
+| Tue 17 Nov | Post 7 `post-07-saying` | | |
+| Wed 18 Nov | | `story-04-this-or-that` with two new cards, or a café night | |
+| Thu 19 Nov | **Video 3** heads-up fails (use a funny freeze frame as the cover) | `story-07-thursday-night` | |
+| Sat 21 Nov | Post 8 `post-08-heads-up` | | |
+| Sun 22 Nov | | | Schedule the last week. |
+
+### Week 5 · 23 – 27 Nov: one month
+
+| Day | Feed or video | Stories | Also |
+| --- | --- | --- | --- |
+| Mon 23 Nov | | `story-03-suggest-a-card` | |
+| Tue 24 Nov | Post 9 `post-09-play-now` | | |
+| Wed 25 Nov | | A café winner, or `story-05-new-card-drop` for the next community card | |
+| Thu 26 Nov | **Video 4** guess with us, with `reel-cover-03-impossible-card` (or a café night recap if one happened) | `story-07-thursday-night` | One month since launch. |
+| Fri 27 Nov | Post 10 `post-10-one-month` | | **Review the month** against the goals and plan December. |
+
+Posting 1 to 9 in order puts post 9 top-left of the first 3×3 grid; post 10 opens the next row.
 
 ## Weekly routine (about 3 hours)
 
@@ -102,9 +124,9 @@ Film on a phone, vertical, with natural light. Each is 15 to 25 seconds. Put the
 
 ## Ready-to-send messages
 
-### Heads-up to the launch crew (WhatsApp)
+### To the launch crew (WhatsApp)
 
-> هلا! 👋 الخميس الجاي (٥ تشرين الثاني) الساعة ٨ بنطلق «ولا كلمة»: لعبة تمثيل أردنية للسهرات، مجانية وبتشتغل عالجوال. بدنا منكم إشي بسيط: ليلتها العبوها مع أهلكم أو صحابكم، وشاركوا الرابط أو صورة النتيجة عالستوري 🙏 walakelmeh.com
+> هلا! 👋 اليوم أطلقنا «ولا كلمة»: لعبة تمثيل أردنية للسهرات، مجانية وبتشتغل عالجوال. بدنا منكم إشي بسيط: العبوها هالأسبوع مع أهلكم أو صحابكم، وشاركوا الرابط أو صورة النتيجة عالستوري، وتابعونا على إنستغرام @walakelmeh 🙏 walakelmeh.com
 
 ### Launch message (to forward)
 
@@ -114,7 +136,7 @@ Film on a phone, vertical, with natural light. Each is 15 to 25 seconds. Put the
 
 ### Creator message (Instagram or TikTok DM)
 
-> مرحبا [الاسم]! 👋 إحنا فريق «ولا كلمة»، لعبة تمثيل أردنية مجانية للسهرات (walakelmeh.com). بنحب محتواك، وحاسّين إنو اللعبة بتعمل فيديو بيضحّك مع عيلتك أو صحابك. بنطلق الخميس ٥ تشرين الثاني، وحابين نعطيك إياها قبل الكل، وإذا عملت فيديو منضيف باللعبة بطاقة خاصة فيك ✨ بدون أي التزام. شو رأيك؟
+> مرحبا [الاسم]! 👋 إحنا فريق «ولا كلمة»، لعبة تمثيل أردنية مجانية للسهرات (walakelmeh.com). بنحب محتواك، وحاسّين إنو اللعبة بتعمل فيديو بيضحّك مع عيلتك أو صحابك. لسّا مطلقينها هالأسبوع، وإذا عملت فيديو منضيف باللعبة بطاقة خاصة فيك ✨ بدون أي التزام. شو رأيك؟
 
 ### Café message
 
@@ -148,10 +170,10 @@ Every post and story gets alt text before it goes out: Instagram's **Advanced se
 | --- | --- |
 | Small reach with no budget | The launch crew, creators and the WhatsApp result picture carry the first wave. Comments get reused as content. |
 | Running it alone gets tiring | Batch once a week, use the quick replies, and stick to 2 posts a week. Missing a day is fine. |
-| iPhone users don't know how to install | The game shows the steps. Add a «ثبّتها» story highlight. |
+| iPhone users don't know how to install | The game shows the steps, and `story-08-install` goes in the «كيف تلعب» highlight. |
 | Group posts look like spam | One post per group, only where self-promotion is allowed, always with a real clip. |
 
-## After the 30 days
+## After the first month
 
 - **New Year's Eve (20–31 Dec):** a countdown-game reel and a «سهرة آخر السنة» story series, linked to the winter-nights blog article.
 - **Ramadan 2027 (starts around 8 February, depending on the moon sighting):** start preparing in mid-January, with «سهرة سحور» café nights, the «رمضان والعيد» category, and the Ramadan blog article. Likely the biggest moment of the year.
@@ -159,7 +181,6 @@ Every post and story gets alt text before it goes out: Instagram's **Advanced se
 
 ## Claude's part
 
-- Add the social handles to the website (footer and search data) as soon as they exist.
-- Connect GoatCounter once the site code arrives.
+- Social handles on the website and GoatCounter: done.
 - Keep the social kit in line with «يلا نلعب» (done for post 9 and the bio).
 - Add the community card each week, and a creator's card when one posts a video.

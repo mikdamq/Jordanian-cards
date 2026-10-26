@@ -1,5 +1,5 @@
 """Social kit: profile pictures, launch posts (1080x1350), stories and reel covers (1080x1920), highlight covers."""
-import json, os, subprocess
+import json, os, subprocess, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = '/home/user/Jordanian-cards'
 OUT = os.path.join(REPO, 'brand', 'social')
@@ -77,6 +77,10 @@ post('play-now', 'night', f'''<div class="band" style="top:0"></div>
 <div style="position:absolute;top:120px;left:0;right:0;text-align:center;display:grid;gap:22px"><h1 style="font-size:110px">يلا نلعبها</h1><p>مجانية · بدون حساب · بتشتغل بدون إنترنت</p>
 <span class="chip" style="justify-self:center;font-size:40px">الرابط بالبايو 🔗</span></div>
 <img class="masc" src="{M('yay')}" style="width:600px;bottom:120px;left:50%;transform:translateX(-50%)">{foot('night', False)}''')
+post('one-month', 'red', f'''<div class="band dark" style="top:0"></div>
+<div style="position:absolute;top:120px;left:0;right:0;text-align:center;display:grid;gap:16px"><span class="chip" style="justify-self:center;background:#fff8ee;color:#b5121b">شهر على ولا كلمة 🎉</span><h1 style="font-size:120px">شكراً إلكم</h1>
+<p style="color:#ffd9d3">على كل سهرة، كل ضحكة، وكل بطاقة اقترحتوها</p></div>
+<img class="masc" src="{M('love')}" style="width:700px;bottom:100px;left:50%;transform:translateX(-50%)">{foot('red', False)}''')
 
 # ---------- stories (1080x1920; keep the top 250px and bottom 300px clear) ----------
 S = []
@@ -99,6 +103,14 @@ story('this-or-that', 'cream', f'''<div style="position:absolute;top:300px;left:
 story('new-card-drop', 'night', f'''<div style="position:absolute;top:300px;left:0;right:0;text-align:center;display:grid;gap:18px"><span class="chip" style="justify-self:center">بطاقة جديدة 🎉</span><h2>انضافت للعبة</h2></div>
 <div class="card" style="position:absolute;top:640px;left:140px;right:140px;height:620px"><b>مسخّن</b><span>Msakhan</span></div>
 <p style="position:absolute;bottom:340px;left:0;right:0;text-align:center">اقتراح: الاسم هون 🙏</p>''')
+story('thank-you', 'red', f'''<div style="position:absolute;top:300px;left:0;right:0;text-align:center;display:grid;gap:22px"><h1 style="font-size:116px">أول ليلة</h1><p style="color:#ffd9d3">شكراً إلكم 🙏 كمّلوا لعب وشاركونا النتيجة</p></div>
+<img class="masc" src="{M('yay')}" style="width:620px;top:700px;left:50%;transform:translateX(-50%)">''')
+story('thursday-night', 'night', f'''<div style="position:absolute;top:300px;left:0;right:0;text-align:center;display:grid;gap:22px"><span class="chip" style="justify-self:center">الخميس 🌙</span><h1 style="font-size:104px">شو بتلعبوا الليلة؟</h1></div>
+<img class="masc" src="{M('wink')}" style="width:520px;top:720px;left:50%;transform:translateX(-50%)">
+<div style="position:absolute;bottom:330px;left:120px;right:120px;height:240px;border:5px dashed #b5a28a;border-radius:40px;display:grid;place-items:center;font:800 40px Cairo;color:#b5a28a">ضيفوا ستيكر «تصويت» هون</div>''')
+story('install', 'cream', f'''<div style="position:absolute;top:290px;right:90px;left:90px;display:grid;gap:18px"><h1 style="font-size:96px">ثبّتها على جوالك</h1><p>وبتشتغل زي التطبيق، حتى بدون إنترنت.</p></div>
+<div style="position:absolute;top:720px;left:90px;right:90px;display:grid;gap:30px">{''.join(f'<div style="background:#fbf6ec;border:3px dashed #c7b08a;border-radius:34px;padding:30px 36px;display:grid;gap:8px"><h2 style="font-size:52px">{t}</h2><p style="font-size:36px">{d}</p></div>' for t, d in (('أندرويد', 'افتحوا walakelmeh.com واكبسوا «ثبّتها على جوالك»'), ('آيفون', 'من Safari: زر المشاركة ⬆️ ثم «إضافة إلى الشاشة الرئيسية»')))}</div>
+<img class="masc" src="{M('card')}" style="width:340px;bottom:300px;left:70px">''')
 
 # ---------- reel / TikTok covers (1080x1920; title in the middle third) ----------
 R = []
@@ -130,6 +142,8 @@ def render(items, sub):
         open(f, 'w', encoding='utf-8').write(html)
         jobs.append({'src': f, 'out': os.path.join(d, name + '.png'), 'w': w, 'h': h})
     return jobs
+ONLY = set(sys.argv[1:])  # optional: render just these names, e.g. post-10-one-month
+P, S, R, X = ([i for i in L if not ONLY or i[0] in ONLY] for L in (P, S, R, X))
 jobs = render(P, 'posts') + render(S, 'stories') + render(R, 'reel-covers') + render(X, 'profile')
 json.dump(jobs, open(os.path.join(HERE, 'jobs.json'), 'w'))
 open(os.path.join(HERE, 'render.cjs'), 'w').write('''const { chromium } = require('/opt/node22/lib/node_modules/playwright');
