@@ -1,7 +1,11 @@
 """All website copy, in Arabic and English. One entry per string: {'ar': ..., 'en': ...}."""
 
-SITE = 'https://walakelmeh.com'           # final domain (not live yet)
+SITE = 'https://walakelmeh.com'
 CONTACT = 'hello@walakelmeh.com'
+# Official accounts: linked in the footer and in the Organization's sameAs. Add TikTok here once it exists.
+SOCIAL = {'Instagram': 'https://www.instagram.com/walakelmeh/'}
+# Cookie-free page and click counts (walakelmeh.goatcounter.com). Empty turns them off.
+GOATCOUNTER = 'walakelmeh'
 
 CATEGORIES = [  # id, Arabic, English, cards
     ('screen', 'أفلام ومسلسلات', 'Movies & TV', 40),
