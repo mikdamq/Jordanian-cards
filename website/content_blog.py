@@ -58,7 +58,7 @@ POSTS = [
  {
   'slug': 'how-to-play-charades-in-arabic',
   'date': '2026-10-24', 'mood': 'shh',
-  'title': {'ar': 'كيف تلعب لعبة التمثيل (Charades) بالعربي؟ القواعد والإشارات', 'en': 'How to Play Charades in Arabic: Rules, Signals and Tips'},
+  'title': {'ar': 'كيف تلعب التمثيل (Charades) بالعربي؟ القواعد والإشارات', 'en': 'Charades in Arabic: Rules, Signals and Tips'},
   'desc': {'ar': 'دليل لعبة التمثيل بالعربي: القواعد الأساسية، إشارات التمثيل المعروفة، كيف تختار الكلمات، وأفكار تخلّي اللعبة أحلى مع العيلة والصحاب.',
            'en': 'A guide to playing charades in Arabic: the basic rules, standard signals, choosing words, and ideas to make it more fun with family and friends.'},
   'excerpt': {'ar': 'القواعد، الإشارات، والكلمات: كل اللي بتحتاجه لتلعبوا تمثيل بالعربي الليلة.', 'en': 'Rules, signals and words: everything you need to play charades in Arabic tonight.'},

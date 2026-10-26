@@ -3,7 +3,7 @@ import os, re
 HERE = os.path.dirname(os.path.abspath(__file__))
 
 C = {
-  'index_title': {'ar': 'فئات ولا كلمة: ٥١٠ بطاقة تمثيل أردنية بـ١٦ فئة', 'en': 'Wala Kelmeh Categories: 510 Jordanian Charades Cards in 16 Categories'},
+  'index_title': {'ar': 'فئات ولا كلمة: ٥١٠ بطاقة تمثيل أردنية بـ١٦ فئة', 'en': '510 Jordanian Charades Cards in 16 Categories | Wala Kelmeh'},
   'index_desc': {'ar': 'تصفّح فئات لعبة ولا كلمة: أكل أردني، أماكن، أفلام، أعراس، رمضان، نوستالجيا التسعينات وغيرها. شوف أمثلة من البطاقات واختار فئتك.',
                  'en': 'Browse the Wala Kelmeh categories: Jordanian food, places, movies, weddings, Ramadan, 90s nostalgia and more. See sample cards and pick your favourites.'},
   'index_crumb': {'ar': 'الفئات', 'en': 'Categories'},
@@ -84,8 +84,46 @@ def load_cards():
         out[m.group(1)] = [(a, b, int(c)) for a, b, c in re.findall(r"\['([^']*)',\s*'([^']*)',\s*(\d)\]", m.group(2))]
     return out
 
-def samples(cards, n=8):
+def samples(cards, n=12):
     """The first easy cards, topped up with medium ones if a category has fewer easy cards."""
     easy = [c for c in cards if c[2] == 1]
     med = [c for c in cards if c[2] == 2]
     return (easy + med)[:n]
+
+# «كيف تمثّلوا هالفئة؟»: three acting tips per category, shown on its page (unique, useful text
+# that also answers "how do you act out …?" questions).
+TIPS_H = {'ar': 'كيف تمثّلوا هالفئة؟', 'en': 'How to act these cards'}
+TIPS = {
+  'screen': (['ابدأ بإشارة الفيلم (لفّ إيدك كأنك بتصوّر بكاميرا قديمة) أو المسلسل (ارسم شاشة بإيديك).', 'مثّل أشهر مشهد أو حركة للبطل، مش القصة كلها.', 'للكرتون، قلّد مشية الشخصية أو حركتها المشهورة.'],
+             ['Start with the film signal (crank an old camera) or the TV signal (draw a screen with your hands).', 'Act the most famous scene or the hero’s signature move, not the whole plot.', 'For cartoons, copy the character’s walk or trademark gesture.']),
+  'food': (['مثّل كيف بتنوكل: المنسف بالإيد، الكنافة بتمطّ، الفلافل بتنزل عالزيت.', 'إذا الأكلة صعبة، اطبخها قدّامهم خطوة خطوة.', 'وجّه فريقك على المكوّن الأشهر أوّل: رز، جبنة، حمص.'],
+           ['Act how it’s eaten: mansaf by hand, stretchy knafeh, falafel dropping into the fryer.', 'If the dish is tricky, cook it in front of them step by step.', 'Point your team to the best-known ingredient first: rice, cheese, chickpeas.']),
+  'places': (['ارسم شكل المكان بإيديك: القلعة، البحر، المدرّج.', 'مثّل شو الناس بتعمل هناك: تطفي عالبحر الميت، تطلع درج القلعة.', 'قسّم الاسم المركّب لكلمات، ومثّل كل كلمة لحال.'],
+             ['Draw the place’s shape with your hands: a castle, the sea, the amphitheatre.', 'Act what people do there: floating in the Dead Sea, climbing the Citadel steps.', 'Split two-word names and act each word on its own.']),
+  'life': (['هاي مواقف، فمثّلها كمشهد قصير: مين موجود وشو بيصير.', 'ركّز على اللحظة اللي الكل بيعرفها، مثل زمّور السيارة أو رنّة جوال الماما.', 'خلّي فريقك يحزر الموقف، مش الكلمات بالحرف.'],
+           ['These are moments, so act them as a short scene: who’s there and what happens.', 'Focus on the bit everyone recognises, like the car horn or mum’s ringtone.', 'Let your team guess the situation, not the exact words.']),
+  'sayings': (['عدّ كلمات المثل على أصابعك أوّل.', 'مثّل كل كلمة لحال، أو مثّل الموقف اللي بينقال فيه المثل.', 'لما فريقك يقرّب، أشّر بإيدك «كمّل».'],
+              ['Count the words on your fingers first.', 'Act each word, or act the situation where people say it.', 'When your team gets close, wave “keep going”.']),
+  'heritage': (['مثّل كيف الغرض بينستعمل: الدلة بتصب القهوة، المهباش بيدق، الشماغ بينلف.', 'إذا كان أداة، ارسم شكلها بالهوا.', 'الجدّات بيعرفوا أغراض التراث أسرع، فخلّوا وحدة بفريقكم.'],
+               ['Act how the object is used: pouring from the dallah, pounding with the mihbash, wrapping the shemagh.', 'If it’s a tool, trace its shape in the air.', 'Grandparents spot heritage items fastest, so get one on your team.']),
+  'fun': (['مثّل الحركة الأشهر بالرياضة: ضربة الجزاء، رمية السلة.', 'للغنا والفن، مثّل الآلة كأنك بتعزف عليها.', 'للاعبين والفنانين المشهورين، قلّد حركتهم المعروفة.'],
+          ['Act the sport’s signature move: a penalty kick, a basketball shot.', 'For music and the arts, mime playing the instrument.', 'For famous players and artists, copy their trademark gesture.']),
+  'animals': (['مشية الحيوان أحسن تلميح: الجمل بيتمختر، البطريق بيتهزهز.', 'استعمل إيديك للأذان أو الذيل أو المنقار.', 'وممنوع الأصوات! الحركة بس.'],
+              ['The walk is your best clue: a camel’s sway, a penguin’s waddle.', 'Use your hands for ears, a tail or a beak.', 'And no animal noises: only movement is allowed.']),
+  'jobs': (['مثّل أداة المهنة: سمّاعة الدكتور، مقص الحلاق، طبشورة الأستاذ.', 'مثّل ثانيتين من يوم شغلهم.', 'إذا علقت، مثّل المكان اللي بيشتغلوا فيه.'],
+           ['Act the tool of the trade: a doctor’s stethoscope, the barber’s scissors, a teacher’s chalk.', 'Show two seconds of their working day.', 'Stuck? Act the place where they work.']),
+  'office': (['مواقف شغل الكل عاشها: الاجتماع اللي ما بيخلص، إيميل «رد على الكل»، استراحة القهوة.', 'مثّل ردة فعلك أكثر من الموقف نفسه.', 'ممتازة لسهرات الشركات وفعاليات الفرق.'],
+             ['Office moments everyone has lived: the endless meeting, the reply-all email, the coffee break.', 'Act your reaction more than the moment itself.', 'Great for company nights and team events.']),
+  'weddings': (['مثّل الطقس الأشهر: الدبكة، الزفّة، تقطيع الكيك، الجاهة وهي بتطلب.', 'اعمل حالك لابس الثوب أو البدلة.', 'صفّق كأنك بالعرس، بس بدون صوت!'],
+               ['Act the best-known ritual: the dabke, the zaffeh, cutting the cake, the jaha asking for the bride’s hand.', 'Pretend you’re wearing the thobe or the suit.', 'Clap along like you’re at the wedding, silently!']),
+  'nineties': (['رجّع فريقك للتسعينات: الأتاري، لفّ شريط الكاسيت بقلم، الكاميرا أبو الفيلم.', 'مثّل كيف كنا نستعمل الغرض، لأنه الجيل الجديد يمكن ما شافه.', 'هاي البطاقات بتضحّك الأهل أكثر من الصغار.'],
+               ['Take your team back to the 90s: the Atari, rewinding a cassette with a pencil, the film camera.', 'Act how we used it, since younger players may never have seen one.', 'These cards make parents laugh more than kids.']),
+  'amman': (['مثّل شو بتعمل بالمنطقة: أكلة بوسط البلد، تسوّق، طلعة عالجبل.', 'ارسم الطلعات والنزلات بالهوا، عمّان كلها جبال.', 'قسّم الأسماء المركّبة (جبل، شارع، دوّار) ومثّل كل جزء.'],
+            ['Act what you do there: a meal downtown, shopping, a drive up the hill.', 'Draw the slopes in the air: Amman is all hills.', 'Split compound names (Jabal, Street, Circle) and act each part.']),
+  'ramadan': (['مثّل اللحظات: مدفع الإفطار، أوّل تمرة، المسحّراتي بطبلته، الفانوس.', 'للعيد، مثّل العيدية والمعمول والأواعي الجديدة.', 'فئة مثالية لسهرات رمضان مع العيلة.'],
+              ['Act the moments: the iftar cannon, the first date, the mesaharati with his drum, the lantern.', 'For Eid, act the eidiyeh money, ma’amoul and new clothes.', 'Perfect for family Ramadan nights.']),
+  'actions': (['هاي الفئة كلها حركات، فاعمل الفعل نفسه.', 'بلّش بطيء وواضح، وبعدين زيد.', 'مناسبة كتير للصغار، ولأوّل مرة بتلعبوا.'],
+              ['This category is pure mime: just do the action.', 'Start slow and clear, then build up.', 'Ideal for kids and for your first game.']),
+  'shabab': (['بطاقات أجرأ شوي عن حياة الشباب: الواسطة، آخر الشهر، الفويس نوت الطويل.', 'بالغ بالتمثيل، هون المبالغة هي النكتة.', 'الباكيت اختياري، فشغّلوه بس إذا السهرة بتناسب.'],
+             ['Slightly cheekier cards about young life: wasta, broke at the end of the month, the endless voice note.', 'Exaggerate: here over-acting is the joke.', 'The pack is optional, so switch it on only when the crowd suits it.']),
+}

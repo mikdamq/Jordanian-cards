@@ -140,7 +140,7 @@ def base_graph(c):
     site = {'@type': 'WebSite', '@id': SITE + '/#site', 'url': SITE + '/', 'name': 'ولا كلمة — Wala Kelmeh',
             'inLanguage': ['ar', 'en'], 'publisher': {'@id': SITE + '/#org'}}
     app = {'@type': ['SoftwareApplication', 'VideoGame'], '@id': SITE + '/#game', 'name': 'ولا كلمة — Wala Kelmeh',
-           'alternateName': 'Wala Kelmeh', 'description': t('about_p', lang), 'url': c.abs('home'),
+           'alternateName': 'Wala Kelmeh', 'description': t('about_p', lang), 'url': SITE + '/play/',
            'applicationCategory': 'GameApplication', 'genre': ['Party game', 'Charades', 'Word game'],
            'operatingSystem': 'Web, Android', 'inLanguage': 'ar', 'playMode': 'MultiPlayer',
            'numberOfPlayers': {'@type': 'QuantitativeValue', 'minValue': 2, 'maxValue': 12},
@@ -662,6 +662,9 @@ def category_page(cid):
 <section class="sec" aria-labelledby="samples-h"><div class="in">
   <div class="sec-head"><h2 id="samples-h">{L(CC.C['samples_h'])}</h2><p>{note}</p></div>
   <ul class="scards">{''.join(card_tile(a, b, lv, lang) for a, b, lv in sample)}</ul></div></section>
+<section class="sec tips" aria-labelledby="tips-h"><div class="in narrow">
+  <h2 id="tips-h">{CC.TIPS_H[lang]}</h2>
+  <ol class="tip-list">{''.join(f'<li>{x}</li>' for x in CC.TIPS[cid][0 if lang == 'ar' else 1])}</ol></div></section>
 {suggest_form(c, 'card', cid, name)}
 <section class="sec related" aria-labelledby="rel-h"><div class="in">
   <div class="sec-head"><h2 id="rel-h">{L(CC.C['related_h'])}</h2></div>
@@ -928,7 +931,7 @@ def post_page(p):
         posting = {'@type': 'BlogPosting', '@id': c.url + '#post', 'headline': p['title'][lang], 'description': desc, 'inLanguage': lang,
                    'datePublished': p['date'], 'dateModified': p['date'], 'wordCount': post_words(p, lang),
                    'author': {'@type': 'Organization', 'name': L('author'), '@id': SITE + '/#org'}, 'publisher': {'@id': SITE + '/#org'},
-                   'image': SITE + f'/assets/og-{lang}.png', 'mainEntityOfPage': c.url, 'isPartOf': {'@id': c.abs('blog') + '#blog'}}
+                   'image': SITE + f'/assets/og-{lang}.png', 'mainEntityOfPage': c.url, 'isPartOf': {'@type': 'Blog', '@id': c.abs('blog') + '#blog', 'url': c.abs('blog'), 'name': CB.B['h1'][lang]}}
         graph = base_graph(c) + [webpage(c, title, desc), breadcrumbs_ld(c, [(home_name, c.abs('home')), (L('crumb'), c.abs('blog')), (p['title'][lang], c.url)]), posting]
         h = head(c, title, desc, graph).replace('<meta property="og:type" content="website">', f'<meta property="og:type" content="article">\n<meta property="article:published_time" content="{p["date"]}">')
         return h + header(c) + '<main id="main">' + main + footer(c)
@@ -951,6 +954,7 @@ def sitemap():
                      f'    <xhtml:link rel="alternate" hreflang="ar" href="{ar}"/>\n'
                      f'    <xhtml:link rel="alternate" hreflang="en" href="{en}"/>\n'
                      f'    <xhtml:link rel="alternate" hreflang="x-default" href="{ar}"/>\n  </url>\n')
+    urls += f'  <url>\n    <loc>{SITE}/play/</loc>\n    <lastmod>{UPDATED}</lastmod>\n  </url>\n'   # the game (Arabic only)
     return ('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" '
             'xmlns:xhtml="http://www.w3.org/1999/xhtml">\n' + urls + '</urlset>\n')
 

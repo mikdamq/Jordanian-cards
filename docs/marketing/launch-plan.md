@@ -1,8 +1,9 @@
-# Launch plan: Monday 26 October 2026
+# Launch plan: first posts 26 October, public launch 5 November 2026
 
-The public launch of ولا كلمة. The website and game were already live at walakelmeh.com; post 1 went up on Instagram on Monday 26 October, so that's launch day. This plan covers the first month after it.
+The launch of ولا كلمة. The website and game are live at walakelmeh.com. Posting on Instagram started on Monday 26 October, so the account already has a few posts when people arrive for the public launch on Thursday 5 November. This plan covers the month from the first post.
 
-- **Launch:** Monday 26 October 2026. It was first planned for Thursday 5 November; we started early.
+- **First posts (soft start):** Monday 26 October 2026. Post 1 is up; a few posts and stories go out before the launch.
+- **Public launch:** Thursday 5 November 2026, 8 pm Amman time. That's when the launch crew, WhatsApp and the first video go out together.
 - **Budget:** zero. Everything here is organic.
 - **Team:** Mikdam alone, a few hours a week. The plan is sized for that: content is batched once a week and every reply is pre-written.
 - **Posts, stories and video ideas** are in the social kit (`docs/social/launch-plan.md`, graphics in `brand/social/`). This plan schedules them and adds everything around them.
@@ -46,11 +47,11 @@ Launch week is the exception, because it started on a Monday and the videos aren
 
 Post, story and reel-cover files are in `brand/social/`. Captions, hashtags and alt text for each one are in the social kit.
 
-### Week 1 · 26 Oct – 1 Nov: launch week
+### Week 1 · 26 Oct – 1 Nov: soft start
 
 | Day | Feed or video | Stories | Also |
 | --- | --- | --- | --- |
-| Mon 26 Oct | ✅ Post 1 `post-01-arrived` | Link sticker to walakelmeh.com, then «العبوها الليلة وشاركونا النتيجة» | WhatsApp status, then the launch message to the launch crew and family groups. Reply to every comment. |
+| Mon 26 Oct | ✅ Post 1 `post-01-arrived` | Link sticker to walakelmeh.com | Reply to every comment. Write the launch crew list (15–20 people) and send them the heads-up for 5 November. |
 | Tue 27 Oct | | `story-06-thank-you` | Pick 10 micro-creators and send the creator message. |
 | Wed 28 Oct | | `story-08-install` (then save it to the «كيف تلعب» highlight) | Pick 5 cafés and send the café message, or visit with a printed table tent. |
 | Thu 29 Oct | Post 2 `post-02-meet-shammogh` | `story-07-thursday-night` with a poll sticker | |
@@ -63,8 +64,8 @@ Post, story and reel-cover files are in `brand/social/`. Captions, hashtags and 
 | --- | --- | --- | --- |
 | Mon 2 Nov | | `story-03-suggest-a-card` with a link to the website form | |
 | Tue 3 Nov | Post 3 `post-03-how-it-works` | | |
-| Wed 4 Nov | | `story-04-this-or-that` with a poll sticker | Follow up with the cafés that didn't reply. |
-| Thu 5 Nov | **Video 1** «لما خالتك تمثّل منسف» 😂 with `reel-cover-01-auntie-mansaf` | `story-07-thursday-night` | |
+| Wed 4 Nov | | `story-04-this-or-that` with a poll sticker | Follow up with the cafés that didn't reply. Remind the launch crew: tomorrow at 8. |
+| Thu 5 Nov · **public launch** | 8 pm: **Video 1** «لما خالتك تمثّل منسف» 😂 with `reel-cover-01-auntie-mansaf` | `story-07-thursday-night`, then a link sticker with «العبوها الليلة وشاركونا النتيجة» | 8:10 pm: WhatsApp status, then the launch message to the launch crew and family groups. 8:30–10:30 pm: reply to everything. |
 | Fri 6 Nov | | | Community posts in 2 or 3 groups, with video 1 as the clip. |
 | Sat 7 Nov | Post 4 `post-04-card-mansaf` | | Reply to every «كيف بتمثّلوها» comment. |
 | Sun 8 Nov | | | Schedule week 3. Check the numbers. |

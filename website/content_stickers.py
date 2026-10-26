@@ -1,6 +1,6 @@
 """Shammogh stickers page."""
 S = {
-  'title': {'ar': 'ستيكرات شمّوغ لواتساب: ١٤ ستيكر أردني مجاني | ولا كلمة', 'en': 'Shammogh WhatsApp Stickers: 14 Free Jordanian Stickers | Wala Kelmeh'},
+  'title': {'ar': 'ستيكرات شمّوغ لواتساب: ١٤ ستيكر أردني مجاني | ولا كلمة', 'en': 'Shammogh: 14 Free Jordanian WhatsApp Stickers | Wala Kelmeh'},
   'desc': {'ar': 'حمّل ستيكرات شمّوغ، الشماغ اللي ما بقدر يسكت: ١٤ ستيكر أردني مجاني لواتساب، من «ششش… ولا كلمة!» لـ«نشامى!». مع طريقة الإضافة على آيفون وأندرويد.',
            'en': 'Download Shammogh, the shemagh who can’t stop talking: 14 free Jordanian WhatsApp stickers, from “Shh, not a word!” to “Nashama!”. Steps for iPhone and Android.'},
   'crumb': {'ar': 'ستيكرات شمّوغ', 'en': 'Shammogh stickers'},
