@@ -13,7 +13,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.join(HERE, '..')
 sys.path.insert(0, os.path.join(REPO, 'brand', 'tools'))
 
-from content import T, CATEGORIES, SITE, CONTACT, SOCIAL, GOATCOUNTER, TOTAL_CARDS, SUGGEST, SUGGEST_ENDPOINT
+from content import T, CATEGORIES, SITE, CONTACT, SOCIAL, GOATCOUNTER, GA_ID, CLARITY_ID, CONSENT, TOTAL_CARDS, SUGGEST, SUGGEST_ENDPOINT
 from logos import icon_C, xstitch, svg as raw_svg
 from lockups2 import horiz_ar, horiz_en
 from final import BR, CREAM, INK, RED, GOLD
@@ -243,6 +243,8 @@ def footer(c):
              (T['nav']['stickers'][lang], c.href('stickers')), (T['nav']['blog'][lang], c.href('blog')), (t('privacy', lang), c.href('privacy')), (t('contact', lang), f'"mailto:{CONTACT}"')]
     nav = ''.join(f'<a href={h}>{n}</a>' for n, h in links)
     nav += ''.join(f'<a href="{u}" rel="me noopener" target="_blank" lang="en" dir="ltr">{n}</a>' for n, u in SOCIAL.items())
+    if CONSENT_ON:
+        nav += f'<button type="button" class="foot-btn" data-consent-open>{CONSENT["settings"][lang]}</button>'
     return f'''</main>
 <div class="band" aria-hidden="true"></div>
 <footer class="foot"><div class="in">
@@ -252,6 +254,7 @@ def footer(c):
 </div></footer>
 {SITE_JS}
 {ANALYTICS}
+{consent_js(c)}
 {SUGGEST_JS if c.key.startswith('cat') or c.key in ('categories', 'cafes') else ''}
 </body>
 </html>'''
@@ -418,6 +421,66 @@ def suggest_form(c, kind, cid=None, cat_name=None):
       <p class="f-status" role="status" aria-live="polite" data-ok="{S('thanks')}" data-err="{S('error')}" data-mail-label="{S('by_email')}"></p>
     </form>
   </div></div></section>'''
+
+# Google Analytics and Clarity: a banner asks first, and the answer is shared with the game
+# (same origin, same "wk.consent" key). Off when neither ID is set, and in the preview.
+CONSENT_ON = bool(GA_ID or CLARITY_ID) and not PREVIEW
+
+def consent_js(c):
+    if not CONSENT_ON:
+        return ''
+    cfg = json.dumps({'ga': GA_ID, 'clarity': CLARITY_ID, 'privacyHref': c.href('privacy').strip('"'), 'privacyText': CONSENT['privacy'][c.lang],
+                      **{k: CONSENT[k][c.lang] for k in ('text', 'yes', 'no', 'label')}}, ensure_ascii=False)
+    return f"""<script>
+(function (cfg) {{
+  var KEY = 'wk.consent';
+  function get() {{ try {{ var v = JSON.parse(localStorage.getItem(KEY) || 'null'); return v && v.analytics; }} catch (e) {{ return null; }} }}
+  function inject(src) {{ var s = document.createElement('script'); s.async = true; s.src = src; document.head.appendChild(s); }}
+  function load() {{
+    if (cfg.ga && !window.gtag) {{
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function () {{ window.dataLayer.push(arguments); }};
+      gtag('js', new Date()); gtag('config', cfg.ga); inject('https://www.googletagmanager.com/gtag/js?id=' + cfg.ga);
+    }}
+    if (cfg.clarity && !window.clarity) {{
+      window.clarity = function () {{ (window.clarity.q = window.clarity.q || []).push(arguments); }};
+      inject('https://www.clarity.ms/tag/' + cfg.clarity); window.clarity('consent');
+    }}
+  }}
+  function revoke() {{
+    if (!window.gtag && !window.clarity) return;
+    try {{ window.clarity && window.clarity('consent', false); }} catch (e) {{}}
+    document.cookie.split(';').forEach(function (c) {{
+      var n = c.split('=')[0].trim();
+      if (/^(_ga|_gid|_gat|_clck|_clsk|CLID|ANONCHK|MR|MUID|SM)/.test(n)) ['', '; domain=' + location.hostname, '; domain=.' + location.hostname.replace(/^www\\./, '')].forEach(function (d) {{
+        document.cookie = n + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/' + d; }});
+    }});
+    location.reload();
+  }}
+  function answer(granted) {{
+    try {{ localStorage.setItem(KEY, JSON.stringify({{ analytics: granted ? 'granted' : 'denied', at: Date.now() }})); }} catch (e) {{}}
+    close(); if (granted) load(); else revoke();
+  }}
+  var box = null;
+  function close() {{ if (box) {{ box.remove(); box = null; }} }}
+  function open() {{
+    if (box) return;
+    box = document.createElement('div'); box.className = 'consent'; box.setAttribute('role', 'region'); box.setAttribute('aria-label', cfg.label);
+    var p = document.createElement('p'); p.textContent = cfg.text + ' ';
+    var link = document.createElement('a'); link.href = cfg.privacyHref; link.textContent = cfg.privacyText;
+    p.appendChild(link);
+    var row = document.createElement('div'); row.className = 'consent-btns';
+    [[cfg.yes, true, 'btn btn-red'], [cfg.no, false, 'btn btn-ghost']].forEach(function (b) {{
+      var el = document.createElement('button'); el.type = 'button'; el.className = b[2]; el.textContent = b[0];
+      el.addEventListener('click', function () {{ answer(b[1]); }}); row.appendChild(el);
+    }});
+    box.appendChild(p); box.appendChild(row); document.body.appendChild(box);
+  }}
+  document.addEventListener('click', function (e) {{ if (e.target.closest('[data-consent-open]')) open(); }});
+  var v = get();
+  if (v === 'granted') load(); else if (v !== 'denied') open();
+}})({cfg});
+</script>"""
 
 # GoatCounter: cookie-free, no personal data. data-goatcounter-click on links counts those clicks too.
 ANALYTICS = '' if PREVIEW or not GOATCOUNTER else f'<script data-goatcounter="https://{GOATCOUNTER}.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>'

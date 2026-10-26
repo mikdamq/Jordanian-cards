@@ -1,4 +1,6 @@
-import { CategoryIcon, InstallButton, Logo, Screen, TatreezBand, ThemeToggle } from '../components';
+import { useState } from 'react';
+import { CategoryIcon, ConsentBanner, InstallButton, Logo, Screen, TatreezBand, ThemeToggle } from '../components';
+import { consentNeeded } from '../lib/consent';
 import { CARDS, CATEGORIES } from '../data/cards';
 import type { ThemePref } from '../hooks';
 import { CONTACT_EMAIL } from '../config';
@@ -11,6 +13,7 @@ interface Props {
 }
 
 export function Home({ onPlay, onHowTo, theme, onTheme }: Props) {
+  const [askAgain, setAskAgain] = useState(false);
   return (
     <Screen className="home">
       <div className="home__fabric" aria-hidden>
@@ -50,8 +53,17 @@ export function Home({ onPlay, onHowTo, theme, onTheme }: Props) {
           <a href={`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent('ولا كلمة — ملاحظات')}`}>ملاحظات</a>
           <span aria-hidden>·</span>
           <a href="privacy.html">الخصوصية</a>
+          {consentNeeded && (
+            <>
+              <span aria-hidden>·</span>
+              <button className="link-btn" onClick={() => setAskAgain(true)}>
+                الإحصائيات
+              </button>
+            </>
+          )}
         </nav>
       </div>
+      <ConsentBanner forceOpen={askAgain} onDone={() => setAskAgain(false)} />
     </Screen>
   );
 }

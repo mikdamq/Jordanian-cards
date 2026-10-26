@@ -2125,3 +2125,38 @@ h2 {
   line-height: 1;
   cursor: pointer;
 }
+
+/* consent banner (only when Google Analytics or Clarity is configured) */
+.consent {
+  position: fixed;
+  inset-inline: 12px;
+  bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  z-index: 40;
+  max-width: 520px;
+  margin-inline: auto;
+  display: grid;
+  gap: 12px;
+  padding: 16px 18px;
+  border-radius: 20px;
+  background: var(--surface);
+  border: 2px solid var(--line);
+  box-shadow: var(--shadow);
+  animation: fade 0.25s ease-out;
+}
+
+.consent p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+.consent__btns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.consent a {
+  color: var(--red-text);
+  font-weight: 700;
+}

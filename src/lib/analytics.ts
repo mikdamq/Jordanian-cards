@@ -1,8 +1,11 @@
 import { GOATCOUNTER_CODE } from '../config';
+import { loadOptional } from './consent';
 
 /**
- * Anonymous, cookie-free usage counts via GoatCounter. No personal data:
- * only page views and named game events such as "game-start/headsup".
+ * Usage counts. GoatCounter (anonymous, no cookies) always runs; Google Analytics and
+ * Microsoft Clarity get the same events once the player has agreed (see consent.ts).
+ * Events have a name and a few values, e.g. track('game_start', { mode: 'classic' }),
+ * which GoatCounter shows as the path "game-start/classic".
  */
 type GoatCounter = { count: (opts: { path: string; title?: string; event?: boolean }) => void };
 
@@ -15,8 +18,10 @@ declare global {
 let started = false;
 
 export function startAnalytics() {
-  if (started || !GOATCOUNTER_CODE) return;
+  if (started) return;
   started = true;
+  loadOptional();
+  if (!GOATCOUNTER_CODE) return;
   const s = document.createElement('script');
   s.async = true;
   s.src = 'https://gc.zgo.at/count.js';
@@ -24,11 +29,22 @@ export function startAnalytics() {
   document.head.appendChild(s);
 }
 
-export function track(event: string) {
-  if (!GOATCOUNTER_CODE) return;
+export function track(name: string, params: Record<string, string | number> = {}) {
+  const path = [name, ...Object.values(params)].join('/').replace(/_/g, '-');
+  // Each tool may be blocked (ad blockers, offline); the game never waits on them.
   try {
-    window.goatcounter?.count({ path: event, title: event, event: true });
+    if (GOATCOUNTER_CODE) window.goatcounter?.count({ path, title: path, event: true });
   } catch {
-    // Blocked by an ad blocker or offline: the game doesn't care.
+    /* ignore */
+  }
+  try {
+    window.gtag?.('event', name, params);
+  } catch {
+    /* ignore */
+  }
+  try {
+    window.clarity?.('event', name);
+  } catch {
+    /* ignore */
   }
 }

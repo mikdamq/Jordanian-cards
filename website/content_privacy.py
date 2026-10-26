@@ -1,5 +1,5 @@
 """Privacy policy for the game and the website."""
-UPDATED_AR, UPDATED_EN = '٢٣ تشرين الأول ٢٠٢٦', '23 October 2026'
+UPDATED_AR, UPDATED_EN = '٢٦ تشرين الأول ٢٠٢٦', '26 October 2026'
 PR = {
   'title': {'ar': 'سياسة الخصوصية | ولا كلمة', 'en': 'Privacy Policy | Wala Kelmeh'},
   'desc': {'ar': 'لعبة وموقع ولا كلمة ما بيطلبوا حساب وما بيجمعوا معلومات شخصية. اعرف شو بنخزّن على جهازك، وشو بيصير بالاقتراحات وطلبات الشراكة اللي بتبعتها.',
@@ -14,9 +14,10 @@ PR = {
       {'ar': 'إعدادات اللعبة: أسماء الفرق، الفئات، الوقت، عدد الجولات، والمظهر.', 'en': 'Game settings: team names, categories, timer, rounds and theme.'},
       {'ar': 'قائمة بالبطاقات اللي لعبتوها، عشان ما تتكرر.', 'en': 'A list of cards already played, so they don’t repeat.'},
       {'ar': 'هاي المعلومات بتضل بذاكرة المتصفح على جهازك بس، وما بتنبعت لأي مكان. بتقدر تمسحها من إعدادات المتصفح.', 'en': 'This stays in your browser’s storage on your device and is never sent anywhere. Clearing the site’s data in your browser removes it.'}]),
-    ('stats', {'ar': 'إحصائيات مجهولة', 'en': 'Anonymous statistics'}, [
-      {'ar': 'بنستعمل GoatCounter لعدّ الزيارات وأحداث عامة مثل «بلّشت لعبة» أو «انتهت لعبة» أو «تمت مشاركة النتيجة»، عشان نعرف شو بيحبّوا اللاعبين.', 'en': 'We use GoatCounter to count visits and general events such as “game started”, “game finished” or “result shared”, to learn what players enjoy.'},
-      {'ar': 'ما فيها كوكيز، ما بتحفظ عنوان IP، وما بتقدر تعرف مين إنت.', 'en': 'It uses no cookies, stores no IP addresses and cannot identify you.'}]),
+    ('stats', {'ar': 'الإحصائيات', 'en': 'Statistics'}, [
+      {'ar': 'بنستعمل GoatCounter لعدّ الزيارات وأحداث عامة مثل «بلّشت لعبة» و«الفئات اللي انختارت» و«البطاقات اللي انتخطّت» و«تمت مشاركة النتيجة»، عشان نعرف شو بيحبّوا اللاعبين. ما فيها كوكيز، ما بتحفظ عنوان IP، وما بتقدر تعرف مين إنت.', 'en': 'We use GoatCounter to count visits and general events such as “game started”, “categories chosen”, “cards skipped” or “result shared”, to learn what players enjoy. It uses no cookies, stores no IP addresses and cannot identify you.'},
+      {'ar': 'إذا وافقت على شريط الإحصائيات، بنشغّل كمان Google Analytics و Microsoft Clarity. Google Analytics بيعدّ الزيارات ونفس الأحداث، و Clarity بيسجّل كيف بتنستعمل الصفحات (الكبسات والتمرير) بدون ما يعرف مين إنت، وأي إشي بتكتبه بالحقول بيضل مخفي. هالأدوات بتحط كوكيز، وما بتشتغل أبداً بدون موافقتك.', 'en': 'If you agree on the analytics banner, we also run Google Analytics and Microsoft Clarity. Google Analytics counts visits and the same events; Clarity records how pages are used (taps and scrolling) without identifying you, and anything typed into fields stays hidden. These tools set cookies, and they never run without your agreement.'},
+      {'ar': 'بتقدر تغيّر رأيك وقت ما بدك: «إعدادات الإحصائيات» بأسفل الموقع، أو «الإحصائيات» بالصفحة الرئيسية للعبة.', 'en': 'You can change your mind any time: “Analytics settings” at the bottom of the site, or «الإحصائيات» on the game’s home screen.'}]),
     ('sensors', {'ar': 'الحساسات والصوت', 'en': 'Motion sensor and sound'}, [
       {'ar': 'بوضع «عالجبين» اللعبة بتقرأ حساس الحركة عشان تعرف إذا نزّلت أو رفعت الجوال. القراءات بتنستعمل لحظياً على جهازك، وما بتنحفظ ولا بتنبعت.', 'en': 'In Heads Up mode the game reads the motion sensor to detect tilting. Readings are used instantly on your device and are never stored or sent.'},
       {'ar': 'اللعبة ما بتستعمل المايكروفون ولا الكاميرا ولا الموقع.', 'en': 'The game never uses the microphone, camera or location.'}]),
@@ -30,7 +31,7 @@ PR = {
       {'ar': 'بنحتفظ بطلبات الشراكة قد ما بنحتاجها للتواصل، وبتقدر تطلب نمسحها بأي وقت.', 'en': 'We keep partnership requests only as long as needed to talk with you, and you can ask us to delete them at any time.'}]),
     ('third', {'ar': 'خدمات خارجية', 'en': 'Third-party services'}, [
       {'ar': 'الخطوط (Cairo و Almarai) بتنحمّل من Google Fonts، اللي ممكن تشوف عنوان IP تبعك وقت تحميل الصفحة.', 'en': 'Fonts (Cairo and Almarai) load from Google Fonts, which can see your IP address when the page loads.'},
-      {'ar': 'GoatCounter للإحصائيات المجهولة بس. ما في إعلانات ولا أدوات تتبّع إعلانية.', 'en': 'GoatCounter for anonymous statistics, and nothing else. There are no ads and no advertising trackers.'}]),
+      {'ar': 'GoatCounter للإحصائيات المجهولة دايماً، و Google Analytics و Microsoft Clarity بس بموافقتك. ما في إعلانات.', 'en': 'GoatCounter for anonymous statistics, always; Google Analytics and Microsoft Clarity only with your agreement. There are no ads.'}]),
     ('children', {'ar': 'الأطفال', 'en': 'Children'}, [
       {'ar': 'اللعبة مناسبة للعيلة وما بتجمع معلومات من حدا. إذا عمرك أقل من ١٣ سنة، اطلب من أهلك قبل ما تبعت اقتراح باسمك.', 'en': 'The game is family-friendly and collects no information from anyone. If you’re under 13, ask a parent before sending a suggestion with your name.'}]),
     ('rights', {'ar': 'حقوقك', 'en': 'Your rights'}, [

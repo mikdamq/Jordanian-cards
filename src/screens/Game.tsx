@@ -54,8 +54,18 @@ export function GameView({ settings, onExit, onReplay }: Props) {
   const [g, dispatch] = useReducer(reduce, settings, (s) => newGame(s, buildDeck(s.categories, s.shabab)));
   useWakeLock(g.phase !== 'final');
 
+  const startedAt = useRef(Date.now());
   useEffect(() => {
-    track(`game-start/${settings.mode}/${sides(settings).length}-${settings.mode === 'fastest' ? 'players' : 'teams'}/${settings.rounds}-rounds`);
+    const who = settings.mode === 'fastest' ? 'players' : 'teams';
+    track('game_start', {
+      mode: settings.mode,
+      sides: `${sides(settings).length}-${who}`,
+      rounds: `${settings.rounds}-rounds`,
+      seconds: `${settings.seconds}s`,
+    });
+    // Which categories people choose is the clearest sign of what they enjoy.
+    for (const category of settings.categories) track('category_pick', { category });
+    if (settings.shabab) track('category_pick', { category: 'shabab' });
   }, [settings]);
 
   useEffect(() => {
@@ -64,7 +74,11 @@ export function GameView({ settings, onExit, onReplay }: Props) {
   useEffect(() => leaveLandscape, []);
 
   const exit = () => {
-    if (g.phase === 'final' || window.confirm('بدك تطلع من اللعبة؟ النتيجة رح تروح.')) onExit();
+    if (g.phase === 'final') return onExit();
+    if (window.confirm('بدك تطلع من اللعبة؟ النتيجة رح تروح.')) {
+      track('game_quit', { mode: g.settings.mode, round: `round-${g.round}` });
+      onExit();
+    }
   };
 
   const body = (() => {
@@ -81,7 +95,7 @@ export function GameView({ settings, onExit, onReplay }: Props) {
       case 'scores':
         return <Scores g={g} dispatch={dispatch} />;
       case 'final':
-        return <Final g={g} onHome={onExit} onReplay={onReplay} />;
+        return <Final g={g} startedAt={startedAt.current} onHome={onExit} onReplay={onReplay} />;
     }
   })();
 
@@ -354,6 +368,9 @@ function PlayHeadsUp({ g, dispatch }: { g: Game; dispatch: Dispatch }) {
 function Summary({ g, dispatch }: { g: Game; dispatch: Dispatch }) {
   const confirm = () => {
     markSeen(g.turn.map((r) => r.card.id));
+    // Skips after the team's corrections point to the cards that are too hard or unclear.
+    for (const r of g.turn) if (!r.correct) track('card_skip', { card: r.card.id });
+    track('turn_end', { mode: g.settings.mode, correct: `${turnScore(g)}-correct` });
     dispatch({ type: 'confirmTurn' });
   };
   const outOfCards = g.deckPos >= g.deck.length;
@@ -448,7 +465,7 @@ function Scores({ g, dispatch }: { g: Game; dispatch: Dispatch }) {
   );
 }
 
-function Final({ g, onHome, onReplay }: { g: Game; onHome: () => void; onReplay: () => void }) {
+function Final({ g, startedAt, onHome, onReplay }: { g: Game; startedAt: number; onHome: () => void; onReplay: () => void }) {
   const top = winners(g.scores);
   const tie = top.length > 1;
   const endedEarly = !isLastTurn(g);
@@ -458,16 +475,16 @@ function Final({ g, onHome, onReplay }: { g: Game; onHome: () => void; onReplay:
 
   useEffect(() => {
     feedback.celebrate();
-    track(`game-end/${g.settings.mode}`);
-  }, [g.settings.mode]);
+    track('game_end', { mode: g.settings.mode, length: `${Math.max(1, Math.round((Date.now() - startedAt) / 60000))}-min` });
+  }, [g.settings.mode, startedAt]);
 
   const share = async () => {
     setSharing(true);
     try {
       const how = await shareResult({ teams: sides(g.settings), scores: g.scores, winners: top });
-      track(`share/${how}`);
+      track('share', { how });
     } catch {
-      track('share/failed');
+      track('share', { how: 'failed' });
     } finally {
       setSharing(false);
     }

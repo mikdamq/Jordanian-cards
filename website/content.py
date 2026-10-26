@@ -4,8 +4,23 @@ SITE = 'https://walakelmeh.com'
 CONTACT = 'hello@walakelmeh.com'
 # Official accounts: linked in the footer and in the Organization's sameAs. Add TikTok here once it exists.
 SOCIAL = {'Instagram': 'https://www.instagram.com/walakelmeh/'}
-# Cookie-free page and click counts (walakelmeh.goatcounter.com). Empty turns them off.
-GOATCOUNTER = 'walakelmeh'
+# Analytics IDs live in the game's src/config.ts, so the site and the game always match:
+# GoatCounter (cookie-free, always on), and Google Analytics + Microsoft Clarity (after consent).
+def _config(name):
+    import os, re
+    src = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'src', 'config.ts'), encoding='utf-8').read()
+    m = re.search(r"export const %s = '([^']*)'" % name, src)
+    return m.group(1) if m else ''
+GOATCOUNTER, GA_ID, CLARITY_ID = _config('GOATCOUNTER_CODE'), _config('GA_ID'), _config('CLARITY_ID')
+CONSENT = {
+  'text': {'ar': 'بنستعمل Google Analytics و Microsoft Clarity لنفهم كيف بتنلعب ولا كلمة ونحسّن الموقع. بنشغّلهم بس إذا وافقت، وبتقدر تغيّر رأيك وقت ما بدك.',
+           'en': 'We use Google Analytics and Microsoft Clarity to understand how Wala Kelmeh is played and improve the site. They only run if you agree, and you can change your mind any time.'},
+  'yes': {'ar': 'تمام', 'en': 'OK'},
+  'no': {'ar': 'لا، شكراً', 'en': 'No thanks'},
+  'privacy': {'ar': 'الخصوصية', 'en': 'Privacy'},
+  'settings': {'ar': 'إعدادات الإحصائيات', 'en': 'Analytics settings'},
+  'label': {'ar': 'الإحصائيات', 'en': 'Analytics'},
+}
 
 CATEGORIES = [  # id, Arabic, English, cards
     ('screen', 'أفلام ومسلسلات', 'Movies & TV', 40),

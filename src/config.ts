@@ -8,3 +8,11 @@ export const CONTACT_EMAIL = 'hello@walakelmeh.com';
  * off until this is set.
  */
 export const GOATCOUNTER_CODE = 'walakelmeh';
+
+/**
+ * Optional analytics that load only after the player agrees on the consent banner.
+ * Google Analytics 4 measurement ID ("G-…") and Microsoft Clarity project ID.
+ * Empty turns the tool, and the banner, off. The website reads these too.
+ */
+export const GA_ID = '';
+export const CLARITY_ID = '';
