@@ -426,11 +426,17 @@ def suggest_form(c, kind, cid=None, cat_name=None):
 # (same origin, same "wk.consent" key). Off when neither ID is set, and in the preview.
 CONSENT_ON = bool(GA_ID or CLARITY_ID) and not PREVIEW
 
+def consent_text(lang):
+    tools = [n for n, on in (('Google Analytics', GA_ID), ('Microsoft Clarity', CLARITY_ID)) if on]
+    many = len(tools) > 1
+    return CONSENT['text'][lang].format(tools=(' و ' if lang == 'ar' else ' and ').join(tools),
+                                        them='بنشغّلهم' if many else 'بنشغّله', they='They only run' if many else 'It only runs')
+
 def consent_js(c):
     if not CONSENT_ON:
         return ''
     cfg = json.dumps({'ga': GA_ID, 'clarity': CLARITY_ID, 'privacyHref': c.href('privacy').strip('"'), 'privacyText': CONSENT['privacy'][c.lang],
-                      **{k: CONSENT[k][c.lang] for k in ('text', 'yes', 'no', 'label')}}, ensure_ascii=False)
+                      'text': consent_text(c.lang), **{k: CONSENT[k][c.lang] for k in ('yes', 'no', 'label')}}, ensure_ascii=False)
     return f"""<script>
 (function (cfg) {{
   var KEY = 'wk.consent';

@@ -14,5 +14,5 @@ export const GOATCOUNTER_CODE = 'walakelmeh';
  * Google Analytics 4 measurement ID ("G-…") and Microsoft Clarity project ID.
  * Empty turns the tool, and the banner, off. The website reads these too.
  */
-export const GA_ID = '';
+export const GA_ID = 'G-QGHEHC3BEF';
 export const CLARITY_ID = '';

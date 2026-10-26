@@ -13,8 +13,9 @@ def _config(name):
     return m.group(1) if m else ''
 GOATCOUNTER, GA_ID, CLARITY_ID = _config('GOATCOUNTER_CODE'), _config('GA_ID'), _config('CLARITY_ID')
 CONSENT = {
-  'text': {'ar': 'بنستعمل Google Analytics و Microsoft Clarity لنفهم كيف بتنلعب ولا كلمة ونحسّن الموقع. بنشغّلهم بس إذا وافقت، وبتقدر تغيّر رأيك وقت ما بدك.',
-           'en': 'We use Google Analytics and Microsoft Clarity to understand how Wala Kelmeh is played and improve the site. They only run if you agree, and you can change your mind any time.'},
+  # {tools} lists only the tools switched on; {them}/{they} follow how many there are.
+  'text': {'ar': 'بنستعمل {tools} لنفهم كيف بتنلعب ولا كلمة ونحسّن الموقع. {them} بس إذا وافقت، وبتقدر تغيّر رأيك وقت ما بدك.',
+           'en': 'We use {tools} to understand how Wala Kelmeh is played and improve the site. {they} if you agree, and you can change your mind any time.'},
   'yes': {'ar': 'تمام', 'en': 'OK'},
   'no': {'ar': 'لا، شكراً', 'en': 'No thanks'},
   'privacy': {'ar': 'الخصوصية', 'en': 'Privacy'},
