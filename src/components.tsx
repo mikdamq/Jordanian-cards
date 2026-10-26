@@ -4,7 +4,7 @@ import { categoryById, type Card } from './data/cards';
 import { useFitText, useInstallMode, type ThemePref } from './hooks';
 import { askedToInstall, inviteSnoozed, promptInstall, snoozeInvite, type InstallMode } from './lib/install';
 import { track } from './lib/analytics';
-import { consentNeeded, getConsent, setConsent } from './lib/consent';
+import { consentNeeded, consentPlural, consentToolsAr, getConsent, setConsent } from './lib/consent';
 
 const THREADS: Thread[] = ['r', 'g', 'y', 'k', 'b'];
 
@@ -525,8 +525,8 @@ export function ConsentBanner({ forceOpen = false, onDone }: { forceOpen?: boole
   return (
     <div className="consent" role="region" aria-label="الإحصائيات">
       <p>
-        بنستعمل Google Analytics و Microsoft Clarity لنفهم كيف بتنلعب ولا كلمة ونحسّنها. بنشغّلهم بس إذا وافقت، وبتقدر تغيّر رأيك
-        وقت ما بدك. <a href="privacy.html">الخصوصية</a>
+        بنستعمل {consentToolsAr} لنفهم كيف بتنلعب ولا كلمة ونحسّنها. {consentPlural ? 'بنشغّلهم' : 'بنشغّله'} بس إذا وافقت، وبتقدر
+        تغيّر رأيك وقت ما بدك. <a href="privacy.html">الخصوصية</a>
       </p>
       <div className="consent__btns">
         <button className="btn btn--primary" onClick={() => answer(true)}>

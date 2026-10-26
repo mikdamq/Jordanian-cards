@@ -9,6 +9,10 @@ export type Consent = 'granted' | 'denied' | null;
 
 const KEY = 'wk.consent';
 export const consentNeeded = Boolean(GA_ID || CLARITY_ID);
+/** The tools the banner names: only the ones switched on. */
+const tools = [GA_ID && 'Google Analytics', CLARITY_ID && 'Microsoft Clarity'].filter(Boolean);
+export const consentToolsAr = tools.join(' و ');
+export const consentPlural = tools.length > 1;
 
 type Gtag = (...args: unknown[]) => void;
 type Clarity = ((...args: unknown[]) => void) & { q?: unknown[] };
