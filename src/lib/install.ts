@@ -32,7 +32,7 @@ export function initInstall() {
   window.addEventListener('appinstalled', () => {
     deferred = null;
     save(KEY, { ...load(KEY, {}), installed: true });
-    track('install/installed');
+    track('install', { step: 'installed' });
     notify();
   });
   if (askedToInstall) history.replaceState(null, '', location.pathname + location.hash);
@@ -68,7 +68,7 @@ export async function promptInstall(): Promise<boolean> {
   deferred = null;
   await e.prompt();
   const { outcome } = await e.userChoice;
-  track(`install/prompt-${outcome}`);
+  track('install', { step: `prompt-${outcome}` });
   notify();
   return outcome === 'accepted';
 }

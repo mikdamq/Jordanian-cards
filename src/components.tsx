@@ -4,6 +4,7 @@ import { categoryById, type Card } from './data/cards';
 import { useFitText, useInstallMode, type ThemePref } from './hooks';
 import { askedToInstall, inviteSnoozed, promptInstall, snoozeInvite, type InstallMode } from './lib/install';
 import { track } from './lib/analytics';
+import { consentNeeded, getConsent, setConsent } from './lib/consent';
 
 const THREADS: Thread[] = ['r', 'g', 'y', 'k', 'b'];
 
@@ -477,7 +478,7 @@ export function InstallButton({
   const [open, setOpen] = useState(autoOpen && askedToInstall);
   if (!mode) return null;
   const click = async () => {
-    track(`install/tap-${from}-${mode}`);
+    track('install', { step: 'tap', from, mode });
     if (mode === 'prompt') await promptInstall();
     else setOpen(true);
   };
@@ -505,6 +506,36 @@ export function InstallInvite() {
         <b>انبسطتوا؟</b> ثبّتوها على جوالكم، وبتلاقوها بكبسة حتى بدون إنترنت.
       </p>
       <InstallButton className="btn btn--primary" label="ثبّتها على جوالك" from="final" />
+    </div>
+  );
+}
+
+/** Asks before Google Analytics and Clarity load. Shown on the home screen only, never mid-game. */
+export function ConsentBanner({ forceOpen = false, onDone }: { forceOpen?: boolean; onDone?: () => void }) {
+  const [open, setOpen] = useState(() => consentNeeded && (forceOpen || getConsent() === null));
+  useEffect(() => {
+    if (forceOpen && consentNeeded) setOpen(true);
+  }, [forceOpen]);
+  if (!open) return null;
+  const answer = (granted: boolean) => {
+    setConsent(granted);
+    setOpen(false);
+    onDone?.();
+  };
+  return (
+    <div className="consent" role="region" aria-label="الإحصائيات">
+      <p>
+        بنستعمل Google Analytics و Microsoft Clarity لنفهم كيف بتنلعب ولا كلمة ونحسّنها. بنشغّلهم بس إذا وافقت، وبتقدر تغيّر رأيك
+        وقت ما بدك. <a href="privacy.html">الخصوصية</a>
+      </p>
+      <div className="consent__btns">
+        <button className="btn btn--primary" onClick={() => answer(true)}>
+          تمام
+        </button>
+        <button className="btn btn--ghost" onClick={() => answer(false)}>
+          لا، شكراً
+        </button>
+      </div>
     </div>
   );
 }

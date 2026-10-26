@@ -33,7 +33,7 @@ This covers SEO (Google, Bing), AEO (answer boxes, voice assistants) and GEO (AI
 2. **Google Search Console and Bing Webmaster Tools**: verify the domain and submit `sitemap.xml`. This takes about 10 minutes once the domain is live. I'll walk you through it.
 3. **Social accounts**: Instagram @walakelmeh is in the footer and the Organization `sameAs`. Add TikTok to `SOCIAL` in `content.py` once it exists.
 4. ~~**Public creator name**~~ Decided: the site names the brand and «فريق ولا كلمة» (The Wala Kelmeh Team) only, never one person.
-5. ~~**Analytics**~~ Done: GoatCounter (`walakelmeh.goatcounter.com`), cookie-free, on the website and in the game. Play and install buttons on the site are counted as `site/play` and `site/install`.
+5. ~~**Analytics**~~ Done: GoatCounter (`walakelmeh.goatcounter.com`), cookie-free, always on, on the website and in the game. Site buttons count as `site/play` and `site/install`; game events: `game-start`, `category-pick`, `card-skip`, `turn-end`, `game-end`, `game-quit`, `share`, `install`. Google Analytics 4 and Microsoft Clarity load only after consent (one banner, one answer shared by site and game); set `GA_ID` and `CLARITY_ID` in `src/config.ts` to switch them on.
 6. ~~**A brand email** on the new domain~~ Done: hello@walakelmeh.com is used everywhere.
 7. **Later**: real player quotes and a short gameplay video. Reviews and video both improve rich results and AI citations.
 
