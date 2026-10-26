@@ -67,6 +67,8 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
+          # The default 30 s control timeout can lapse while the game's largest file uploads.
+          timeout: 120000
           local-dir: site/
           server-dir: ${{ vars.FTP_DIR || './' }}
       - if: env.FTP_SERVER == ''
