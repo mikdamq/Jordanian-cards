@@ -64,7 +64,7 @@ GoatCounter has to be connected before launch, or the first two goals can't be m
 | Time | What |
 | --- | --- |
 | 6:00 pm | Open walakelmeh.com and the game on an Android phone and an iPhone. Check play, the install button and a form. |
-| 8:00 pm | Post 1 (`post-01-arrived`) and the best video as the first reel, on Instagram and TikTok. |
+| 8:00 pm | Post 1 (`post-01-arrived`, with its alt text) and the best video as the first reel (auto captions on), on Instagram and TikTok. |
 | 8:05 pm | Stories: a link sticker to walakelmeh.com, then «العبوها الليلة وشاركونا النتيجة». |
 | 8:10 pm | WhatsApp: your status, then the launch message to the launch crew and family groups. |
 | 8:30 – 10:30 pm | Reply to every comment and message (quick replies below), and repost every story that tags us. |
@@ -86,7 +86,7 @@ Sized for one person: 2 feed posts and 1 video a week, plus stories on 3 days. T
 
 | When | Time | What |
 | --- | --- | --- |
-| Sunday | 90 min | Schedule the week's 2 posts and the video. Plan 3 story days. |
+| Sunday | 90 min | Schedule the week's 2 posts and the video, with alt text and captions. Plan 3 story days. |
 | Every day | 10 min | Reply to comments and messages, and repost tags. |
 | Thursday evening | 20 min | A "Thursday night" story: «شو بتلعبوا الليلة؟» |
 | Once a week | 30 min | Check the numbers (GoatCounter and the apps' insights), read the suggestions, and pick a community card to add. |
@@ -125,6 +125,10 @@ Film on a phone, vertical, with natural light. Each is 15 to 25 seconds. Put the
 > We made a free Jordanian charades game for family nights: 510 cards in Jordanian Arabic (with Arabizi), three modes including heads-up, no account, and it works offline once opened. It runs in the browser and installs to your home screen. We'd love feedback and card ideas: walakelmeh.com
 >
 > عملنا لعبة تمثيل أردنية مجانية للسهرات: ٥١٠ بطاقة بالحكي الأردني، ٣ طرق للعب، بدون حساب وبتشتغل بدون إنترنت. بنحب نسمع رأيكم وأفكار بطاقات: walakelmeh.com
+
+## Alt text on every post
+
+Every post and story gets alt text before it goes out: Instagram's **Advanced settings → Accessibility → Write alt text**. The text for each graphic, in Arabic and English, is in the social kit guide (`docs/social/launch-plan.md`, "Alt text"). Reels and TikToks get **auto captions** instead.
 
 ## Quick replies
 
