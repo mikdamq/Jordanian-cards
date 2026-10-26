@@ -2160,3 +2160,13 @@ h2 {
   color: var(--red-text);
   font-weight: 700;
 }
+
+.setup-notice {
+  margin: 0;
+  padding: 12px 16px;
+  border-radius: 16px;
+  background: var(--surface);
+  border: 2px dashed var(--stitch);
+  font-weight: 700;
+  line-height: 1.7;
+}

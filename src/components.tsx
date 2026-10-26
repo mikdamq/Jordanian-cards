@@ -93,11 +93,11 @@ export function Logo() {
     <div className="logo">
       <img className="logo__symbol" src="brand/symbol-primary.svg" alt="" width={104} height={104} />
       <h1 className="logo__name">
-        <img className="logo__ar logo--on-light" src="brand/wordmark-arabic-on-light.svg" alt="ولا كلمة" />
-        <img className="logo__ar logo--on-dark" src="brand/wordmark-arabic-on-dark.svg" alt="ولا كلمة" />
+        <img className="logo__ar logo--on-light" src="brand/wordmark-arabic-on-light.svg" alt="ولا كلمة" width={742} height={266} />
+        <img className="logo__ar logo--on-dark" src="brand/wordmark-arabic-on-dark.svg" alt="ولا كلمة" width={742} height={266} />
       </h1>
-      <img className="logo__en logo--on-light" src="brand/wordmark-english-on-light.svg" alt="Wala Kelmeh" />
-      <img className="logo__en logo--on-dark" src="brand/wordmark-english-on-dark.svg" alt="" />
+      <img className="logo__en logo--on-light" src="brand/wordmark-english-on-light.svg" alt="Wala Kelmeh" width={1456} height={210} />
+      <img className="logo__en logo--on-dark" src="brand/wordmark-english-on-dark.svg" alt="" width={1456} height={210} />
     </div>
   );
 }

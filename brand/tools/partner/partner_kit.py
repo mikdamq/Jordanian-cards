@@ -1,13 +1,13 @@
 """Café partner kit: print-ready PDFs (with 3 mm bleed) and PNG previews.
 
-    python3 partner_kit.py [--url https://walakelmeh.com/play/?ref=venue]
+    python3 partner_kit.py [--url 'https://walakelmeh.com/play/?ref=venue-name&night=1']
 """
 import io, json, os, subprocess, sys, tempfile
 import qrcode, qrcode.image.svg
 HERE = tempfile.mkdtemp(prefix='partner-kit-')
 REPO = '/home/user/Jordanian-cards'
 OUT = os.path.join(REPO, 'brand', 'partner-kit')
-URL = sys.argv[sys.argv.index('--url') + 1] if '--url' in sys.argv else 'https://walakelmeh.com/play/?ref=cafe'
+URL = sys.argv[sys.argv.index('--url') + 1] if '--url' in sys.argv else 'https://walakelmeh.com/play/?ref=cafe&night=1'
 F = lambda *p: 'file://' + os.path.join(REPO, *p)
 M = lambda k: F('brand', 'mascot', 'svg', f'shammogh-{k}.svg')
 ART = lambda k: F('website', 'out', 'assets', 'art', k + '.svg')
@@ -93,7 +93,7 @@ item('table-card-a6', 105, 148, doc(105, 148, f'''<div class="band" style="top:0
 # 5. Partner guide, A4 (210 x 297 mm), one page
 guide = [
   ('قبل الليلة', ['اختاروا يوم ثابت بالأسبوع وساعة (مثلاً الخميس ٨ مساءً).', 'حطّوا البوستر على الباب وستاند الطاولة على كل طاولة.', 'انشروا ستوري «ليلة ولا كلمة» قبلها بيومين، ويوم الليلة.']),
-  ('بالليلة', ['كل طاولتين جنب بعض بيتحدّوا على جوال واحد: كل طاولة فريق.', 'نفس الإعدادات للكل: وضع «تمثيل»، ٦٠ ثانية للدور، ٣ جولات.', 'الطاولات الفايزة بتلعب النهائي قدّام الكل، والفايز بياخذ الجائزة.']),
+  ('بالليلة', ['كل طاولتين جنب بعض بيتحدّوا على جوال واحد: كل طاولة فريق.', 'امسحوا الكود وبتلاقوا الإعدادات جاهزة: تمثيل، ٦٠ ثانية، ٣ جولات.', 'الطاولات الفايزة بتلعب النهائي قدّام الكل، والفايز بياخذ الجائزة.']),
   ('أفكار للجائزة', ['خصم على الفاتورة للطاولة الفايزة.', 'مشروب أو حلو مجاني.', 'طاولة محجوزة للأسبوع الجاي.']),
   ('بعد الليلة', ['صوّروا الفريق الفايز (بموافقتهم) وانشروا مع #ولا_كلمة.', 'تاجونا @walakelmeh لنعيد النشر ونذكر محلّكم.', 'ابعتولنا شو انبسطوا عليه وشو بدكم نضيف.']),
 ]

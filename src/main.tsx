@@ -10,9 +10,11 @@ import App from './App';
 import { ErrorBoundary } from './ErrorBoundary';
 import { startAnalytics } from './lib/analytics';
 import { initInstall } from './lib/install';
+import { trackVenue } from './lib/venue';
 
 startAnalytics();
 initInstall();
+trackVenue();
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

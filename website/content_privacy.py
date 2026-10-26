@@ -30,7 +30,7 @@ PR = {
       {'ar': 'إذا انضافت بطاقتك للعبة وكتبت اسمك، ممكن نذكره بقائمة الشكر. إذا ما بدك، احكيلنا.', 'en': 'If your card is added and you gave your name, we may thank you by name. Tell us if you’d rather we didn’t.'},
       {'ar': 'بنحتفظ بطلبات الشراكة قد ما بنحتاجها للتواصل، وبتقدر تطلب نمسحها بأي وقت.', 'en': 'We keep partnership requests only as long as needed to talk with you, and you can ask us to delete them at any time.'}]),
     ('third', {'ar': 'خدمات خارجية', 'en': 'Third-party services'}, [
-      {'ar': 'الخطوط (Cairo و Almarai) بتنحمّل من Google Fonts، اللي ممكن تشوف عنوان IP تبعك وقت تحميل الصفحة.', 'en': 'Fonts (Cairo and Almarai) load from Google Fonts, which can see your IP address when the page loads.'},
+      {'ar': 'الخطوط (Cairo و Almarai) بتنحمّل من موقعنا نفسه، بدون أي طلب لشركة ثانية.', 'en': 'Fonts (Cairo and Almarai) load from our own site, with no request to anyone else.'},
       {'ar': 'GoatCounter للإحصائيات المجهولة دايماً، و Google Analytics و Microsoft Clarity بس بموافقتك. ما في إعلانات.', 'en': 'GoatCounter for anonymous statistics, always; Google Analytics and Microsoft Clarity only with your agreement. There are no ads.'}]),
     ('children', {'ar': 'الأطفال', 'en': 'Children'}, [
       {'ar': 'اللعبة مناسبة للعيلة وما بتجمع معلومات من حدا. إذا عمرك أقل من ١٣ سنة، اطلب من أهلك قبل ما تبعت اقتراح باسمك.', 'en': 'The game is family-friendly and collects no information from anyone. If you’re under 13, ask a parent before sending a suggestion with your name.'}]),

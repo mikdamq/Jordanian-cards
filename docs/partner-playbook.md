@@ -111,10 +111,11 @@ Pricing is still open. Our suggestion for the first venues: **everything free fo
 
 ## 9. App work this reveals
 
-These are not built yet. They're listed here so they can be planned.
+1. ~~**Venue scan counts**~~ Done: opening the game with `?ref=<venue>` records `venue/<venue>` in GoatCounter.
+2. ~~**A venue night preset**~~ Done: `?ref=<venue>&night=1` opens setup with the format A settings already chosen, and a note telling the tables to type their names and start. The partner-kit QR codes use it.
 
-1. **Venue scan counts:** the app should record a `venue/<ref>` event when it opens with `?ref=`, once GoatCounter is set up.
-2. **A venue night preset:** a link such as `?ref=venue&preset=night` that opens with the agreed settings, so no one has to set them by hand.
+Still to build:
+
 3. **Venue categories:** a partner QR that unlocks a venue's own category (the Signature level).
 4. **A shareable result card for the night:** the existing share image, with the venue's name on it.
 

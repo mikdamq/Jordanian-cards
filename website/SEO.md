@@ -15,7 +15,7 @@ This covers SEO (Google, Bing), AEO (answer boxes, voice assistants) and GEO (AI
 | Answer-ready copy | A plain "What is Wala Kelmeh?" definition near the top, a facts list (price, players, cards, language, made in), and short, direct FAQ answers. These are the passages AI engines quote. |
 | Images | Real image files with `alt` text in the page's language, `width` and `height` set, lazy loading below the fold, high priority for the hero image. |
 | Accessibility | Landmarks (header, nav, main, footer), skip link, visible focus, contrast checked, reduced-motion respected. Accessibility helps rankings too. |
-| Speed | About 40 KB of HTML per page. Images and logos are cached files. Font preconnect with `display=swap`. |
+| Speed | About 40 KB of HTML per page. Images and logos are cached files. Fonts are self-hosted (`static/assets/fonts/`), their `@font-face` rules inlined and the two main files preloaded. The header logo is a `<picture>`, so only the light or dark version downloads. |
 | Internal links | Header, category tiles and footer link every page. The language switch links to the twin page. |
 
 ## Site-wide files
@@ -40,5 +40,7 @@ This covers SEO (Google, Bing), AEO (answer boxes, voice assistants) and GEO (AI
 ## Before each release
 
 - Run `python3 website/build.py` and check: one h1, every image has alt text, the JSON-LD parses.
+- Lighthouse on the home, a category, a blog post and `/play/`. Last run (26 Oct 2026): accessibility and SEO 100 on every page, performance 92–96 on the site and 80 on the game, zero broken internal links.
+- `404.html` is the not-found page (`ErrorDocument` in `static/.htaccess`); it is `noindex`.
 - Test a page in Google's Rich Results Test and the PageSpeed Insights tool once the domain is live.
 - Add each new page to the sitemap pairs in `build.py`.

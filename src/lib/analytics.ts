@@ -16,6 +16,14 @@ declare global {
 }
 
 let started = false;
+// Events from the first moments (e.g. which café was scanned) wait here until count.js loads.
+const pending: string[] = [];
+
+function goat(path: string) {
+  const g = window.goatcounter;
+  if (g?.count) g.count({ path, title: path, event: true });
+  else pending.push(path);
+}
 
 export function startAnalytics() {
   if (started) return;
@@ -26,6 +34,9 @@ export function startAnalytics() {
   s.async = true;
   s.src = 'https://gc.zgo.at/count.js';
   s.dataset.goatcounter = `https://${GOATCOUNTER_CODE}.goatcounter.com/count`;
+  s.onload = () => {
+    if (window.goatcounter?.count) pending.splice(0).forEach(goat);
+  };
   document.head.appendChild(s);
 }
 
@@ -33,7 +44,7 @@ export function track(name: string, params: Record<string, string | number> = {}
   const path = [name, ...Object.values(params)].join('/').replace(/_/g, '-');
   // Each tool may be blocked (ad blockers, offline); the game never waits on them.
   try {
-    if (GOATCOUNTER_CODE) window.goatcounter?.count({ path, title: path, event: true });
+    if (GOATCOUNTER_CODE) goat(path);
   } catch {
     /* ignore */
   }

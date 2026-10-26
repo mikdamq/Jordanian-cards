@@ -11,6 +11,8 @@ interface Props {
   onChange: (s: Settings) => void;
   onStart: () => void;
   onBack: () => void;
+  /** A short line under the title, e.g. when a café's night link set things up. */
+  notice?: string;
 }
 
 const MODES: { id: Mode; title: string; desc: string }[] = [
@@ -21,7 +23,7 @@ const MODES: { id: Mode; title: string; desc: string }[] = [
 
 const countIn = (id: CategoryId) => CARDS.filter((c) => c.category === id).length;
 
-export function Setup({ settings, onChange, onStart, onBack }: Props) {
+export function Setup({ settings, onChange, onStart, onBack, notice }: Props) {
   const [picking, setPicking] = useState<number | null>(null);
   const set = (patch: Partial<Settings>) => onChange({ ...settings, ...patch });
   const count = eligibleCards(settings.categories, settings.shabab).length;
@@ -70,6 +72,11 @@ export function Setup({ settings, onChange, onStart, onBack }: Props) {
         </button>
         <h1>جهّز اللعبة</h1>
       </header>
+      {notice && (
+        <p className="setup-notice" role="status">
+          {notice}
+        </p>
+      )}
 
       <section>
         <h3 className="label">طريقة اللعب</h3>

@@ -67,8 +67,12 @@ def logo_img(lang, theme, pre, h=46, eager=False):
     return f'<img src="{pre}assets/{name}" width="{round(h * vw / vh)}" height="{h}" alt="{alt}"{load}>'
 
 def logo_pair(lang, pre=''):
-    """Both versions; CSS shows the one that matches the viewer's theme."""
-    return f'<span class="logo-light">{logo_img(lang, "light", pre, eager=True)}</span><span class="logo-dark">{logo_img(lang, "dark", pre, eager=True)}</span>'
+    """One picture: the browser downloads only the version that matches the viewer's theme.
+    The preview inlines its images, so there both versions stay and CSS picks one."""
+    if PREVIEW:
+        return f'<span class="logo-light">{logo_img(lang, "light", pre, eager=True)}</span><span class="logo-dark">{logo_img(lang, "dark", pre, eager=True)}</span>'
+    logo_img(lang, 'dark', pre)  # registers the dark file for the build
+    return f'<picture><source media="(prefers-color-scheme: dark)" srcset="{pre}assets/logo-{lang}-dark.svg">{logo_img(lang, "light", pre, eager=True)}</picture>'
 
 MASCOT_FILES = tuple(MOODS)   # every mood: the stickers page shows them all
 def mascot_img(key, lang, prefix, eager=False, w=440):
@@ -194,13 +198,19 @@ def head(c, title, desc, graph):
 <link rel="icon" href="{c.pre}assets/icon.svg" type="image/svg+xml">
 <link rel="icon" href="{c.pre}assets/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="{c.pre}assets/apple-touch-icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Almarai:wght@700;800&family=Cairo:wght@400;600;800&display=swap">
+{FONT_LINKS}
 <script type="application/ld+json">{ld}</script>
 <style>{CSS}</style>
 </head>
 <body>'''
+
+# Fonts are served from our own domain (no Google request). The preview runs where only
+# Google Fonts can load, so it keeps those.
+FONT_LINKS = ('<link rel="preconnect" href="https://fonts.googleapis.com">\n<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n'
+              '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Almarai:wght@700;800&family=Cairo:wght@400;600;800&display=swap">') if PREVIEW else (
+              '<link rel="preload" href="/assets/fonts/cairo-arabic-400-normal.woff2" as="font" type="font/woff2" crossorigin>\n'
+              '<link rel="preload" href="/assets/fonts/almarai-arabic-800-normal.woff2" as="font" type="font/woff2" crossorigin>\n'
+              '<style>' + open(os.path.join(STATIC, 'assets', 'fonts', 'fonts.css'), encoding='utf-8').read() + '</style>')
 
 def header(c):
     lang, other = c.lang, ('en' if c.lang == 'ar' else 'ar')
@@ -597,7 +607,7 @@ def card_tile(ar, arabizi, level, lang):
     dots = ''.join(f'<i class="{"on" if i < level else ""}"></i>' for i in range(3))
     lvl = CC.C['levels'][lang][level - 1]
     return (f'<li class="scard"><b lang="ar" dir="rtl">{ar}</b><span lang="en" dir="ltr">{html.escape(arabizi)}</span>'
-            f'<span class="lvl" title="{lvl}" aria-label="{lvl}">{dots}</span></li>')
+            f'<span class="lvl" role="img" title="{lvl}" aria-label="{lvl}">{dots}</span></li>')
 
 def categories_page(c):
     lang, pre, L = c.lang, c.pre, (lambda d: d[c.lang])
@@ -815,6 +825,33 @@ def privacy_page(c):
     graph = base_graph(c) + [page, breadcrumbs_ld(c, [(home_name, c.abs('home')), (L('crumb'), c.url)])]
     return head(c, title, desc, graph) + header(c) + '<main id="main">' + main + footer(c)
 
+# ---------- 404 ----------
+class RootCtx(Ctx):
+    """For a page served at any address (the 404): every link and asset is absolute."""
+    def __init__(self, lang, key):
+        super().__init__(lang, key)
+        self.pre = '/'
+
+def not_found(lang='ar'):
+    c = RootCtx(lang, 'home')
+    other = 'en' if lang == 'ar' else 'ar'
+    copy = {
+        'ar': ('الصفحة مش موجودة | ولا كلمة', 'أوبس! هالصفحة مش موجودة', 'يمكن الرابط فيه غلطة، أو الصفحة انتقلت. بس اللعبة موجودة، وجاهزة 😉', 'الصفحة الرئيسية'),
+        'en': ('Page not found | Wala Kelmeh', 'Oops! This page doesn’t exist', 'The link may have a typo, or the page has moved. The game is still right here 😉', 'Home'),
+    }[lang]
+    title, h1, p, home_label = copy
+    main = f'''<section class="page-hero"><div class="in">
+  <div class="page-hero-grid">
+    <div class="page-hero-text"><h1>{h1}</h1><p class="answer">{p}</p>
+      <div class="ctas"><a class="btn btn-red" href="{PLAY}" data-goatcounter-click="site/play-404">{t('play', lang)}</a><a class="btn btn-ghost" href={c.href('home')}>{home_label}</a></div>
+      <p class="muted" lang="{other}" dir="{'rtl' if other == 'ar' else 'ltr'}">{'الصفحة مش موجودة.' if other == 'ar' else 'Page not found.'} <a href={c.href('home', other)}>{'الموقع بالعربي' if other == 'ar' else 'Go to the English site'}</a></p></div>
+    <div class="page-hero-art">{mascot_img('shock', lang, c.pre, eager=True, w=300)}</div>
+  </div></div></section>'''
+    doc = head(c, title, p, []) + header(c) + '<main id="main">' + main + footer(c)
+    # Not a real page: keep it out of search and don't claim the home page's address.
+    doc = doc.replace('<meta name="robots" content="index, follow, max-image-preview:large">', '<meta name="robots" content="noindex">', 1)
+    return re.sub(r'<link rel="(?:canonical|alternate)"[^>]*>\n', '', doc)
+
 # ---------- blog ----------
 import math
 MONTHS_AR = ['كانون الثاني', 'شباط', 'آذار', 'نيسان', 'أيار', 'حزيران', 'تموز', 'آب', 'أيلول', 'تشرين الأول', 'تشرين الثاني', 'كانون الأول']
@@ -961,6 +998,7 @@ def build():
         for lang in ('ar', 'en'):
             write(os.path.join(OUT, 'en' if lang == 'en' else '', PAGES[key], 'index.html'), fn(Ctx(lang, key)))
     write(os.path.join(OUT, 'privacy.html'), f'<!doctype html><meta charset="utf-8"><title>Privacy</title><link rel="canonical" href="{SITE}/privacy/"><meta name="robots" content="noindex"><meta http-equiv="refresh" content="0; url=privacy/"><a href="privacy/">سياسة الخصوصية · Privacy policy</a>')
+    write(os.path.join(OUT, '404.html'), not_found('ar'))
     write(os.path.join(OUT, 'robots.txt'), robots())
     write(os.path.join(OUT, 'sitemap.xml'), sitemap())
     write(os.path.join(OUT, 'llms.txt'), llms())
