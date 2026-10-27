@@ -4,6 +4,7 @@ import {
   Confetti,
   HeadsUpWord,
   InstallInvite,
+  ReviewCard,
   PromptCard,
   RotatePrompt,
   Screen,
@@ -20,6 +21,7 @@ import { loadList, save } from '../lib/storage';
 import { requestTiltPermission } from '../lib/tilt';
 import { track } from '../lib/analytics';
 import { shareResult } from '../lib/shareImage';
+import { countGameAndCheck } from '../lib/review';
 import { CONTACT_EMAIL } from '../config';
 
 type Dispatch = (a: Parameters<typeof reduce>[1]) => void;
@@ -478,6 +480,15 @@ function Final({ g, startedAt, onHome, onReplay }: { g: Game; startedAt: number;
     track('game_end', { mode: g.settings.mode, length: `${Math.max(1, Math.round((Date.now() - startedAt) / 60000))}-min` });
   }, [g.settings.mode, startedAt]);
 
+  // Count this game once (effects run twice in development) and maybe ask for a rating.
+  const [askReview, setAskReview] = useState(false);
+  const counted = useRef(false);
+  useEffect(() => {
+    if (counted.current) return;
+    counted.current = true;
+    if (countGameAndCheck((Date.now() - startedAt) / 60000)) setAskReview(true);
+  }, [startedAt]);
+
   const share = async () => {
     setSharing(true);
     try {
@@ -518,10 +529,16 @@ function Final({ g, startedAt, onHome, onReplay }: { g: Game; startedAt: number;
         <button className="btn btn--ghost" onClick={onHome}>
           الرئيسية
         </button>
-        <InstallInvite />
-        <a className="link-btn center" href={`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent('ولا كلمة — ملاحظات')}`}>
-          عندك ملاحظة أو فكرة بطاقة؟ ابعتلنا
-        </a>
+        {askReview ? (
+          <ReviewCard mode={g.settings.mode} />
+        ) : (
+          <>
+            <InstallInvite />
+            <a className="link-btn center" href={`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent('ولا كلمة — ملاحظات')}`}>
+              عندك ملاحظة أو فكرة بطاقة؟ ابعتلنا
+            </a>
+          </>
+        )}
       </div>
     </Screen>
   );

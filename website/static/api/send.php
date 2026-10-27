@@ -1,6 +1,7 @@
 <?php
 // Form endpoint for walakelmeh.com: emails each suggestion or partner request to the team.
-// Called by the website forms (see SUGGEST_JS in website/build.py). Replies with JSON.
+// Called by the website forms (see SUGGEST_JS in website/build.py) and the game's rating card
+// (ReviewCard in src/components.tsx). Replies with JSON.
 
 const TO = 'hello@walakelmeh.com';
 const FROM = 'hello@walakelmeh.com';   // a real mailbox, so the hosting's mail server accepts it as sender
@@ -14,8 +15,9 @@ const FIELDS = [
   'category' => 60, 'word' => 80, 'arabizi' => 80, 'level' => 20,
   'category_name' => 60, 'examples' => 400,
   'venue' => 80, 'city' => 40, 'type' => 40, 'contact' => 80, 'message' => 800,
+  'stars' => 1, 'publish' => 3, 'mode' => 20, 'games' => 5,
 ];
-const KINDS = ['card' => 'اقتراح بطاقة', 'category' => 'اقتراح فئة', 'partner' => 'طلب شراكة'];
+const KINDS = ['card' => 'اقتراح بطاقة', 'category' => 'اقتراح فئة', 'partner' => 'طلب شراكة', 'review' => 'رأي لاعب'];
 
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store');
@@ -84,14 +86,17 @@ foreach (FIELDS as $key => $max) {
 }
 $kind = $data['kind'] ?? '';
 if (!isset(KINDS[$kind])) reply(400, false, 'kind');
-$needed = ['card' => ['word'], 'category' => ['category_name'], 'partner' => ['venue', 'contact']][$kind];
+$needed = ['card' => ['word'], 'category' => ['category_name'], 'partner' => ['venue', 'contact'], 'review' => ['stars']][$kind];
 foreach ($needed as $key) if (empty($data[$key])) reply(400, false, 'missing');
+if ($kind === 'review' && !preg_match('/^[1-5]$/', $data['stars'])) reply(400, false, 'stars');
 
-$about = $data['word'] ?? $data['category_name'] ?? $data['venue'] ?? '';
+$about = $kind === 'review'
+  ? str_repeat('★', (int) $data['stars']) . str_repeat('☆', 5 - (int) $data['stars']) . ' ' . $data['stars'] . '/5'
+  : ($data['word'] ?? $data['category_name'] ?? $data['venue'] ?? '');
 $subject = 'ولا كلمة · ' . KINDS[$kind] . ($about !== '' ? ': ' . $about : '');
 $body = '';
 foreach ($data as $key => $v) $body .= $key . ': ' . $v . "\n";
-$body .= "\nSent " . gmdate('Y-m-d H:i') . " UTC from the website.\n";
+$body .= "\nSent " . gmdate('Y-m-d H:i') . ' UTC from the ' . ($kind === 'review' ? 'game' : 'website') . ".\n";
 
 $headers = [
   'From: =?UTF-8?B?' . base64_encode('موقع ولا كلمة') . '?= <' . FROM . '>',

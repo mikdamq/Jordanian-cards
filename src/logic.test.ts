@@ -3,6 +3,7 @@ import { CARDS, CATEGORIES } from './data/cards';
 import { DEFAULT_SETTINGS, DEFAULT_TEAMS, defaultPlayer, newGame, nextGuesser, normalizeSettings, reduce, winners, type Game, type Settings } from './game';
 import { buildDeck, eligibleCards } from './lib/deck';
 import { nextTiltState, screenFacing } from './lib/tilt';
+import { afterAsk, afterGame, FRESH, isDue } from './lib/review';
 
 describe('cards', () => {
   it('has ~470 family cards plus a shabab pack, with unique ids and no duplicate prompts', () => {
@@ -163,5 +164,35 @@ describe('مين أسرع؟ (fastest) mode', () => {
     expect(normalizeSettings({ ...DEFAULT_SETTINGS, players: many } as unknown as Settings).players).toHaveLength(12);
     expect(normalizeSettings({ mode: 'fastest' } as unknown as Settings).players).toHaveLength(4);
     expect(normalizeSettings({ mode: 'fastest' } as unknown as Settings).mode).toBe('fastest');
+  });
+});
+
+describe('review prompt timing', () => {
+  // Plays `n` games of `minutes` each; when the card is due it is shown (and unanswered).
+  const play = (s: typeof FRESH, n: number, minutes = 15) => {
+    const shown: number[] = [];
+    for (let i = 0; i < n; i++) {
+      s = afterGame(s, minutes);
+      if (isDue(s)) {
+        shown.push(s.games);
+        s = afterAsk(s);
+      }
+    }
+    return { s, shown };
+  };
+
+  it('asks after the 2nd finished game, once more 5 games later, then never', () => {
+    const { s, shown } = play(FRESH, 30);
+    expect(shown).toEqual([2, 7]);
+    expect(s.done).toBe(true);
+  });
+
+  it('ignores games shorter than 5 minutes', () => {
+    expect(play(FRESH, 10, 3).shown).toEqual([]);
+    expect(afterGame(FRESH, 4.9).games).toBe(0);
+  });
+
+  it('never asks again after an answer', () => {
+    expect(isDue({ ...FRESH, games: 50, done: true })).toBe(false);
   });
 });

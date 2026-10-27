@@ -1,9 +1,11 @@
-import { useEffect, useId, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react';
+import { useEffect, useId, useMemo, useRef, useState, type CSSProperties, type FormEvent, type ReactNode } from 'react';
 import { avatarById, CATEGORY_ART, TATREEZ_BAND, type AvatarId, type StitchArt, type Thread } from './art';
 import { categoryById, type Card } from './data/cards';
 import { useFitText, useInstallMode, type ThemePref } from './hooks';
 import { askedToInstall, inviteSnoozed, promptInstall, snoozeInvite, type InstallMode } from './lib/install';
 import { track } from './lib/analytics';
+import { finishReview, gamesPlayed } from './lib/review';
+import { CONTACT_EMAIL, REVIEW_ENDPOINT } from './config';
 import { consentNeeded, consentPlural, consentToolsAr, getConsent, setConsent } from './lib/consent';
 
 const THREADS: Thread[] = ['r', 'g', 'y', 'k', 'b'];
@@ -507,6 +509,137 @@ export function InstallInvite() {
       </p>
       <InstallButton className="btn btn--primary" label="ثبّتها على جوالك" from="final" />
     </div>
+  );
+}
+
+const STAR_WORDS = ['', 'ما عجبتني', 'مش كثير', 'عادية', 'حلوة', 'بتجنن!'];
+
+/**
+ * "شو رأيك باللعبة؟" on the winner screen (when it shows: lib/review.ts). 4–5 stars may
+ * leave a quote we could publish later; 1–3 stars only tell us, privately, what to fix.
+ */
+export function ReviewCard({ mode }: { mode: string }) {
+  const [stars, setStars] = useState(0);
+  const [state, setState] = useState<'idle' | 'sending' | 'sent' | 'failed' | 'closed'>('idle');
+  const [failCode, setFailCode] = useState('');
+  const formRef = useRef<HTMLFormElement>(null);
+  useEffect(() => track('review_shown'), []);
+
+  if (state === 'closed') return null;
+  if (state === 'sent')
+    return (
+      <div className="review review--sent" role="status">
+        <p>
+          <b>يسلموا! 🙏</b> وصلنا رأيك، وبنقرأ كل كلمة.
+        </p>
+      </div>
+    );
+
+  const happy = stars >= 4;
+  const close = () => {
+    track('review_dismissed', stars ? { stars: `${stars}-stars` } : {});
+    setState('closed');
+  };
+
+  const fields = () => {
+    const data = new FormData(formRef.current ?? undefined);
+    data.set('kind', 'review');
+    data.set('stars', String(stars));
+    data.set('publish', happy && data.get('publish') ? 'yes' : 'no');
+    data.set('mode', mode);
+    data.set('games', String(gamesPlayed()));
+    data.set('lang', 'ar');
+    data.set('page', location.pathname);
+    return data;
+  };
+
+  const mailto = () => {
+    const lines: string[] = [];
+    fields().forEach((v, k) => v && lines.push(`${k}: ${v}`));
+    return `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent('ولا كلمة — رأيي باللعبة')}&body=${encodeURIComponent(lines.join('\n'))}`;
+  };
+
+  const done = () => {
+    finishReview();
+    track('review_sent', { stars: `${stars}-stars` });
+    setState('sent');
+  };
+
+  const send = async (e: FormEvent) => {
+    e.preventDefault();
+    if (!stars || state === 'sending') return;
+    setState('sending');
+    try {
+      const r = await fetch(REVIEW_ENDPOINT, { method: 'POST', body: fields(), headers: { Accept: 'application/json' } });
+      const j = await r.json().catch(() => null);
+      if (r.ok && j?.success) return done();
+      setFailCode(j?.error || `http ${r.status}`);
+    } catch {
+      setFailCode('network');
+    }
+    setState('failed');
+  };
+
+  return (
+    <form ref={formRef} className="review" onSubmit={send} aria-labelledby="review-h">
+      <p id="review-h" className="review__q">
+        <b>شو رأيك باللعبة؟</b>
+      </p>
+      <div className="review__stars" role="radiogroup" aria-label="تقييمك من 5">
+        {[1, 2, 3, 4, 5].map((n) => (
+          <button
+            key={n}
+            type="button"
+            role="radio"
+            aria-checked={stars === n}
+            aria-label={`${n} من 5: ${STAR_WORDS[n]}`}
+            className={n <= stars ? 'on' : ''}
+            onClick={() => setStars(n)}
+          >
+            ★
+          </button>
+        ))}
+      </div>
+      <p className="review__word muted" aria-hidden="true">
+        {STAR_WORDS[stars] || 'اختار من نجمة لـ 5'}
+      </p>
+
+      {stars > 0 && (
+        <div className="review__fields">
+          <textarea
+            name="message"
+            rows={3}
+            maxLength={800}
+            placeholder={happy ? 'شو أكثر إشي عجبك؟ (اختياري)' : 'شو نحسّن؟ احكيلنا بصراحة'}
+            aria-label={happy ? 'شو أكثر إشي عجبك؟' : 'شو نحسّن؟'}
+          />
+          {happy && (
+            <>
+              <div className="review__row">
+                <input name="name" maxLength={60} placeholder="اسمك (اختياري)" aria-label="اسمك" autoComplete="given-name" />
+                <input name="city" maxLength={40} placeholder="مدينتك (اختياري)" aria-label="مدينتك" />
+              </div>
+              <label className="review__check">
+                <input type="checkbox" name="publish" value="yes" />
+                <span>موافق تنشروا رأيي على الموقع</span>
+              </label>
+            </>
+          )}
+          {!happy && <p className="review__note muted">رأيك بيوصلنا إحنا بس، وما بننشره.</p>}
+          {state === 'failed' && (
+            <p className="review__err" role="alert">
+              ما زبط الإرسال ({failCode}). <a href={mailto()} onClick={done}>ابعته بالإيميل</a>
+            </p>
+          )}
+          <button className="btn btn--primary" type="submit" disabled={state === 'sending'}>
+            {state === 'sending' ? 'لحظة…' : 'إرسال'}
+          </button>
+        </div>
+      )}
+      <button type="button" className="link-btn center" onClick={close}>
+        مش هلّق
+      </button>
+    </form>
   );
 }
 
