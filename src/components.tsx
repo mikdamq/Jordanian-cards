@@ -621,7 +621,7 @@ export function ReviewCard({ mode }: { mode: string }) {
               </div>
               <label className="review__check">
                 <input type="checkbox" name="publish" value="yes" />
-                <span>موافق تنشروا رأيي على الموقع</span>
+                <span>موافق ينشر رأيك على الموقع</span>
               </label>
             </>
           )}
@@ -637,7 +637,7 @@ export function ReviewCard({ mode }: { mode: string }) {
         </div>
       )}
       <button type="button" className="link-btn center" onClick={close}>
-        مش هلّق
+        ذكّرني بعدين
       </button>
     </form>
   );

@@ -3,7 +3,7 @@ import { load, save } from './storage';
 
 /**
  * When to ask "شو رأيك باللعبة؟". Counts finished games on this device; asks after the
- * second one, once more after a "مش هلّق", and never again once the player has answered.
+ * second one, once more after "ذكّرني بعدين", and never again once the player has answered.
  */
 export interface ReviewState {
   games: number;
@@ -22,7 +22,7 @@ export const afterGame = (s: ReviewState, minutes: number): ReviewState =>
 export const isDue = (s: ReviewState) => !s.done && s.games >= s.askAt;
 
 /**
- * The card was shown. Unless the player sends an answer, that counts as a "مش هلّق":
+ * The card was shown. Unless the player sends an answer, that counts as "ذكّرني بعدين":
  * ask once more later, and a second time without an answer is final.
  */
 export const afterAsk = (s: ReviewState): ReviewState =>

@@ -20,7 +20,7 @@ export const CLARITY_ID = '';
 /**
  * The "شو رأيك باللعبة؟" card on the winner screen. It shows after this many finished
  * games (each at least REVIEW_MIN_MINUTES long), and once more REVIEW_ASK_AGAIN games
- * after a "مش هلّق". Answers go to the website's form endpoint, which emails them.
+ * after "ذكّرني بعدين". Answers go to the website's form endpoint, which emails them.
  */
 export const REVIEW_AFTER_GAMES = 2;
 export const REVIEW_MIN_MINUTES = 5;
