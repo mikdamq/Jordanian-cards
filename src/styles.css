@@ -2095,6 +2095,117 @@ h2 {
   color: var(--red-text);
 }
 
+/* "شو رأيك باللعبة؟" card on the winner screen */
+.review {
+  display: grid;
+  gap: 10px;
+  padding: 16px 18px;
+  border-radius: 20px;
+  background: var(--surface);
+  border: 2px dashed var(--stitch);
+  text-align: center;
+}
+
+.review p {
+  margin: 0;
+}
+
+.review__q {
+  font-family: var(--display);
+  font-size: 1.15rem;
+}
+
+.review__stars {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+
+.review__stars button {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  font-size: 2rem;
+  line-height: 1;
+  color: var(--line);
+  transition: color 0.15s, transform 0.15s;
+}
+
+.review__stars button.on {
+  color: var(--gold);
+}
+
+.review__stars button:active {
+  transform: scale(0.9);
+}
+
+.review__word {
+  min-height: 1.5em;
+  font-size: 0.95rem;
+}
+
+.review__fields {
+  display: grid;
+  gap: 10px;
+}
+
+.review textarea,
+.review__row input {
+  width: 100%;
+  min-width: 0;
+  padding: 10px 12px;
+  border: 2px solid var(--line);
+  border-radius: 14px;
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+}
+
+.review textarea {
+  resize: vertical;
+}
+
+.review textarea:focus,
+.review__row input:focus {
+  outline: none;
+  border-color: var(--gold);
+}
+
+.review__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.review__check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.review__check input {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--red);
+}
+
+.review__note {
+  font-size: 0.9rem;
+}
+
+.review__err {
+  color: var(--red-text);
+  font-size: 0.95rem;
+}
+
+.review__err a {
+  color: inherit;
+  font-weight: 700;
+}
+
 .install-invite {
   position: relative;
   display: grid;
